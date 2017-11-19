@@ -28,10 +28,11 @@
     "url": "https://github.com/pkosiec/mongo-seeding"
   },
   "version": "0.0.1",
-  "main": "build/index.js",
+  "main": "index.js",
+  "license": "MIT",
   "scripts": {
-    "build": "rm -rf ./build; tsc",
-    "prepare": "npm run build",
+    "build": "rm -rf ./dist; tsc",
+    "dist": "npm run build; cp {package.json,LICENSE,README.md} ./dist",
     "precommit": "lint-staged"
   },
   "dependencies": {
