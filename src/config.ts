@@ -1,7 +1,7 @@
 const mergeAdvanced: any = require('object-merge-advanced');
 import { resolve } from 'path';
 
-const APP_NAME = 'Elastic MongoDB Seed';
+const APP_NAME = 'mongo-seeding';
 const VERSION = process.env.npm_package_version || '';
 export const LOG_TAG = `${APP_NAME} ${VERSION}:`;
 export const SUPPORTED_EXTENSIONS = ['json', 'ts', 'js'];
@@ -23,7 +23,7 @@ export interface AppConfig {
   debugLogging: boolean;
 }
 
-const defaultConfig: AppConfig = {
+export const defaultConfig: AppConfig = {
   database: {
     protocol: 'mongodb',
     host: '127.0.0.1',
