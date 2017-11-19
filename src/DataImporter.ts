@@ -1,14 +1,10 @@
 import { readdir, lstat } from 'fs-extra';
 import { Db } from 'mongodb';
 import { ObjectId } from 'bson';
-import { SUPPORTED_EXTENSIONS, LOG_TAG, AppConfig } from './config';
+import { AppConfig } from './config';
 
 export class DataImporter {
-  constructor(
-    public db: Db,
-    public debugLogging: boolean,
-    readonly TAG: string,
-  ) {}
+  constructor(public db: Db, public log: Function) {}
 
   importData = async (config: AppConfig): Promise<void> => {
     const collectionsDirs = await readdir(config.dataPath);
@@ -28,11 +24,7 @@ export class DataImporter {
       }
 
       await this.createCollectionIfShould(collections, collectionName);
-      await this.insertDocuments(
-        collectionName,
-        collectionPath,
-        config.convertId,
-      );
+      await this.insertDocuments(collectionName, collectionPath, config);
     }
   };
 
@@ -41,8 +33,7 @@ export class DataImporter {
     collectionName: string,
   ) => {
     if (!collections.some(collection => collection.name === collectionName)) {
-      this.debugLogging &&
-        console.log(this.TAG, `Creating collection ${collectionName}...`);
+      this.log(`Creating collection ${collectionName}...`);
       await this.db.createCollection(collectionName);
     }
   };
@@ -50,7 +41,7 @@ export class DataImporter {
   insertDocuments = async (
     collectionName: string,
     collectionPath: string,
-    convertId: boolean,
+    config: AppConfig,
   ) => {
     const fileNames = (await readdir(collectionPath)) || [];
     const documentFileNames = fileNames.filter(fileName => {
@@ -60,16 +51,12 @@ export class DataImporter {
       }
 
       const fileExtension = fileNameArray.pop()!.toLowerCase();
-      return SUPPORTED_EXTENSIONS.some(
+      return config.supportedExtensions.some(
         extension => extension === fileExtension,
       );
     });
 
-    this.debugLogging &&
-      console.log(
-        this.TAG,
-        `Inserting documents into collection ${collectionName}...`,
-      );
+    this.log(`Inserting documents into collection ${collectionName}...`);
 
     const documents = documentFileNames.reduce<any[]>(
       (arr: any[], documentFileName) => {
@@ -79,7 +66,7 @@ export class DataImporter {
       [],
     );
 
-    const documentsToInsert = convertId
+    const documentsToInsert = config.convertId
       ? this.setProperDocumentId(documents)
       : documents;
     await this.db.collection(collectionName).insertMany(documentsToInsert);

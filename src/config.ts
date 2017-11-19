@@ -1,11 +1,6 @@
 const mergeAdvanced: any = require('object-merge-advanced');
 import { resolve } from 'path';
 
-const APP_NAME = 'mongo-seeding';
-const VERSION = process.env.npm_package_version || '';
-export const LOG_TAG = `${APP_NAME} ${VERSION}:`;
-export const SUPPORTED_EXTENSIONS = ['json', 'ts', 'js'];
-
 export type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };
 
 export interface DatabaseConfig {
@@ -20,7 +15,8 @@ export interface AppConfig {
   dataPath: string;
   dropDatabase: boolean;
   convertId: boolean;
-  debugLogging: boolean;
+  supportedExtensions: string[];
+  reconnectTimeout: number;
 }
 
 export const defaultConfig: AppConfig = {
@@ -33,7 +29,8 @@ export const defaultConfig: AppConfig = {
   dataPath: resolve(__dirname, '../data'),
   dropDatabase: false,
   convertId: false,
-  debugLogging: false,
+  supportedExtensions: ['json', 'js'],
+  reconnectTimeout: 2000,
 };
 
 export const getConfig = (ownConfig: DeepPartial<AppConfig>): AppConfig => {
