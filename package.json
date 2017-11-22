@@ -1,0 +1,61 @@
+{
+  "name": "mongo-seeding",
+  "description": "Fill your MongoDB database with data in an easy way. Use JSON and JavaScript files to define the data!",
+  "keywords": [
+    "mongo",
+    "mongodb",
+    "seed",
+    "db-seed",
+    "database",
+    "seeding",
+    "db"
+  ],
+  "tags": [
+    "mongo",
+    "mongodb",
+    "seed",
+    "db-seed",
+    "database",
+    "seeding",
+    "db"
+  ],
+  "author": {
+    "name": "Paweł Kosiec",
+    "email": "pawel.kosiec@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pkosiec/mongo-seeding"
+  },
+  "version": "0.1.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf ./dist; tsc",
+    "dist": "npm run build; cp {package.json,LICENSE,README.md} ./dist",
+    "precommit": "lint-staged"
+  },
+  "dependencies": {
+    "debug": "^3.1.0",
+    "fs-extra": "^4.0.2",
+    "mongodb": "^2.2.33",
+    "object-merge-advanced": "^8.1.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^4.0.5",
+    "@types/mongodb": "^2.2.15",
+    "husky": "^0.14.3",
+    "lint-staged": "^5.0.0",
+    "prettier": "^1.8.2",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1"
+  },
+  "lint-staged": {
+    "linters": {
+      "src/**/*.{ts,js,json}": [
+        "prettier --write",
+        "git add"
+      ]
+    }
+  }
+}
