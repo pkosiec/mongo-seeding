@@ -9,9 +9,47 @@ npm install mongo-seeding --save
 ```
 
 ### Usage
-Coming soon
+```javascript
 
-Alright, how does it work? It's pretty simple - you have to provide a directory with data files in proper structure. 
+    import { seedDatabase } from "mongo-seeding";
+
+    // Define config
+    const config = {
+        database: {
+            host: '127.0.0.1',
+            port: 27017,
+            name: 'mydatabase',
+        },
+        dataPath: resolve(__dirname, '../data'),
+        dropDatabase: true,
+    };    
+
+    // Use it!
+    seedDatabase(config);
+
+```
+
+**You don't have to provide all parameters**.The configuration you'll provide as a parameter of `seedDatabase` method will be merged with default configuration object.
+
+Default configuration object:
+
+```javascript
+const config: AppConfig = {
+  database: {
+    protocol: 'mongodb',
+    host: '127.0.0.1',
+    port: 27017,
+    name: 'database',
+  },
+  dataPath: resolve(__dirname, '../data'),
+  dropDatabase: false,
+  convertId: false,
+  supportedExtensions: ['json', 'js'],
+  reconnectTimeout: 2000,
+};
+```
+
+You can overwrite any field you want.
 
 ### Prepare your data to import
 
@@ -46,4 +84,5 @@ Alright, how does it work? It's pretty simple - you have to provide a directory 
     |   +-- dog.js
     ```
 
-    Take a look at samples to see elastic-mongodb-seed in action!
+ ### Sample Data
+ Take a look at [samples repository](https://github.com/pkosiec/mongo-seeding-samples) to see Mongo Seeding in action! 
