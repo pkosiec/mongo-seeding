@@ -9,7 +9,7 @@ const sleep = (time: number): Promise<void> =>
 export const connectToDatabase = async (
   { host, port, name, protocol }: DatabaseConfig,
   reconnectTimeout: number,
-  log: Function,
+  log: (message: string) => void,
 ): Promise<Db> => {
   const uri = `${protocol}://${host}:${port}/${name}`;
   log(`Connecting to ${uri}...`);

@@ -4,7 +4,7 @@ import { ObjectId } from 'bson';
 import { AppConfig } from './config';
 
 export class DataImporter {
-  constructor(public db: Db, public log: Function) {}
+  constructor(public db: Db, public log: (message: string) => void) {}
 
   importData = async (config: AppConfig): Promise<void> => {
     const collectionsDirs = await readdir(config.dataPath);
