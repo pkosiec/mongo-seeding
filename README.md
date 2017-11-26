@@ -3,6 +3,8 @@ Fill your MongoDB database with data in an easy way. Use JSON and JavaScript fil
 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 
+Looking for Docker image? Try [Mongo Seeding Docker Image](https://github.com/pkosiec/mongo-seeding-image)! It brings also additional TypeScript support!
+
 ### Install
 ```bash
 npm install mongo-seeding --save
@@ -99,5 +101,5 @@ import { seedDatabase } from 'mongo-seeding';
     |   +-- dog.js
     ```
 
- ### Sample Data
+ ### Samples
  Take a look at [samples repository](https://github.com/pkosiec/mongo-seeding-samples) to see Mongo Seeding in action! 
