@@ -26,7 +26,7 @@ export const defaultConfig: AppConfig = {
     port: 27017,
     name: 'database',
   },
-  dataPath: resolve(__dirname, '../data'),
+  dataPath: resolve(__dirname, '../../data'),
   dropDatabase: false,
   convertId: false,
   supportedExtensions: ['json', 'js'],
