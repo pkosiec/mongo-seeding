@@ -51,6 +51,21 @@ const config: AppConfig = {
 
 You can overwrite any field you want.
 
+### Debug output
+To see debug output just set environmental variable `DEBUG` to `mongo-seeding` before starting your Node.js app:
+
+```bash
+DEBUG=mongo-seeding node yourapp/index.js
+```
+
+or programmatically before import:
+
+```javascript
+process.env.DEBUG = 'mongo-seeding';
+import { seedDatabase } from 'mongo-seeding';
+// ...
+```
+
 ### Prepare your data to import
 
 1. Create a new directory. In this example, name it simply as `data`.

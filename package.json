@@ -1,6 +1,6 @@
 {
   "name": "mongo-seeding",
-  "description": "Fill your MongoDB database with data in an easy way. Use JSON and JavaScript files to define the data!",
+  "description": "Fill your MongoDB database with data in easy way. Use JSON and JavaScript files to define the data!",
   "keywords": [
     "mongo",
     "mongodb",
@@ -39,11 +39,11 @@
     "debug": "^3.1.0",
     "fs-extra": "^4.0.2",
     "mongodb": "^2.2.33",
-    "object-merge-advanced": "^8.1.1"
+    "object-merge-advanced": "^8.1.1",
+    "@types/fs-extra": "^4.0.5",
+    "@types/mongodb": "^2.2.15"
   },
   "devDependencies": {
-    "@types/fs-extra": "^4.0.5",
-    "@types/mongodb": "^2.2.15",
     "husky": "^0.14.3",
     "lint-staged": "^5.0.0",
     "prettier": "^1.8.2",
