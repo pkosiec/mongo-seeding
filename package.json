@@ -27,7 +27,7 @@
     "type": "git",
     "url": "https://github.com/pkosiec/mongo-seeding"
   },
-  "version": "0.1.2",
+  "version": "0.1.3",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
