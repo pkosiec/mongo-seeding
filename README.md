@@ -1,9 +1,12 @@
 # Mongo Seeding
-Fill your MongoDB database with data in an easy way. Use JSON and JavaScript files to define the data!
+Fill your MongoDB database with data in easy way. Use JavaScript and JSON files to define the data!
 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 
-Looking for Docker image? Try [Mongo Seeding Docker Image](https://github.com/pkosiec/mongo-seeding-image)! It brings also additional TypeScript support!
+**If this is not what are you looking for...**
+- Searching for a command line tool? Use [Mongo Seeding CLI](https://github.com/pkosiec/mongo-seeding-cli)!
+- Looking for Docker image? Try [Mongo Seeding Docker Image](https://github.com/pkosiec/mongo-seeding-image)! It brings also additional TypeScript support!
+
 
 ### Install
 ```bash
