@@ -1,7 +1,7 @@
 # Mongo Seeding
 Fill your MongoDB database with data in easy way. Use JavaScript and JSON files to define the data!
 
-[![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
+[![npm](https://img.shields.io/npm/v/mongo-seeding.svg)](https://www.npmjs.com/package/mongo-seeding) [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 
 **If this is not what are you looking for...**
 - Searching for a command line tool? Use [Mongo Seeding CLI](https://github.com/pkosiec/mongo-seeding-cli)!
