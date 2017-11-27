@@ -15,23 +15,22 @@ npm install mongo-seeding --save
 
 ### Usage
 ```javascript
+const { seedDatabase } = require('mongo-seeding');
+const path = require('path');
 
-    import { seedDatabase } from "mongo-seeding";
+// Define configuration object
+const config = {
+  database: {
+    host: '127.0.0.1',
+    port: 27017,
+    name: 'mydatabase',
+  },
+  dataPath: path.resolve(__dirname, '../data'),
+  dropDatabase: true,
+};
 
-    // Define config
-    const config = {
-        database: {
-            host: '127.0.0.1',
-            port: 27017,
-            name: 'mydatabase',
-        },
-        dataPath: resolve(__dirname, '../data'),
-        dropDatabase: true,
-    };    
-
-    // Use it!
-    seedDatabase(config);
-
+// Use it!
+seedDatabase(config);
 ```
 
 **You don't have to provide all parameters**.The configuration you'll provide as a parameter of `seedDatabase` method will be merged with default configuration object.
@@ -39,14 +38,14 @@ npm install mongo-seeding --save
 Default configuration object:
 
 ```javascript
-const config: AppConfig = {
+const config = {
   database: {
     protocol: 'mongodb',
     host: '127.0.0.1',
     port: 27017,
     name: 'database',
   },
-  dataPath: resolve(__dirname, '../data'),
+  dataPath: path.resolve(__dirname, '../data'),
   dropDatabase: false,
   convertId: false,
   supportedExtensions: ['json', 'js'],
@@ -63,12 +62,11 @@ To see debug output just set environmental variable `DEBUG` to `mongo-seeding` b
 DEBUG=mongo-seeding node yourapp/index.js
 ```
 
-or programmatically before import:
+or programmatically before requiring `mongo-seeding`:
 
 ```javascript
 process.env.DEBUG = 'mongo-seeding';
-import { seedDatabase } from 'mongo-seeding';
-// ...
+const { seedDatabase } = require('mongo-seeding');
 ```
 
 ### Prepare your data to import
