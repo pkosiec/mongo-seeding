@@ -32,7 +32,6 @@
   "license": "MIT",
   "scripts": {
     "build": "rm -rf ./dist; tsc",
-    "dist": "npm run build; cp {package.json,LICENSE,README.md} ./dist",
     "precommit": "lint-staged"
   },
   "dependencies": {
