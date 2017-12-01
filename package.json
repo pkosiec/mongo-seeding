@@ -36,16 +36,16 @@
     "precommit": "lint-staged"
   },
   "dependencies": {
+    "@types/fs-extra": "^4.0.5",
+    "@types/mongodb": "^2.2.16",
     "debug": "^3.1.0",
     "fs-extra": "^4.0.2",
     "mongodb": "^2.2.33",
-    "object-merge-advanced": "^8.1.1",
-    "@types/fs-extra": "^4.0.5",
-    "@types/mongodb": "^2.2.15"
+    "object-merge-advanced": "^8.1.1"
   },
   "devDependencies": {
     "husky": "^0.14.3",
-    "lint-staged": "^5.0.0",
+    "lint-staged": "^6.0.0",
     "prettier": "^1.8.2",
     "tslint": "^5.8.0",
     "typescript": "^2.6.1"
