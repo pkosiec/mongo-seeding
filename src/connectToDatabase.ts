@@ -1,17 +1,24 @@
 import { MongoClient, Db } from 'mongodb';
 import { DatabaseConfig } from './config';
+import { sleep } from './sleep';
 
 const CONNECTION_REFUSED_ERROR_CODE = 'ECONNREFUSED';
 
-const sleep = (time: number): Promise<void> =>
-  new Promise(resolve => setTimeout(resolve, time));
+export const getDbConnectionUri = ({
+  host,
+  port,
+  name,
+  protocol,
+}: DatabaseConfig) => {
+  return `${protocol}://${host}:${port}/${name}`;
+};
 
 export const connectToDatabase = async (
-  { host, port, name, protocol }: DatabaseConfig,
+  dbConfig: DatabaseConfig,
   reconnectTimeout: number,
   log: (message: string) => void,
 ): Promise<Db> => {
-  const uri = `${protocol}://${host}:${port}/${name}`;
+  const uri = getDbConnectionUri(dbConfig);
   log(`Connecting to ${uri}...`);
 
   let db: Db | undefined;
