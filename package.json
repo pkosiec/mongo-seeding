@@ -31,6 +31,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "test": "jest tests",
+    "test-watch": "jest --watch",
     "build": "rm -rf ./dist; tsc",
     "precommit": "lint-staged"
   },
@@ -42,11 +44,29 @@
     "object-merge-advanced": "^8.3.0"
   },
   "devDependencies": {
+    "@types/jest": "^22.0.1",
     "husky": "^0.14.3",
+    "jest": "^22.0.4",
     "lint-staged": "^6.0.0",
     "prettier": "^1.9.2",
+    "ts-jest": "^22.0.1",
     "tslint": "^5.8.0",
     "typescript": "^2.6.1"
+  },
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   },
   "lint-staged": {
     "linters": {
