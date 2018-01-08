@@ -1,13 +1,19 @@
 import { DatabaseConfig } from '../src/config';
 import { DatabaseConnector } from '../src/DatabaseConnector';
 
-jest.mock('mongodb');
-import { MongoClient } from 'mongodb';
-jest.mock('../src/helpers');
+// Import mocks
+jest.mock('../src/helpers', () => ({
+  sleep: jest.fn().mockReturnValue(
+    new Promise((resolve, reject) => {
+      resolve();
+    }),
+  ),
+}));
 import { sleep } from '../src/helpers';
+import { MongoClient } from 'mongodb';
+
 
 const databaseConnector = new DatabaseConnector(MongoClient, jest.fn(() => {}));
-
 const dbConfig: DatabaseConfig = {
   protocol: 'mongodb',
   host: '127.0.0.1',
@@ -23,6 +29,21 @@ describe('Connecting to database', () => {
   });
 
   it('should retry connecting to DB when connection refused', async () => {
+    const getConnectionRefusedError = () => {
+      const connectionRefusedError = {
+        name: 'MongoNetworkError',
+        message:
+          'failed to connect to server [127.0.0.1:27017] on first connect [MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017]',
+      };
+      return new Promise((resolve, reject) => reject(connectionRefusedError));
+    };
+
+    MongoClient.connect = jest
+      .fn()
+      .mockReturnValueOnce(getConnectionRefusedError())
+      .mockReturnValueOnce(getConnectionRefusedError())
+      .mockReturnValue(new Promise((resolve, reject) => resolve({})));
+
     const reconnectTimeout = 20;
     await databaseConnector.connect(dbConfig, reconnectTimeout);
     expect(sleep).toBeCalledWith(reconnectTimeout);
