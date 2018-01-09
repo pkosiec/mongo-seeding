@@ -10,10 +10,6 @@ export class DatabaseConnector {
     public log: (message: string) => void,
   ) {}
 
-  getDbConnectionUri = ({ host, port, name, protocol }: DatabaseConfig) => {
-    return `${protocol}://${host}:${port}/${name}`;
-  };
-
   connect = async (
     dbConfig: DatabaseConfig,
     reconnectTimeout: number,
@@ -36,5 +32,9 @@ export class DatabaseConnector {
     } while (!db);
 
     return db;
+  };
+
+  getDbConnectionUri = ({ host, port, name, protocol }: DatabaseConfig) => {
+    return `${protocol}://${host}:${port}/${name}`;
   };
 }

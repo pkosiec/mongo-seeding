@@ -12,7 +12,6 @@ jest.mock('../src/helpers', () => ({
 import { sleep } from '../src/helpers';
 import { MongoClient } from 'mongodb';
 
-
 const databaseConnector = new DatabaseConnector(MongoClient, jest.fn(() => {}));
 const dbConfig: DatabaseConfig = {
   protocol: 'mongodb',
@@ -22,6 +21,7 @@ const dbConfig: DatabaseConfig = {
 };
 
 describe('Connecting to database', () => {
+
   it('should return proper DB connection URI', () => {
     const uri = databaseConnector.getDbConnectionUri(dbConfig);
     const expectedUri = 'mongodb://127.0.0.1:27017/database';

@@ -2,7 +2,7 @@ import { sleep } from '../src/helpers';
 
 jest.useFakeTimers();
 
-describe('Testing helper functions', () => {
+describe('Helper functions', () => {
   it('should wait given time', () => {
     const sleepTime = 500;
     sleep(sleepTime);
