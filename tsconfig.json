@@ -17,6 +17,10 @@
     "baseUrl": "./src",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "declaration": true
-  }
+    "declaration": true,
+  },
+  "exclude": [
+    "node_modules",
+    "tests"
+  ]
 }
