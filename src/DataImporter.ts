@@ -1,4 +1,4 @@
-import { readdir, lstat } from 'fs-extra';
+import { readdirSync, lstatSync } from 'fs';
 import { Db } from 'mongodb';
 import { ObjectId } from 'bson';
 import { AppConfig } from './config';
@@ -7,7 +7,7 @@ export class DataImporter {
   constructor(public db: Db, public log: (message: string) => void) {}
 
   importData = async (config: AppConfig): Promise<void> => {
-    const collectionsDirs = await readdir(config.dataPath);
+    const collectionsDirs = await readdirSync(config.dataPath);
     const collections = await this.db.listCollections().toArray();
 
     for (const collectionDir of collectionsDirs) {
@@ -17,7 +17,7 @@ export class DataImporter {
         ? collectionDir.split('-')[1]
         : collectionDir;
       const collectionPath = `${config.dataPath}/${collectionDir}`;
-      const stats = await lstat(collectionPath);
+      const stats = await lstatSync(collectionPath);
 
       if (!stats.isDirectory()) {
         continue;
@@ -43,7 +43,7 @@ export class DataImporter {
     collectionPath: string,
     config: AppConfig,
   ) => {
-    const fileNames = (await readdir(collectionPath)) || [];
+    const fileNames = (await readdirSync(collectionPath)) || [];
     const documentFileNames = fileNames.filter(fileName => {
       const fileNameArray = fileName.split('.');
       if (!fileNameArray || fileNameArray.length <= 1) {
