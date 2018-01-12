@@ -35,7 +35,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "jest tests",
+    "test": "jest",
     "test-watch": "jest --watch",
     "build": "rm -rf ./dist; tsc",
     "precommit": "lint-staged"
