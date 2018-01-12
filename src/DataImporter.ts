@@ -1,78 +1,129 @@
-import { readdirSync, lstatSync } from 'fs';
-import { Db } from 'mongodb';
-import { ObjectId } from 'bson';
+import { ObjectId } from 'mongodb';
+import { Database } from './Database';
+import { fileSystem } from './FileSystem';
 import { AppConfig } from './config';
+import { log } from './logger';
+
+export interface CollectionToImport {
+  name: string;
+  directoryName: string;
+  directoryPath: string;
+  shouldCreate: boolean;
+}
 
 export class DataImporter {
-  constructor(public db: Db, public log: (message: string) => void) {}
+  static DIRECTORY_NAME_PATTERN_SEPARATOR = '-';
 
-  importData = async (config: AppConfig): Promise<void> => {
-    const collectionsDirs = await readdirSync(config.dataPath);
-    const collections = await this.db.listCollections().toArray();
+  constructor(public db: Database) {}
 
-    for (const collectionDir of collectionsDirs) {
-      // Directory name pattern: {import order}-{collection name}
-      // Objective: to ensure correct import order - i.e. 1-categories
-      const collectionName = collectionDir.includes('-')
-        ? collectionDir.split('-')[1]
-        : collectionDir;
-      const collectionPath = `${config.dataPath}/${collectionDir}`;
-      const stats = await lstatSync(collectionPath);
+  async importData(config: AppConfig): Promise<void> {
+    const inputDirectory = config.dataPath;
+    const existingCollections = await this.db.getExistingCollectionsArray();
+    const collectionsToImport = this.getCollectionsToImport(
+      inputDirectory,
+      existingCollections,
+    );
 
-      if (!stats.isDirectory()) {
-        continue;
+    for (const collection of collectionsToImport) {
+      if (collection.shouldCreate) {
+        log(`Creating collection ${collection.name}...`);
+        await this.db.createCollection(collection.name);
       }
 
-      await this.createCollectionIfShould(collections, collectionName);
-      await this.insertDocuments(collectionName, collectionPath, config);
+      await this.importCollection(
+        collection.name,
+        collection.directoryPath,
+        config,
+      );
     }
-  };
+  }
 
-  createCollectionIfShould = async (
-    collections: Array<{ name: string }>,
-    collectionName: string,
-  ) => {
-    if (!collections.some(collection => collection.name === collectionName)) {
-      this.log(`Creating collection ${collectionName}...`);
-      await this.db.createCollection(collectionName);
-    }
-  };
+  getCollectionsToImport(
+    inputDirectory: string,
+    existingCollections: string[] = [],
+  ): CollectionToImport[] {
+    const collectionsDirectories = fileSystem.listDirectories(inputDirectory);
+    const collectionsToImport = collectionsDirectories.map(
+      collectionDirectory => {
+        return this.getCollectionToImport(
+          collectionDirectory,
+          existingCollections,
+          inputDirectory,
+        );
+      },
+    );
 
-  insertDocuments = async (
+    return collectionsToImport;
+  }
+
+  async importCollection(
     collectionName: string,
     collectionPath: string,
     config: AppConfig,
-  ) => {
-    const fileNames = (await readdirSync(collectionPath)) || [];
-    const documentFileNames = fileNames.filter(fileName => {
-      const fileNameArray = fileName.split('.');
-      if (!fileNameArray || fileNameArray.length <= 1) {
-        return false;
-      }
+  ) {
+    const fileNames = fileSystem.listFileNames(collectionPath);
+    const documentFileNames = fileSystem.getSupportedDocumentFileNames(
+      fileNames,
+      config.supportedExtensions,
+    );
 
-      const fileExtension = fileNameArray.pop()!.toLowerCase();
-      return config.supportedExtensions.some(
-        extension => extension === fileExtension,
-      );
-    });
+    log(`Inserting documents into collection ${collectionName}...`);
 
-    this.log(`Inserting documents into collection ${collectionName}...`);
-
-    const documents = documentFileNames.reduce<any[]>(
-      (arr: any[], documentFileName) => {
-        const document: any = require(`${collectionPath}/${documentFileName}`);
-        return arr.concat(document);
-      },
-      [],
+    const documentsContentArray = fileSystem.getFilesContentArray(
+      collectionPath,
+      documentFileNames,
     );
 
     const documentsToInsert = config.convertId
-      ? this.setProperDocumentId(documents)
-      : documents;
-    await this.db.collection(collectionName).insertMany(documentsToInsert);
-  };
+      ? this.replaceDocumentIdWithUnderscoreId(documentsContentArray)
+      : documentsContentArray;
+    this.db.insertDocumentsIntoCollection(documentsToInsert, collectionName);
+  }
 
-  setProperDocumentId = (documents: Array<{ id: ObjectId }>) => {
+  getCollectionToImport(
+    collectionDirectory: string,
+    existingCollections: string[],
+    inputDirectory: string,
+  ): CollectionToImport {
+    const collectionName = this.getCollectionName(collectionDirectory);
+
+    return {
+      name: collectionName,
+      shouldCreate: this.shouldCreateCollection(
+        collectionName,
+        existingCollections,
+      ),
+      directoryName: collectionDirectory,
+      directoryPath: `${inputDirectory}/${collectionDirectory}`,
+    };
+  }
+
+  shouldCreateCollection(
+    collection: string,
+    existingCollections: string[] = [],
+  ) {
+    return existingCollections.indexOf(collection) === -1;
+  }
+
+  getCollectionName(directoryName: string) {
+    // Directory name pattern: {import order}-{collection name}
+    // TODO: Use Regex and allow more separators
+    let collectionName;
+
+    if (directoryName.includes(DataImporter.DIRECTORY_NAME_PATTERN_SEPARATOR)) {
+      collectionName = directoryName.split(
+        DataImporter.DIRECTORY_NAME_PATTERN_SEPARATOR,
+      )[1];
+    } else {
+      collectionName = directoryName;
+    }
+
+    return collectionName;
+  }
+
+  replaceDocumentIdWithUnderscoreId(
+    documents: Array<{ id: string | ObjectId }>,
+  ) {
     return documents.map(document => {
       const documentToInsert = {
         ...document,
@@ -82,5 +133,5 @@ export class DataImporter {
       delete documentToInsert.id;
       return documentToInsert;
     });
-  };
+  }
 }

@@ -21,32 +21,55 @@
   ],
   "author": {
     "name": "Paweł Kosiec",
-    "email": "pawel.kosiec@gmail.com"
+    "email": "pawel.kosiec@gmail.com",
+    "url": "https://www.kosiec.net"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/pkosiec/mongo-seeding"
   },
+  "bugs": {
+    "url": "https://github.com/pkosiec/mongo-seeding/issues"
+  },
   "version": "0.1.4",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "test": "jest",
+    "test-watch": "jest --watch",
     "build": "rm -rf ./dist; tsc",
     "precommit": "lint-staged"
   },
   "dependencies": {
-    "@types/fs-extra": "^5.0.0",
     "@types/mongodb": "^2.2.18",
     "debug": "^3.1.0",
     "mongodb": "^3.0.1",
     "object-merge-advanced": "^8.3.0"
   },
   "devDependencies": {
+    "@types/jest": "^22.0.1",
     "husky": "^0.14.3",
+    "jest": "^22.0.5",
     "lint-staged": "^6.0.0",
     "prettier": "^1.9.2",
+    "ts-jest": "^22.0.1",
     "tslint": "^5.8.0",
     "typescript": "^2.6.1"
+  },
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   },
   "lint-staged": {
     "linters": {
