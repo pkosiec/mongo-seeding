@@ -37,7 +37,6 @@
     "precommit": "lint-staged"
   },
   "dependencies": {
-    "@types/fs-extra": "^5.0.0",
     "@types/mongodb": "^2.2.18",
     "debug": "^3.1.0",
     "mongodb": "^3.0.1",
