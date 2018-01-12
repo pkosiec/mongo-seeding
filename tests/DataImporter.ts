@@ -1,9 +1,10 @@
-import { DataImporter } from '../src/DataImporter';
-
-import { Db } from 'mongodb';
 import { readdirSync } from 'fs';
+import { DataImporter } from '../src/DataImporter';
+import { Database } from '../src/Database';
 
-const dataImporter = new DataImporter(null, jest.fn(() => {}));
+const dataImporter = new DataImporter(
+  new Database(jest.genMockFromModule('mongodb')),
+);
 
 describe('Reading files', () => {
   it('should get proper collection name from directory name', () => {
@@ -95,15 +96,15 @@ jest.mock('mockFiles/test3.json', () => ({ string: 'three' }), {
 describe('Processing data', () => {
   it('should create collection only it does not exist', () => {
     const collection = 'testing';
-    const existingCollections = ['just', 'a', "simple", 'test'];
+    const existingCollections = ['just', 'a', 'simple', 'test'];
     const shouldCreateTestingCollection = dataImporter.shouldCreateCollection(
-      "testing",
+      'testing',
       existingCollections,
     );
     expect(shouldCreateTestingCollection).toBeTruthy();
-    
+
     const shouldCreateTestCollection = dataImporter.shouldCreateCollection(
-      "test",
+      'test',
       existingCollections,
     );
     expect(shouldCreateTestCollection).toBeFalsy();
