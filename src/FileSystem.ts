@@ -3,11 +3,11 @@ import { readdirSync, lstatSync } from 'fs';
 export class FileSystem {
   static FILE_NAME_SPLIT_CHARACTER = '.';
 
-  listFiles(path: string) {
+  listFileNames(path: string) {
     return readdirSync(path) || [];
   }
 
-  getDirectories(inputDirectory: string) {
+  listDirectories(inputDirectory: string) {
     const filesAndDirectories = readdirSync(inputDirectory);
     const directories = filesAndDirectories.filter(fileOrDirectory =>
       this.isDirectory(`${inputDirectory}/${fileOrDirectory}`),

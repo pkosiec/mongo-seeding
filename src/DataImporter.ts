@@ -42,7 +42,7 @@ export class DataImporter {
     inputDirectory: string,
     existingCollections: string[] = [],
   ): CollectionToImport[] {
-    const collectionsDirectories = fileSystem.getDirectories(inputDirectory);
+    const collectionsDirectories = fileSystem.listDirectories(inputDirectory);
     const collectionsToImport = collectionsDirectories.map(
       collectionDirectory => {
         return this.getCollectionToImport(
@@ -61,7 +61,7 @@ export class DataImporter {
     collectionPath: string,
     config: AppConfig,
   ) {
-    const fileNames = fileSystem.listFiles(collectionPath);
+    const fileNames = fileSystem.listFileNames(collectionPath);
     const documentFileNames = fileSystem.getSupportedDocumentFileNames(
       fileNames,
       config.supportedExtensions,
