@@ -21,11 +21,15 @@
   ],
   "author": {
     "name": "Paweł Kosiec",
-    "email": "pawel.kosiec@gmail.com"
+    "email": "pawel.kosiec@gmail.com",
+    "url": "https://www.kosiec.net"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/pkosiec/mongo-seeding"
+  },
+  "bugs": {
+    "url": "https://github.com/pkosiec/mongo-seeding/issues"
   },
   "version": "0.1.4",
   "main": "index.js",
