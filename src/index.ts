@@ -1,27 +1,24 @@
 import { AppConfig, getConfig, DeepPartial } from './config';
-import { connectToDatabase } from './connectToDatabase';
+import { databaseConnector } from './DatabaseConnector';
 import { DataImporter } from './DataImporter';
-
-const log = require('debug')('mongo-seeding');
+import { log } from './logger';
 
 export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
   const config = getConfig(partialConfig);
 
   try {
     log('Starting...');
-    const db = await connectToDatabase(
+    const database = await databaseConnector.connect(
       config.database,
       config.reconnectTimeout,
-      log,
     );
 
     if (config.dropDatabase) {
-      log('Dropping database...');
-      await db.dropDatabase();
+      await database.drop();
     }
 
-    await new DataImporter(db, log).importData(config);
-    await db.close();
+    await new DataImporter(database).importData(config);
+    await database.closeConnection();
 
     log('Exiting...');
     process.exit(0);

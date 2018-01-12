@@ -14,13 +14,12 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "baseUrl": "./src",
+    "baseUrl": "./tests",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "declaration": true,
   },
   "exclude": [
-    "node_modules",
-    "tests"
+    "node_modules"
   ]
 }
