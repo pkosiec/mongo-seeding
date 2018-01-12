@@ -1,6 +1,5 @@
-import { MongoClient } from 'mongodb';
 import { AppConfig, getConfig, DeepPartial } from './config';
-import { DatabaseConnector } from './DatabaseConnector';
+import { databaseConnector } from './DatabaseConnector';
 import { DataImporter } from './DataImporter';
 import { log } from './logger';
 
@@ -9,7 +8,7 @@ export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
 
   try {
     log('Starting...');
-    const database = await new DatabaseConnector(MongoClient).connect(
+    const database = await databaseConnector.connect(
       config.database,
       config.reconnectTimeout,
     );
