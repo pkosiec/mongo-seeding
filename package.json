@@ -41,7 +41,7 @@
     "precommit": "lint-staged"
   },
   "dependencies": {
-    "@types/mongodb": "^2.2.18",
+    "@types/mongodb": "^3.0.0",
     "debug": "^3.1.0",
     "mongodb": "^3.0.1",
     "object-merge-advanced": "^8.3.0"
