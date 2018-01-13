@@ -11,6 +11,7 @@ jest.mock('../src/helpers', () => ({
   ),
 }));
 import { sleep } from '../src/helpers';
+import { Database } from '../src/Database';
 
 const databaseConnector = new DatabaseConnector(MongoClient);
 const dbConfig: DatabaseConfig = {
@@ -41,12 +42,26 @@ describe('Connecting to database', () => {
       .fn()
       .mockReturnValueOnce(getConnectionRefusedError())
       .mockReturnValueOnce(getConnectionRefusedError())
-      .mockReturnValue(new Promise((resolve, reject) => resolve({})));
+      .mockReturnValue(new Promise((resolve, reject) => resolve('success')));
 
     const reconnectTimeout = 20;
     await databaseConnector.connect(dbConfig, reconnectTimeout);
     expect(sleep).toBeCalledWith(reconnectTimeout);
     expect(sleep).toHaveBeenCalledTimes(2);
+  });
+
+  it('should return DB instance on success', async () => {
+    MongoClient.connect = jest
+      .fn()
+      .mockReturnValue(
+        new Promise((resolve, reject) =>
+          resolve(new Database(jest.genMockFromModule('mongodb'))),
+        ),
+      );
+
+    const reconnectTimeout = 20;
+    const result = await databaseConnector.connect(dbConfig, reconnectTimeout);
+    expect(result).toBeInstanceOf(Database);
   });
 
   it('should throw error other than connection refused', async () => {
