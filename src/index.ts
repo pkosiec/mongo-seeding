@@ -18,7 +18,7 @@ export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
     }
 
     await new DataImporter(database).importData(config);
-    await database.closeConnection();
+    await databaseConnector.close();
 
     log('Exiting...');
     process.exit(0);

@@ -4,13 +4,9 @@ import { log } from './logger';
 export class Database {
   constructor(public db: Db) {}
 
-  async drop() {
-    log('Dropping database...');
-    await this.db.dropDatabase();
-  }
-
-  async getExistingCollectionsArray() {
-    return await this.db.listCollections().toArray();
+  async getExistingCollectionsArray(): Promise<string[]> {
+    const collections = await this.db.listCollections().toArray();
+    return collections.map(collection => collection.name);
   }
 
   async createCollection(collectionName: string) {
@@ -21,11 +17,12 @@ export class Database {
     documentsToInsert: any[],
     collectionName: string,
   ) {
-    await this.db.collection(collectionName).insertMany(documentsToInsert);
+    const documentsCopy = documentsToInsert.map(document => ({ ...document }));
+    await this.db.collection(collectionName).insertMany(documentsCopy);
   }
 
-  async closeConnection() {
-    log('Closing connection...');
-    await this.db.close();
+  async drop() {
+    log('Dropping database...');
+    await this.db.dropDatabase();
   }
 }
