@@ -8,7 +8,7 @@ export class FileSystem {
   }
 
   listDirectories(inputDirectory: string) {
-    const filesAndDirectories = readdirSync(inputDirectory);
+    const filesAndDirectories = this.listFileNames(inputDirectory);
     const directories = filesAndDirectories.filter(fileOrDirectory =>
       this.isDirectory(`${inputDirectory}/${fileOrDirectory}`),
     );

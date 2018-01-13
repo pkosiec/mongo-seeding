@@ -1,6 +1,28 @@
 import { fileSystem } from '../src/FileSystem';
 
+// Import mocks
+jest.mock('fs', () => ({
+  lstatSync: jest.fn().mockReturnValue({
+    isDirectory: jest
+      .fn()
+      .mockReturnValueOnce(false)
+      .mockReturnValueOnce(true)
+      .mockReturnValueOnce(false),
+  }),
+  readdirSync: jest.fn().mockReturnValue(['test1.txt', 'testDirectory', '.test2']),
+}));
+
 describe('Reading files', () => {
+  it('should return all files list from directory', () => {
+    const fileNames = fileSystem.listFileNames('/any/path');
+    expect(fileNames).toEqual(['test1.txt', 'testDirectory', '.test2');
+  });
+
+  it('should return directories from list of files and directories', () => {
+    const dirs = fileSystem.listDirectories('/any/path');
+    expect(dirs).toEqual(["testDirectory"]);
+  });
+
   it('should filter supported documents from all files in directory', () => {
     const fileNames = [
       '.README.md',

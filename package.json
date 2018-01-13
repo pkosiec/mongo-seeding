@@ -36,7 +36,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "test-watch": "jest --watch",
+    "test-watch": "jest --watch --coverage",
     "build": "rm -rf ./dist; tsc",
     "precommit": "lint-staged"
   },
