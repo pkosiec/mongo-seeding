@@ -35,6 +35,6 @@ export const defaultConfig: AppConfig = {
 
 export const getConfig = (ownConfig: DeepPartial<AppConfig>): AppConfig => {
   return merge<AppConfig>(defaultConfig, ownConfig as Partial<AppConfig>, {
-    arrayMerge: (source: any[], destination: any[]) => destination,
+    arrayMerge: (_: any[], destination: any[]) => destination,
   });
 };
