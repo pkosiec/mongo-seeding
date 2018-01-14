@@ -14,7 +14,7 @@ beforeAll(async () => {
 
 afterEach(async () => {
   await database.db.dropDatabase();
-})
+});
 
 afterAll(async () => {
   await databaseConnector.close();

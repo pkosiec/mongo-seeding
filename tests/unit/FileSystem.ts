@@ -9,7 +9,9 @@ jest.mock('fs', () => ({
       .mockReturnValueOnce(true)
       .mockReturnValueOnce(false),
   }),
-  readdirSync: jest.fn().mockReturnValue(['test1.txt', 'testDirectory', '.test2']),
+  readdirSync: jest
+    .fn()
+    .mockReturnValue(['test1.txt', 'testDirectory', '.test2']),
 }));
 
 describe('Reading files', () => {
@@ -20,7 +22,7 @@ describe('Reading files', () => {
 
   it('should return not empty directories from list of files and directories', () => {
     const dirs = fileSystem.listNotEmptyDirectories('/any/path');
-    expect(dirs).toEqual(["testDirectory"]);
+    expect(dirs).toEqual(['testDirectory']);
   });
 
   it('should filter supported documents from all files in directory', () => {

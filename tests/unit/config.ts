@@ -2,7 +2,7 @@ import { getConfig, DeepPartial, AppConfig } from '../../src/config';
 
 describe('Loading config', () => {
   it('should merge config with default one', () => {
-    const partialConfig:DeepPartial<AppConfig> = {
+    const partialConfig: DeepPartial<AppConfig> = {
       database: {
         port: 3000,
         host: 'mongo',
@@ -14,7 +14,7 @@ describe('Loading config', () => {
     };
     const config = getConfig(partialConfig);
 
-    const expectedConfig:DeepPartial<AppConfig> = {
+    const expectedConfig: DeepPartial<AppConfig> = {
       database: {
         protocol: 'mongodb',
         host: 'mongo',

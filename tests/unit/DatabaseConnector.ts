@@ -79,5 +79,4 @@ describe('Connecting to database', () => {
       'MongoError',
     );
   });
-
 });

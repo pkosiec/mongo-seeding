@@ -164,15 +164,12 @@ describe('Importing data', () => {
     const collectionPath = `${TEMP_DIRECTORY_PATH}/${collection}`;
     mkdirSync(collectionPath);
 
-    writeFileSync(
-      `${collectionPath}/test1.md`,
-      'Hello',
-    );
+    writeFileSync(`${collectionPath}/test1.md`, 'Hello');
 
     const ownConfig: DeepPartial<AppConfig> = {
       dataPath: TEMP_DIRECTORY_PATH,
       replaceIdWithUnderscoreId: true,
-      supportedExtensions: ['js', 'json']
+      supportedExtensions: ['js', 'json'],
     };
 
     const config = getConfig(ownConfig);
