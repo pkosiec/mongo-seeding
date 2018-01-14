@@ -1,3 +1,5 @@
+![Mongo Seeding](https://raw.githubusercontent.com/pkosiec/mongo-seeding/master/logo.png)
+
 # Mongo Seeding
 Fill your MongoDB database with data in easy way. Use JavaScript and JSON files to define the data!
 
