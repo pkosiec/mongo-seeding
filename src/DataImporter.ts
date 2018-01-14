@@ -135,9 +135,13 @@ export class DataImporter {
   }
 
   replaceDocumentIdWithUnderscoreId(
-    documents: Array<{ id: string | ObjectId }>,
+    documents: Array<{ id?: string | ObjectId }>,
   ) {
     return documents.map(document => {
+      if (typeof document.id === 'undefined') {
+        return document;
+      }
+
       const documentToInsert = {
         ...document,
         _id: document.id,
