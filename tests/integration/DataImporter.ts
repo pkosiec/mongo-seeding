@@ -18,16 +18,17 @@ let dataImporter: DataImporter;
 beforeAll(async () => {
   const database = await databaseConnector.connect(defaultConfig.database);
   dataImporter = new DataImporter(database);
+  await dataImporter.db.drop();
 });
 
 beforeEach(async () => {
-  await dataImporter.db.drop();
   if (!existsSync(TEMP_DIRECTORY_PATH)) {
     mkdirSync(TEMP_DIRECTORY_PATH);
   }
 });
 
-afterEach(() => {
+afterEach(async () => {
+  await dataImporter.db.drop();
   removeSync(TEMP_DIRECTORY_PATH);
 });
 

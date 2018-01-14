@@ -13,16 +13,17 @@ let database: Database;
 
 beforeAll(async () => {
   database = await databaseConnector.connect(defaultConfig.database);
+  await database.drop();
 });
 
 beforeEach(async () => {
-  await database.drop();
   if (!existsSync(TEMP_DIRECTORY_PATH)) {
     mkdirSync(TEMP_DIRECTORY_PATH);
   }
 });
 
 afterEach(async () => {
+  await database.drop();
   removeSync(TEMP_DIRECTORY_PATH);
 });
 
@@ -68,7 +69,9 @@ describe('Seeding database', () => {
     await expect(seedDatabase(config)).resolves.toBeUndefined();
 
     const collectionArray = await database.getExistingCollectionsArray();
-    expect(collectionArray).toEqual([collection1, collection2]);
+    expect(collectionArray).toHaveLength(2);
+    expect(collectionArray).toContainEqual(collection1);
+    expect(collectionArray).toContainEqual(collection2);
     const collection1Documents = await database.db
       .collection(collection1)
       .find()

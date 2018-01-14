@@ -9,11 +9,12 @@ let database: Database;
 
 beforeAll(async () => {
   database = await databaseConnector.connect(defaultConfig.database);
-});
-
-beforeEach(async () => {
   await database.db.dropDatabase();
 });
+
+afterEach(async () => {
+  await database.db.dropDatabase();
+})
 
 afterAll(async () => {
   await databaseConnector.close();
@@ -94,10 +95,10 @@ describe('Doing database operations', () => {
   it('should drop database', async () => {
     await database.createCollection('first');
     await database.createCollection('second');
-    await expect(database.getExistingCollectionsArray()).resolves.toEqual([
-      'second',
-      'first',
-    ]);
+    const collections = await database.getExistingCollectionsArray();
+    await expect(collections).toHaveLength(2);
+    await expect(collections).toContainEqual('first');
+    await expect(collections).toContainEqual('second');
     await database.drop();
     await expect(database.getExistingCollectionsArray()).resolves.toEqual([]);
   });
