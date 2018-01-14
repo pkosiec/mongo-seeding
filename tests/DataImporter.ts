@@ -1,4 +1,5 @@
 import { readdirSync } from 'fs';
+
 import { DataImporter } from '../src/DataImporter';
 import { Database } from '../src/Database';
 

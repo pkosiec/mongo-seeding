@@ -48,5 +48,3 @@ export class DatabaseConnector {
     return `${protocol}://${host}:${port}/${name}`;
   };
 }
-
-export const databaseConnector = new DatabaseConnector(new MongoClient());

@@ -1,17 +1,19 @@
-import { DataImporter } from '../src/DataImporter';
-import { databaseConnector } from '../src/DatabaseConnector';
+import { MongoClient } from 'mongodb';
+import { mkdirSync, removeSync, existsSync, writeFileSync } from 'fs-extra';
+
 import {
   defaultConfig,
   AppConfig,
   DeepPartial,
   getConfig,
 } from '../src/config';
-
-import { mkdirSync, removeSync, existsSync, writeFileSync } from 'fs-extra';
-
-let dataImporter: DataImporter;
+import { DataImporter } from '../src/DataImporter';
+import { DatabaseConnector } from '../src/DatabaseConnector';
 
 const TEMP_DIRECTORY_PATH = __dirname + '/tempDataImporter';
+
+const databaseConnector = new DatabaseConnector(new MongoClient());
+let dataImporter: DataImporter;
 
 beforeAll(async () => {
   const database = await databaseConnector.connect(defaultConfig.database);
@@ -25,7 +27,7 @@ beforeEach(async () => {
   }
 });
 
-afterEach(async () => {
+afterEach(() => {
   removeSync(TEMP_DIRECTORY_PATH);
 });
 
@@ -156,11 +158,40 @@ describe('Importing data', () => {
     expect(collectionArray).not.toContainEqual('emptyCollection');
   });
 
+  it('should skip unsupported files', async () => {
+    const collection = 'CollectionFour';
+    const collectionPath = `${TEMP_DIRECTORY_PATH}/${collection}`;
+    mkdirSync(collectionPath);
+
+    writeFileSync(
+      `${collectionPath}/test1.md`,
+      'Hello',
+    );
+
+    const ownConfig: DeepPartial<AppConfig> = {
+      dataPath: TEMP_DIRECTORY_PATH,
+      convertId: true,
+      supportedExtensions: ['js', 'json']
+    };
+
+    const config = getConfig(ownConfig);
+    await dataImporter.importData(config);
+    const collectionArray = await dataImporter.db.getExistingCollectionsArray();
+    expect(collectionArray).toContainEqual(collection);
+    const collectionDocuments = await dataImporter.db.db
+      .collection(collection)
+      .find()
+      .toArray();
+    expect(collectionDocuments).toHaveLength(0);
+  });
+
   it('should fail when directory is not found', async () => {
     const ownConfig: DeepPartial<AppConfig> = {
       dataPath: '/surely/not/existing/path',
     };
     const config = getConfig(ownConfig);
-    expect(dataImporter.importData(config)).rejects.toThrowError('ENOENT');
+    await expect(dataImporter.importData(config)).rejects.toThrowError(
+      'ENOENT',
+    );
   });
 });

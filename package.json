@@ -60,7 +60,7 @@
     "typescript": "^2.6.1"
   },
   "jest": {
-    "verbose": true,
+    "verbose": false,
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },

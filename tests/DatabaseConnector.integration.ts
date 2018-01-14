@@ -1,22 +1,17 @@
-import { databaseConnector } from '../src/DatabaseConnector';
-import { Database } from '../src/Database';
-import { defaultConfig } from '../src/config';
-import { Db } from 'mongodb';
-jest.dontMock('mongodb');
+import { Db, MongoClient } from 'mongodb';
 
-afterAll(async () => {
-  await databaseConnector.close();
-});
+import { defaultConfig } from '../src/config';
+import { DatabaseConnector } from '../src/DatabaseConnector';
+import { Database } from '../src/Database';
 
 describe('Connecting to database', () => {
-  it('should connect to database', async () => {
+  it('should connect to database and close connection', async () => {
+    const databaseConnector = new DatabaseConnector(new MongoClient());
     const database = await databaseConnector.connect(defaultConfig.database);
     expect(database).toBeInstanceOf(Database);
-    expect(database).toHaveProperty("db");
     expect(database.db).toBeInstanceOf(Db);
-  });
-
-  it('should close connection with database gracefully', () => {
-    expect(databaseConnector.close()).resolves.toBeUndefined();
+    const collections = await database.db.listCollections().toArray();
+    expect(collections).toBeInstanceOf(Array);
+    await expect(databaseConnector.close()).resolves.toBeUndefined();
   });
 });

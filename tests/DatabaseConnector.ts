@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb';
+
 import { DatabaseConfig } from '../src/config';
 import { DatabaseConnector } from '../src/DatabaseConnector';
 
@@ -74,7 +75,7 @@ describe('Connecting to database', () => {
       }),
     );
 
-    expect(databaseConnector.connect(dbConfig, 0)).rejects.toThrow(
+    await expect(databaseConnector.connect(dbConfig, 0)).rejects.toThrow(
       'MongoError',
     );
   });

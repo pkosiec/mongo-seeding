@@ -1,11 +1,14 @@
 import { mkdirSync, removeSync, existsSync, writeFileSync } from 'fs-extra';
-import { seedDatabase } from '../src/index';
+import { MongoClient } from 'mongodb';
+
 import { DeepPartial, AppConfig, defaultConfig } from '../src/config';
-import { databaseConnector } from '../src/DatabaseConnector';
+import { seedDatabase } from '../src/index';
+import { DatabaseConnector } from '../src/DatabaseConnector';
 import { Database } from '../src/Database';
 
 const TEMP_DIRECTORY_PATH = __dirname + '/tempIntegration';
 
+const databaseConnector = new DatabaseConnector(new MongoClient());
 let database: Database;
 
 beforeAll(async () => {
@@ -62,7 +65,7 @@ describe('Seeding database', () => {
       dataPath: TEMP_DIRECTORY_PATH,
     };
 
-    await seedDatabase(config);
+    await expect(seedDatabase(config)).resolves.toBeUndefined();
 
     const collectionArray = await database.getExistingCollectionsArray();
     expect(collectionArray).toEqual([collection1, collection2]);

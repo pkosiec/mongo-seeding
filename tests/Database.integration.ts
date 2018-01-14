@@ -1,9 +1,10 @@
-import { databaseConnector } from '../src/DatabaseConnector';
+import { MongoClient } from 'mongodb';
+
 import { defaultConfig } from '../src/config';
+import { DatabaseConnector } from '../src/DatabaseConnector';
 import { Database } from '../src/Database';
 
-jest.dontMock('mongodb');
-
+const databaseConnector = new DatabaseConnector(new MongoClient());
 let database: Database;
 
 beforeAll(async () => {
@@ -28,7 +29,7 @@ describe('Doing database operations', () => {
 
   it('should be able to create collection', async () => {
     await database.createCollection('testingCollection');
-    expect(database.getExistingCollectionsArray()).resolves.toContain(
+    await expect(database.getExistingCollectionsArray()).resolves.toContain(
       'testingCollection',
     );
   });
