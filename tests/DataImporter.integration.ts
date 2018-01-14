@@ -25,6 +25,14 @@ beforeEach(async () => {
   }
 });
 
+afterEach(async () => {
+  removeSync(TEMP_DIRECTORY_PATH);
+});
+
+afterAll(async () => {
+  await databaseConnector.close();
+});
+
 describe('Importing data', () => {
   it('should import object into collection', async () => {
     const collection = 'CollectionOne';
@@ -155,12 +163,4 @@ describe('Importing data', () => {
     const config = getConfig(ownConfig);
     expect(dataImporter.importData(config)).rejects.toThrowError('ENOENT');
   });
-});
-
-afterEach(async () => {
-  removeSync(TEMP_DIRECTORY_PATH);
-});
-
-afterAll(async () => {
-  await databaseConnector.close();
 });

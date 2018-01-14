@@ -14,6 +14,10 @@ beforeEach(async () => {
   await database.db.dropDatabase();
 });
 
+afterAll(async () => {
+  await databaseConnector.close();
+});
+
 describe('Doing database operations', () => {
   it('should get collections names in form of array', async () => {
     await database.db.createCollection('test');
@@ -96,8 +100,4 @@ describe('Doing database operations', () => {
     await database.drop();
     await expect(database.getExistingCollectionsArray()).resolves.toEqual([]);
   });
-});
-
-afterAll(async () => {
-  await databaseConnector.close();
 });

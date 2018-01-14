@@ -5,25 +5,17 @@ import { log } from './logger';
 
 export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
   const config = getConfig(partialConfig);
+  log('Starting...');
+  const database = await databaseConnector.connect(
+    config.database,
+    config.reconnectTimeout,
+  );
 
-  try {
-    log('Starting...');
-    const database = await databaseConnector.connect(
-      config.database,
-      config.reconnectTimeout,
-    );
-
-    if (config.dropDatabase) {
-      await database.drop();
-    }
-
-    await new DataImporter(database).importData(config);
-    await databaseConnector.close();
-
-    log('Exiting...');
-    process.exit(0);
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
+  if (config.dropDatabase) {
+    await database.drop();
   }
+
+  await new DataImporter(database).importData(config);
+  await databaseConnector.close();
+  log('Finishing...');
 };

@@ -4,6 +4,10 @@ import { defaultConfig } from '../src/config';
 import { Db } from 'mongodb';
 jest.dontMock('mongodb');
 
+afterAll(async () => {
+  await databaseConnector.close();
+});
+
 describe('Connecting to database', () => {
   it('should connect to database', async () => {
     const database = await databaseConnector.connect(defaultConfig.database);
@@ -14,9 +18,5 @@ describe('Connecting to database', () => {
 
   it('should close connection with database gracefully', () => {
     expect(databaseConnector.close()).resolves.toBeUndefined();
-  });
-
-  afterAll(async () => {
-    databaseConnector.close();
   });
 });
