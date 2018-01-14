@@ -10,7 +10,7 @@ import {
 import { DataImporter } from '../../src/DataImporter';
 import { DatabaseConnector } from '../../src/DatabaseConnector';
 
-const TEMP_DIRECTORY_PATH = __dirname + '/tempDataImporter';
+const TEMP_DIRECTORY_PATH = __dirname + '/_temp-DataImporter';
 
 const databaseConnector = new DatabaseConnector(new MongoClient());
 let dataImporter: DataImporter;
