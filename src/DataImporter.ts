@@ -26,7 +26,7 @@ export class DataImporter {
 
     for (const collection of collectionsToImport) {
       if (collection.shouldCreate) {
-        log(`Creating collection ${collection.name}...`);
+        log(`Creating collection '${collection.name}'...`);
         await this.db.createCollection(collection.name);
       }
 
@@ -42,7 +42,9 @@ export class DataImporter {
     inputDirectory: string,
     existingCollections: string[] = [],
   ): CollectionToImport[] {
-    const collectionsDirectories = fileSystem.listDirectories(inputDirectory);
+    const collectionsDirectories = fileSystem.listNotEmptyDirectories(
+      inputDirectory,
+    );
     const collectionsToImport = collectionsDirectories.map(
       collectionDirectory => {
         return this.getCollectionToImport(
@@ -62,12 +64,23 @@ export class DataImporter {
     config: AppConfig,
   ) {
     const fileNames = fileSystem.listFileNames(collectionPath);
+
+    if (fileNames.length === 0) {
+      log(`Directory '${collectionPath}' is empty. Skipping...`);
+      return;
+    }
+
     const documentFileNames = fileSystem.getSupportedDocumentFileNames(
       fileNames,
       config.supportedExtensions,
     );
 
-    log(`Inserting documents into collection ${collectionName}...`);
+    if (documentFileNames.length === 0) {
+      log(`No documents found for collection '${collectionName}'. Skipping...`);
+      return;
+    }
+
+    log(`Inserting documents into collection '${collectionName}'...`);
 
     const documentsContentArray = fileSystem.getFilesContentArray(
       collectionPath,
