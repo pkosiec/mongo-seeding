@@ -20,7 +20,7 @@ describe('Reading files', () => {
     expect(fileNames).toEqual(['test1.txt', 'testDirectory', '.test2']);
   });
 
-  it('should return not empty directories from list of files and directories', () => {
+  it('should list not empty directories', () => {
     const dirs = fileSystem.listNotEmptyDirectories('/any/path');
     expect(dirs).toEqual(['testDirectory']);
   });

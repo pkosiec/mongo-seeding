@@ -6,7 +6,7 @@ import { DatabaseConnector } from '../../src/DatabaseConnector';
 // Import mocks
 jest.mock('../../src/helpers', () => ({
   sleep: jest.fn().mockReturnValue(
-    new Promise((resolve, reject) => {
+    new Promise((resolve, _) => {
       resolve();
     }),
   ),
@@ -33,10 +33,10 @@ describe('Connecting to database', () => {
     const getConnectionRefusedError = () => {
       const connectionRefusedError = {
         name: 'MongoNetworkError',
-        message:
-          'failed to connect to server [127.0.0.1:27017] on first connect [MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017]',
+        message: `failed to connect to server [127.0.0.1:27017] on first connect
+          [MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017]`,
       };
-      return new Promise((resolve, reject) => reject(connectionRefusedError));
+      return new Promise((_, reject) => reject(connectionRefusedError));
     };
 
     const result = new MongoClient();
@@ -45,7 +45,7 @@ describe('Connecting to database', () => {
       .fn()
       .mockReturnValueOnce(getConnectionRefusedError())
       .mockReturnValueOnce(getConnectionRefusedError())
-      .mockReturnValue(new Promise((resolve, reject) => resolve(result)));
+      .mockReturnValue(new Promise((resolve, _) => resolve(result)));
 
     const reconnectTimeout = 20;
     await databaseConnector.connect(dbConfig, reconnectTimeout);
@@ -58,7 +58,7 @@ describe('Connecting to database', () => {
     MongoClient.connect = jest
       .fn()
       .mockReturnValue(
-        new Promise((resolve, reject) =>
+        new Promise((resolve, _) =>
           resolve(new Database(jest.genMockFromModule('mongodb'))),
         ),
       );
@@ -70,7 +70,7 @@ describe('Connecting to database', () => {
 
   it('should throw error other than connection refused', async () => {
     MongoClient.connect = jest.fn().mockReturnValue(
-      new Promise((resolve, reject) => {
+      new Promise((_, reject) => {
         reject(new Error('MongoError'));
       }),
     );
