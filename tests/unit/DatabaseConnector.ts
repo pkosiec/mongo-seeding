@@ -1,19 +1,20 @@
 import { MongoClient } from 'mongodb';
-import { DatabaseConfig } from '../src/config';
-import { DatabaseConnector } from '../src/DatabaseConnector';
+
+import { DatabaseConfig } from '../../src/config';
+import { DatabaseConnector } from '../../src/DatabaseConnector';
 
 // Import mocks
-jest.mock('../src/helpers', () => ({
+jest.mock('../../src/helpers', () => ({
   sleep: jest.fn().mockReturnValue(
     new Promise((resolve, reject) => {
       resolve();
     }),
   ),
 }));
-import { sleep } from '../src/helpers';
-import { Database } from '../src/Database';
+import { sleep } from '../../src/helpers';
+import { Database } from '../../src/Database';
 
-const databaseConnector = new DatabaseConnector(MongoClient);
+const databaseConnector = new DatabaseConnector(new MongoClient());
 const dbConfig: DatabaseConfig = {
   protocol: 'mongodb',
   host: '127.0.0.1',
@@ -38,16 +39,19 @@ describe('Connecting to database', () => {
       return new Promise((resolve, reject) => reject(connectionRefusedError));
     };
 
+    const result = new MongoClient();
+    result.db = jest.fn().mockReturnValue({});
     MongoClient.connect = jest
       .fn()
       .mockReturnValueOnce(getConnectionRefusedError())
       .mockReturnValueOnce(getConnectionRefusedError())
-      .mockReturnValue(new Promise((resolve, reject) => resolve('success')));
+      .mockReturnValue(new Promise((resolve, reject) => resolve(result)));
 
     const reconnectTimeout = 20;
     await databaseConnector.connect(dbConfig, reconnectTimeout);
     expect(sleep).toBeCalledWith(reconnectTimeout);
     expect(sleep).toHaveBeenCalledTimes(2);
+    expect(result.db).toHaveBeenCalledTimes(1);
   });
 
   it('should return DB instance on success', async () => {
@@ -71,8 +75,9 @@ describe('Connecting to database', () => {
       }),
     );
 
-    expect(databaseConnector.connect(dbConfig, 0)).rejects.toThrow(
+    await expect(databaseConnector.connect(dbConfig, 0)).rejects.toThrow(
       'MongoError',
     );
   });
+
 });
