@@ -131,7 +131,7 @@ describe('Importing data', () => {
 
     const ownConfig: DeepPartial<AppConfig> = {
       dataPath: TEMP_DIRECTORY_PATH,
-      convertId: true,
+      replaceIdWithUnderscoreId: true,
     };
     const config = getConfig(ownConfig);
     await dataImporter.importData(config);
@@ -171,7 +171,7 @@ describe('Importing data', () => {
 
     const ownConfig: DeepPartial<AppConfig> = {
       dataPath: TEMP_DIRECTORY_PATH,
-      convertId: true,
+      replaceIdWithUnderscoreId: true,
       supportedExtensions: ['js', 'json']
     };
 

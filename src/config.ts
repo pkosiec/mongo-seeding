@@ -14,7 +14,7 @@ export interface AppConfig {
   database: DatabaseConfig;
   dataPath: string;
   dropDatabase: boolean;
-  convertId: boolean;
+  replaceIdWithUnderscoreId: boolean;
   supportedExtensions: string[];
   reconnectTimeout: number;
 }
@@ -28,7 +28,7 @@ export const defaultConfig: AppConfig = {
   },
   dataPath: resolve(__dirname, '../../data'),
   dropDatabase: false,
-  convertId: false,
+  replaceIdWithUnderscoreId: false,
   supportedExtensions: ['json', 'js'],
   reconnectTimeout: 2000,
 };
