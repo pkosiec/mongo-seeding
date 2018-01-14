@@ -41,19 +41,27 @@ describe('Processing data', () => {
     expect(shouldCreateTestCollection).toBeFalsy();
   });
 
-  it('should replace document `id` field with `_id`', () => {
+  it('should replace document `id` property with `_id`', () => {
     const documents = [
       { id: 'id_1', name: 'Test 1', value: 1 },
-      { id: '3442', name: 'Test 2', value: 2 },
-      { id: '3_id', name: 'Test 3', value: 3 },
+      { id: '2_id', name: 'Test 2', value: 2 },
     ];
     const newDocuments = dataImporter.replaceDocumentIdWithUnderscoreId(
       documents,
     );
     expect(newDocuments).toEqual([
       { _id: 'id_1', name: 'Test 1', value: 1 },
-      { _id: '3442', name: 'Test 2', value: 2 },
-      { _id: '3_id', name: 'Test 3', value: 3 },
+      { _id: '2_id', name: 'Test 2', value: 2 },
     ]);
+  });
+
+  it('should skip assigning `_id` when `id` property is missing', () => {
+    const documents: Array<{ id?: string; name: string; value: number }> = [
+      { name: 'Test 1', value: 1 },
+    ];
+    const newDocuments = dataImporter.replaceDocumentIdWithUnderscoreId(
+      documents,
+    );
+    expect(newDocuments).toEqual([{ name: 'Test 1', value: 1 }]);
   });
 });
