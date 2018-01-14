@@ -1,7 +1,9 @@
 # Mongo Seeding
 Fill your MongoDB database with data in easy way. Use JavaScript and JSON files to define the data!
 
-[![npm](https://img.shields.io/npm/v/mongo-seeding.svg)](https://www.npmjs.com/package/mongo-seeding) [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
+[![NPM](https://nodei.co/npm/mongo-seeding.png)](https://npmjs.org/package/mongo-seeding)
+
+[![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg)]() [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 
 **If this is not what are you looking for...**
 - Searching for a command line tool? Use [Mongo Seeding CLI](https://github.com/pkosiec/mongo-seeding-cli)!
@@ -18,7 +20,7 @@ npm install mongo-seeding --save
 const { seedDatabase } = require('mongo-seeding');
 const path = require('path');
 
-// Define configuration object
+// Define partial configuration object
 const config = {
   database: {
     host: '127.0.0.1',
@@ -33,7 +35,8 @@ const config = {
 seedDatabase(config);
 ```
 
-**You don't have to provide all parameters**.The configuration you'll provide as a parameter of `seedDatabase` method will be merged with default configuration object.
+### Configuration
+The configuration you'll provide as a parameter of `seedDatabase` method will be merged with default configuration object.
 
 Default configuration object:
 
@@ -53,7 +56,7 @@ const config = {
 };
 ```
 
-You can overwrite any field you want.
+You can overwrite any property you want by passing partial config object to `seedDatabase` function.
 
 ### Debug output
 To see debug output just set environmental variable `DEBUG` to `mongo-seeding` before starting your Node.js app:
@@ -69,7 +72,7 @@ process.env.DEBUG = 'mongo-seeding';
 const { seedDatabase } = require('mongo-seeding');
 ```
 
-### Prepare your data to import
+### Preparing data to import
 
 1. Create a new directory. In this example, name it simply as `data`.
 1. This directory `data` will contain subdirectories in following naming convention: `$NUMBER-$COLLECTION_NAME` - i.e. `1-categories`, `2-posts`.
@@ -78,10 +81,9 @@ const { seedDatabase } = require('mongo-seeding');
 
     `$NUMBER` - to define collections import order.  If you don't care about import order - just name the directory as `$COLLECTION_NAME`, i.e. `categories`.   
 
-1. In every collection directory you can create multiple files in formats: `.js` and `.json`. You can define object or array of objects.
+1. In every collection directory you can create multiple files in formats: `.js` and `.json`. Every file should contain object or array of objects.
 
     For JS files: Export object or array of objects you want to import via `module.exports = objectOrArray`
-
     Every object is a representation of document in MongoDB database.
 
 1. The whole file structure should look like this:
@@ -103,4 +105,4 @@ const { seedDatabase } = require('mongo-seeding');
     ```
 
  ### Samples
- Take a look at [samples repository](https://github.com/pkosiec/mongo-seeding-samples) to see Mongo Seeding in action! 
+ Take a look at [samples repository](https://github.com/pkosiec/mongo-seeding-samples) to see how to define data structure properly!
