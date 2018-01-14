@@ -1,20 +1,20 @@
-import { getConfig } from '../../src/config';
+import { getConfig, DeepPartial, AppConfig } from '../../src/config';
 
 describe('Loading config', () => {
   it('should merge config with default one', () => {
-    const partialConfig = {
+    const partialConfig:DeepPartial<AppConfig> = {
       database: {
         port: 3000,
         host: 'mongo',
       },
       dataPath: '/',
-      convertId: true,
+      replaceIdWithUnderscoreId: true,
       reconnectTimeout: 100,
       supportedExtensions: ['md', 'txt'],
     };
     const config = getConfig(partialConfig);
 
-    const expectedConfig = {
+    const expectedConfig:DeepPartial<AppConfig> = {
       database: {
         protocol: 'mongodb',
         host: 'mongo',
@@ -23,7 +23,7 @@ describe('Loading config', () => {
       },
       dataPath: '/',
       dropDatabase: false,
-      convertId: true,
+      replaceIdWithUnderscoreId: true,
       supportedExtensions: ['md', 'txt'],
       reconnectTimeout: 100,
     };

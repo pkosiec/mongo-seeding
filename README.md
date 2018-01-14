@@ -47,7 +47,7 @@ const config = {
   },
   dataPath: path.resolve(__dirname, '../data'),
   dropDatabase: false,
-  convertId: false,
+  replaceIdWithUnderscoreId: false,
   supportedExtensions: ['json', 'js'],
   reconnectTimeout: 2000,
 };

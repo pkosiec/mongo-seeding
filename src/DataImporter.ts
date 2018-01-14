@@ -87,7 +87,7 @@ export class DataImporter {
       documentFileNames,
     );
 
-    const documentsToInsert = config.convertId
+    const documentsToInsert = config.replaceIdWithUnderscoreId
       ? this.replaceDocumentIdWithUnderscoreId(documentsContentArray)
       : documentsContentArray;
     this.db.insertDocumentsIntoCollection(documentsToInsert, collectionName);

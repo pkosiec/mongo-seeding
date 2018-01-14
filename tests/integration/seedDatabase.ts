@@ -6,7 +6,7 @@ import { seedDatabase } from '../../src/index';
 import { DatabaseConnector } from '../../src/DatabaseConnector';
 import { Database } from '../../src/Database';
 
-const TEMP_DIRECTORY_PATH = __dirname + '/_temp-seedDatabase';
+const TEMP_DIRECTORY_PATH = __dirname + '/_temp-seedDatabasea';
 
 const databaseConnector = new DatabaseConnector(new MongoClient());
 let database: Database;
