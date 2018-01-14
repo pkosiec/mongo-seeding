@@ -1,6 +1,7 @@
 import { readdirSync } from 'fs';
-import { DataImporter } from '../src/DataImporter';
-import { Database } from '../src/Database';
+
+import { DataImporter } from '../../src/DataImporter';
+import { Database } from '../../src/Database';
 
 const dataImporter = new DataImporter(
   new Database(jest.genMockFromModule('mongodb')),
@@ -19,17 +20,6 @@ describe('Processing data', () => {
       `1-${testCollectionName}`,
     );
     expect(collectionWithDashSeparator).toBe(testCollectionName);
-
-    //TODO: New feature: handle multiple separators
-    // const collectionWithDotSeparator = dataImporter.getCollectionName(
-    //   `1.${testCollectionName}`,
-    // );
-    // expect(collectionWithDotSeparator).toBe(testCollectionName);
-
-    // const collectionWithUnderscoreSeparator = dataImporter.getCollectionName(
-    //   `1_${testCollectionName}`,
-    // );
-    // expect(collectionWithUnderscoreSeparator).toBe(testCollectionName);
 
     const collectionWithNumberName = dataImporter.getCollectionName(`1`);
     expect(collectionWithNumberName).toBe('1');

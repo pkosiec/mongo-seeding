@@ -1,4 +1,4 @@
-import { sleep } from '../src/helpers';
+import { sleep } from '../../src/helpers';
 
 jest.useFakeTimers();
 

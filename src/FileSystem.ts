@@ -7,16 +7,21 @@ export class FileSystem {
     return readdirSync(path) || [];
   }
 
-  listDirectories(inputDirectory: string) {
+  listNotEmptyDirectories(inputDirectory: string) {
     const filesAndDirectories = this.listFileNames(inputDirectory);
-    const directories = filesAndDirectories.filter(fileOrDirectory =>
-      this.isDirectory(`${inputDirectory}/${fileOrDirectory}`),
-    );
+    const directories = filesAndDirectories.filter(fileOrDirectory => {
+      const path = `${inputDirectory}/${fileOrDirectory}`;
+      return this.isDirectory(path) && this.isNotEmpty(path);
+    });
     return directories;
   }
 
-  isDirectory(collectionPath: string) {
-    const stats = lstatSync(collectionPath);
+  isNotEmpty(path: string) {
+    return this.listFileNames(path).length > 0;
+  }
+
+  isDirectory(path: string) {
+    const stats = lstatSync(path);
     return stats.isDirectory();
   }
 

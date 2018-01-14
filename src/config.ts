@@ -1,4 +1,4 @@
-const mergeAdvanced: any = require('object-merge-advanced');
+import * as merge from 'deepmerge';
 import { resolve } from 'path';
 
 export type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };
@@ -34,5 +34,7 @@ export const defaultConfig: AppConfig = {
 };
 
 export const getConfig = (ownConfig: DeepPartial<AppConfig>): AppConfig => {
-  return mergeAdvanced(defaultConfig, ownConfig);
+  return merge<AppConfig>(defaultConfig, ownConfig as Partial<AppConfig>, {
+    arrayMerge: (source: any[], destination: any[]) => destination,
+  });
 };

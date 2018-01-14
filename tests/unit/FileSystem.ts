@@ -1,4 +1,4 @@
-import { fileSystem } from '../src/FileSystem';
+import { fileSystem } from '../../src/FileSystem';
 
 // Import mocks
 jest.mock('fs', () => ({
@@ -15,11 +15,11 @@ jest.mock('fs', () => ({
 describe('Reading files', () => {
   it('should return all files list from directory', () => {
     const fileNames = fileSystem.listFileNames('/any/path');
-    expect(fileNames).toEqual(['test1.txt', 'testDirectory', '.test2');
+    expect(fileNames).toEqual(['test1.txt', 'testDirectory', '.test2']);
   });
 
-  it('should return directories from list of files and directories', () => {
-    const dirs = fileSystem.listDirectories('/any/path');
+  it('should return not empty directories from list of files and directories', () => {
+    const dirs = fileSystem.listNotEmptyDirectories('/any/path');
     expect(dirs).toEqual(["testDirectory"]);
   });
 
