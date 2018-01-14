@@ -1,4 +1,4 @@
-import * as merge from 'deepmerge';
+import * as extend from 'extend';
 import { resolve } from 'path';
 
 export type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };
@@ -34,7 +34,6 @@ export const defaultConfig: AppConfig = {
 };
 
 export const getConfig = (ownConfig: DeepPartial<AppConfig>): AppConfig => {
-  return merge<AppConfig>(defaultConfig, ownConfig as Partial<AppConfig>, {
-    arrayMerge: (_: any[], destination: any[]) => destination,
-  });
+  const config = {};
+  return extend(true, config, defaultConfig, ownConfig);
 };
