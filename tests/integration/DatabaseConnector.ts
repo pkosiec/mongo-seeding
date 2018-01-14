@@ -1,8 +1,8 @@
 import { Db, MongoClient } from 'mongodb';
 
-import { defaultConfig } from '../src/config';
-import { DatabaseConnector } from '../src/DatabaseConnector';
-import { Database } from '../src/Database';
+import { defaultConfig } from '../../src/config';
+import { DatabaseConnector } from '../../src/DatabaseConnector';
+import { Database } from '../../src/Database';
 
 describe('Connecting to database', () => {
   it('should connect to database and close connection', async () => {

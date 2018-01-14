@@ -1,8 +1,8 @@
 import { MongoClient } from 'mongodb';
 
-import { defaultConfig } from '../src/config';
-import { DatabaseConnector } from '../src/DatabaseConnector';
-import { Database } from '../src/Database';
+import { defaultConfig } from '../../src/config';
+import { DatabaseConnector } from '../../src/DatabaseConnector';
+import { Database } from '../../src/Database';
 
 const databaseConnector = new DatabaseConnector(new MongoClient());
 let database: Database;

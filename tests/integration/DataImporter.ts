@@ -6,9 +6,9 @@ import {
   AppConfig,
   DeepPartial,
   getConfig,
-} from '../src/config';
-import { DataImporter } from '../src/DataImporter';
-import { DatabaseConnector } from '../src/DatabaseConnector';
+} from '../../src/config';
+import { DataImporter } from '../../src/DataImporter';
+import { DatabaseConnector } from '../../src/DatabaseConnector';
 
 const TEMP_DIRECTORY_PATH = __dirname + '/tempDataImporter';
 

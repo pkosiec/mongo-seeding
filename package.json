@@ -36,6 +36,8 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
+    "test-unit": "jest unit",
+    "test-integration": "jest integration",
     "test-watch": "jest --watch --coverage",
     "build": "rm -rf ./dist; tsc",
     "precommit": "lint-staged"

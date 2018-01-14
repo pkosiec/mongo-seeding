@@ -1,4 +1,4 @@
-import { fileSystem } from '../src/FileSystem';
+import { fileSystem } from '../../src/FileSystem';
 
 // Import mocks
 jest.mock('fs', () => ({

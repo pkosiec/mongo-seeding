@@ -1,4 +1,4 @@
-import { getConfig } from '../src/config';
+import { getConfig } from '../../src/config';
 
 describe('Loading config', () => {
   it('should merge config with default one', () => {

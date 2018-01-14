@@ -1,18 +1,18 @@
 import { MongoClient } from 'mongodb';
 
-import { DatabaseConfig } from '../src/config';
-import { DatabaseConnector } from '../src/DatabaseConnector';
+import { DatabaseConfig } from '../../src/config';
+import { DatabaseConnector } from '../../src/DatabaseConnector';
 
 // Import mocks
-jest.mock('../src/helpers', () => ({
+jest.mock('../../src/helpers', () => ({
   sleep: jest.fn().mockReturnValue(
     new Promise((resolve, reject) => {
       resolve();
     }),
   ),
 }));
-import { sleep } from '../src/helpers';
-import { Database } from '../src/Database';
+import { sleep } from '../../src/helpers';
+import { Database } from '../../src/Database';
 
 const databaseConnector = new DatabaseConnector(new MongoClient());
 const dbConfig: DatabaseConfig = {
