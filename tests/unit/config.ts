@@ -1,4 +1,9 @@
-import { getConfig, DeepPartial, AppConfig } from '../../src/config';
+import {
+  getConfig,
+  DeepPartial,
+  AppConfig,
+  defaultConfig,
+} from '../../src/config';
 
 describe('Loading config', () => {
   it('should merge config with default one', () => {
@@ -28,5 +33,19 @@ describe('Loading config', () => {
       reconnectTimeout: 100,
     };
     expect(config).toEqual(expectedConfig);
+  });
+
+  it('should replace undefined values with default ones', () => {
+    const partialConfig: DeepPartial<AppConfig> = {
+      database: {
+        name: undefined,
+        port: undefined,
+        host: undefined,
+      },
+      replaceIdWithUnderscoreId: undefined,
+      reconnectTimeout: undefined,
+    };
+    const config = getConfig(partialConfig);
+    expect(config).toEqual(defaultConfig);
   });
 });
