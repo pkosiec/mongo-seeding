@@ -6,13 +6,17 @@ import { seedDatabase } from '../../src/index';
 import { DatabaseConnector } from '../../src/DatabaseConnector';
 import { Database } from '../../src/Database';
 
-const TEMP_DIRECTORY_PATH = __dirname + '/_temp-seedDatabasea';
+const DATABASE_NAME = 'seedDatabase';
+const TEMP_DIRECTORY_PATH = __dirname + '/_temp-seedDatabase';
 
 const databaseConnector = new DatabaseConnector(new MongoClient());
 let database: Database;
 
 beforeAll(async () => {
-  database = await databaseConnector.connect(defaultConfig.database);
+  database = await databaseConnector.connect({
+    ...defaultConfig.database,
+    name: DATABASE_NAME,
+  });
   await database.drop();
 });
 
@@ -64,6 +68,9 @@ describe('Seeding database', () => {
 
     const config: DeepPartial<AppConfig> = {
       dataPath: TEMP_DIRECTORY_PATH,
+      database: {
+        name: DATABASE_NAME,
+      },
     };
 
     await expect(seedDatabase(config)).resolves.toBeUndefined();
