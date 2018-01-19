@@ -16,7 +16,10 @@ const databaseConnector = new DatabaseConnector(new MongoClient());
 let dataImporter: DataImporter;
 
 beforeAll(async () => {
-  const database = await databaseConnector.connect(defaultConfig.database);
+  const database = await databaseConnector.connect({
+    ...defaultConfig.database,
+    name: 'DataImporter',
+  });
   dataImporter = new DataImporter(database);
   await dataImporter.db.drop();
 });
@@ -41,7 +44,6 @@ describe('Importing data', () => {
     const collection = 'CollectionOne';
     const collectionPath = `${TEMP_DIRECTORY_PATH}/${collection}`;
     mkdirSync(collectionPath);
-
     writeFileSync(
       `${collectionPath}/test1.json`,
       JSON.stringify({
