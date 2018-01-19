@@ -23,9 +23,36 @@ const dbConfig: DatabaseConfig = {
 };
 
 describe('Connecting to database', () => {
-  it('should return proper DB connection URI', () => {
+  it('should return valid DB connection URI', () => {
     const uri = databaseConnector.getDbConnectionUri(dbConfig);
     const expectedUri = 'mongodb://127.0.0.1:27017/database';
+    expect(uri).toBe(expectedUri);
+  });
+
+  it('should return valid DB connection URI with username only', () => {
+    const authConfig: DatabaseConfig = {
+      protocol: 'mongodb',
+      username: 'user',
+      host: '10.10.10.1',
+      port: 27017,
+      name: 'authDb',
+    };
+    const uri = databaseConnector.getDbConnectionUri(authConfig);
+    const expectedUri = 'mongodb://user@10.10.10.1:27017/authDb';
+    expect(uri).toBe(expectedUri);
+  });
+
+  it('should return valid DB connection URI with username and login', () => {
+    const authConfig: DatabaseConfig = {
+      protocol: 'mongodb',
+      username: 'user',
+      password: 'pass',
+      host: '10.10.10.1',
+      port: 27017,
+      name: 'authDb',
+    };
+    const uri = databaseConnector.getDbConnectionUri(authConfig);
+    const expectedUri = 'mongodb://user:pass@10.10.10.1:27017/authDb';
     expect(uri).toBe(expectedUri);
   });
 
