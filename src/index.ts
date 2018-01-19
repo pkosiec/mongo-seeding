@@ -8,12 +8,13 @@ export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
   const config = getConfig(partialConfig);
   log('Starting...');
   const databaseConnector = new DatabaseConnector(new MongoClient());
-  const database = await databaseConnector.connect(
-    config.database,
-    config.reconnectTimeout,
-  );
 
   try {
+    const database = await databaseConnector.connect(
+      config.database,
+      config.reconnectTimeout,
+    );
+
     if (config.dropDatabase) {
       await database.drop();
     }

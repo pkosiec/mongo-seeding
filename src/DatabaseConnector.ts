@@ -41,6 +41,9 @@ export class DatabaseConnector {
 
   async close() {
     log('Closing connection...');
+    if (!this.client) {
+      return;
+    }
     await this.client.close();
   }
 
