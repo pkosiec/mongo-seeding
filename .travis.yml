@@ -1,0 +1,16 @@
+notifications:
+  email: false
+
+services:
+  - docker
+  - mongodb
+
+before_script:
+# Build image
+- docker build -t $IMAGE_NAME:$TRAVIS_BUILD_NUMBER .
+
+script:
+# Run tests
+  - docker run --rm --network="host" $IMAGE_NAME:$TRAVIS_BUILD_NUMBER
+
+
