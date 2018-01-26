@@ -7,21 +7,32 @@ jest.mock('fs', () => ({
       .fn()
       .mockReturnValueOnce(false)
       .mockReturnValueOnce(true)
+      .mockReturnValueOnce(true)
       .mockReturnValueOnce(false),
   }),
   readdirSync: jest
     .fn()
-    .mockReturnValue(['test1.txt', 'testDirectory', '.test2']),
+    .mockReturnValue([
+      'test1.txt',
+      'testDirectory',
+      '.hiddenDirectory',
+      '.test2',
+    ]),
 }));
 
 describe('Reading files', () => {
-  it('should return all files list from directory', () => {
+  it('should list all files in directory', () => {
     const fileNames = fileSystem.listFileNames('/any/path');
-    expect(fileNames).toEqual(['test1.txt', 'testDirectory', '.test2']);
+    expect(fileNames).toEqual([
+      'test1.txt',
+      'testDirectory',
+      '.hiddenDirectory',
+      '.test2',
+    ]);
   });
 
-  it('should list not empty directories', () => {
-    const dirs = fileSystem.listNotEmptyDirectories('/any/path');
+  it('should list all directories that are not empty or hidden', () => {
+    const dirs = fileSystem.listValidDirectories('/any/path');
     expect(dirs).toEqual(['testDirectory']);
   });
 
@@ -46,7 +57,7 @@ describe('Reading files', () => {
     ]);
   });
 
-  it('should recognize hidden or files with no extension', () => {
+  it('should ignore hidden files and files with no extension', () => {
     const ignoreFile = fileSystem.shouldIgnoreFile('test.extension'.split('.'));
     expect(ignoreFile).toBeFalsy();
 

@@ -7,17 +7,25 @@ export class FileSystem {
     return readdirSync(path) || [];
   }
 
-  listNotEmptyDirectories(inputDirectory: string) {
+  listValidDirectories(inputDirectory: string) {
     const filesAndDirectories = this.listFileNames(inputDirectory);
     const directories = filesAndDirectories.filter(fileOrDirectory => {
       const path = `${inputDirectory}/${fileOrDirectory}`;
-      return this.isDirectory(path) && this.isNotEmpty(path);
+      return (
+        this.isDirectory(path) &&
+        !this.isEmpty(path) &&
+        !this.isHidden(fileOrDirectory)
+      );
     });
     return directories;
   }
 
-  isNotEmpty(path: string) {
-    return this.listFileNames(path).length > 0;
+  isEmpty(path: string) {
+    return this.listFileNames(path).length === 0;
+  }
+
+  isHidden(fileOrDirectoryName: string) {
+    return fileOrDirectoryName.startsWith('.');
   }
 
   isDirectory(path: string) {
