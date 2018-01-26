@@ -42,7 +42,7 @@ export class DataImporter {
     inputDirectory: string,
     existingCollections: string[] = [],
   ): CollectionToImport[] {
-    const collectionsDirectories = fileSystem.listNotEmptyDirectories(
+    const collectionsDirectories = fileSystem.listValidDirectories(
       inputDirectory,
     );
     const collectionsToImport = collectionsDirectories.map(
