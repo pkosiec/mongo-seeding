@@ -1,4 +1,5 @@
 FROM node:9.4.0-alpine
+LABEL Maintainer Pawel Kosiec <pawel@kosiec.net>
 
 WORKDIR /app
 
