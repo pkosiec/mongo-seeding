@@ -9,3 +9,5 @@ cp {package.json,LICENSE,README.md} ./dist
 cd ./dist
 echo "Publishing package..."
 npm publish
+echo "Cleaning up..."
+rm -rf ./dist
