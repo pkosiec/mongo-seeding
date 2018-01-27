@@ -5,8 +5,9 @@ import { log } from './logger';
 import { MongoClient } from 'mongodb';
 
 export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
-  const config = getConfig(partialConfig);
   log('Starting...');
+
+  const config = getConfig(partialConfig);
   const databaseConnector = new DatabaseConnector(new MongoClient());
 
   try {
@@ -20,9 +21,16 @@ export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
     }
     await new DataImporter(database).importData(config);
   } catch (err) {
-    console.error(err);
+    throw wrapError(err);
+  } finally {
+    await databaseConnector.close();
   }
 
-  await databaseConnector.close();
   log('Finishing...');
+};
+
+const wrapError = (err: Error) => {
+  const error = new Error(`${err.name}: ${err.message}`);
+  error.name = 'MongoSeedingError';
+  return error;
 };
