@@ -112,4 +112,13 @@ describe('Seeding database', () => {
       }),
     );
   });
+
+  it('should throw error when wrong path given', async () => {
+    const config: DeepPartial<AppConfig> = {
+      dataPath: '/this/path/surely/doesnt/exist',
+    };
+    await expect(seedDatabase(config)).rejects.toThrowError(
+      "Error: ENOENT: no such file or directory, scandir '/this/path/surely/doesnt/exist",
+    );
+  });
 });
