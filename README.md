@@ -1,6 +1,8 @@
 ![Mongo Seeding](https://raw.githubusercontent.com/pkosiec/mongo-seeding/master/assets/logo.png)
 
 # Mongo Seeding
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/pkosiec/mongo-seeding.svg)](https://greenkeeper.io/)
 Fill your MongoDB database with data in easy way. Use JavaScript and JSON files to define the data!
 
 [![NPM](https://nodei.co/npm/mongo-seeding.png)](https://npmjs.org/package/mongo-seeding)
