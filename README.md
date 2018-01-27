@@ -11,36 +11,57 @@ Fill your MongoDB database with data in easy way. Use JavaScript and JSON files 
 - Docker image (TypeScript support included): [Mongo Seeding Docker Image](https://github.com/pkosiec/mongo-seeding-docker-image)
 - Command line tool: [Mongo Seeding CLI](https://github.com/pkosiec/mongo-seeding-cli)
 
-
 ### Install
 ```bash
 npm install mongo-seeding --save
 ```
 
 ### Usage
-```javascript
-const { seedDatabase } = require('mongo-seeding');
-const path = require('path');
+1. Import `seedDatabase` function:
+    ```javascript
+    const { seedDatabase } = require('mongo-seeding');
+    ```
+1. Define partial configuration object. The object will be merged with default config object (see [Configuration](#configuration) section). Therefore, you can specify only the keys with different values than default ones.
+    ```javascript
+    const path = require('path');
 
-// Define partial configuration object
-const config = {
-  database: {
-    host: '127.0.0.1',
-    port: 27017,
-    name: 'mydatabase',
-  },
-  dataPath: path.resolve(__dirname, '../data'),
-  dropDatabase: true,
-};
-
-// Use it!
-seedDatabase(config);
-```
+    const config = {
+      database: {
+        host: '127.0.0.1',
+        port: 27017,
+        name: 'mydatabase',
+      },
+      dataPath: path.resolve(__dirname, '../data'),
+      dropDatabase: true,
+    };
+    ```
+1. Seed your database!
+  - with `async/await`, i.e.:
+    ```javascript
+    (async () => {
+      try {
+        await seedDatabase(config);
+      } catch (err) {
+        // Handle errors
+      }
+      // Do whatever you want after successful import
+    })()    
+    ```
+  - with raw promises:
+    ```javascript
+    seedDatabase(config).then(() => {
+      // Do whatever you want after successful import
+    }).catch(err => {
+      // Handle errors
+    });
+    ```
 
 ### Configuration
-The configuration you'll provide as a parameter of `seedDatabase` method will be merged with default configuration object.
+You can overwrite any configuration property you want by passing partial config object to `seedDatabase` function.
 
-Default configuration object:
+The object passed as a parameter for `seedDatabase` method is merged with default configuration object. You can pass `{}` to use all default settings.
+
+**Default configuration object**:
 
 ```javascript
 const config = {
@@ -57,8 +78,6 @@ const config = {
   reconnectTimeout: 2000,
 };
 ```
-
-You can overwrite any property you want by passing partial config object to `seedDatabase` function.
 
 ### Debug output
 To see debug output just set environmental variable `DEBUG` to `mongo-seeding` before starting your Node.js app:
