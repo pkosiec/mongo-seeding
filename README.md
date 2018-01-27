@@ -1,27 +1,26 @@
 ![Mongo Seeding](https://raw.githubusercontent.com/pkosiec/mongo-seeding/master/assets/logo.png)
 
 # Mongo Seeding
+[![npm version](https://badge.fury.io/js/mongo-seeding.svg)](https://npmjs.org/package/mongo-seeding) [![Build Status](https://travis-ci.org/pkosiec/mongo-seeding.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg)]() [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9960aeeba19d4992b0df8781cd580eec)](https://www.codacy.com/app/pkosiec/mongo-seeding?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pkosiec/mongo-seeding&amp;utm_campaign=Badge_Grade) 
+
 Fill your MongoDB database with data in easy way. Use JavaScript and JSON files to define the data!
 
-[![NPM](https://nodei.co/npm/mongo-seeding.png)](https://npmjs.org/package/mongo-seeding)
-
-[![Build Status](https://travis-ci.org/pkosiec/mongo-seeding.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg)]() [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9960aeeba19d4992b0df8781cd580eec)](https://www.codacy.com/app/pkosiec/mongo-seeding?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pkosiec/mongo-seeding&amp;utm_campaign=Badge_Grade) [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
-
-### Looking for different type of database seed solution?
-- Docker image (TypeScript support included): [Mongo Seeding Docker Image](https://github.com/pkosiec/mongo-seeding-docker-image)
+## Looking for different type of database seed solution?
+- Docker image (TypeScript support included): [Mongo Seeding Docker Image](https://github.com/pkosiec/mongo-seeding-docker)
 - Command line tool: [Mongo Seeding CLI](https://github.com/pkosiec/mongo-seeding-cli)
 
-### Install
+## Install
 ```bash
 npm install mongo-seeding --save
 ```
 
-### Usage
+## Usage
 1. Import `seedDatabase` function:
     ```javascript
     const { seedDatabase } = require('mongo-seeding');
     ```
 1. Define partial configuration object. The object will be merged with default config object (see [Configuration](#configuration) section). Therefore, you can specify only the keys with different values than default ones.
+
     ```javascript
     const path = require('path');
 
@@ -35,8 +34,10 @@ npm install mongo-seeding --save
       dropDatabase: true,
     };
     ```
+
 1. Seed your database!
   - with `async/await`, i.e.:
+
     ```javascript
     (async () => {
       try {
@@ -47,7 +48,9 @@ npm install mongo-seeding --save
       // Do whatever you want after successful import
     })()    
     ```
+
   - with raw promises:
+  
     ```javascript
     seedDatabase(config).then(() => {
       // Do whatever you want after successful import
@@ -56,7 +59,7 @@ npm install mongo-seeding --save
     });
     ```
 
-### Configuration
+## Configuration
 You can overwrite any configuration property you want by passing partial config object to `seedDatabase` function.
 
 The object passed as a parameter for `seedDatabase` method is merged with default configuration object. You can pass `{}` to use all default settings.
@@ -79,7 +82,7 @@ const config = {
 };
 ```
 
-### Debug output
+## Debug output
 To see debug output just set environmental variable `DEBUG` to `mongo-seeding` before starting your Node.js app:
 
 ```bash
@@ -93,7 +96,7 @@ process.env.DEBUG = 'mongo-seeding';
 const { seedDatabase } = require('mongo-seeding');
 ```
 
-### Preparing data to import
+## Preparing data to import
 1. Create a new base directory. In this example, it'll be named `data`.
 1. Define a few collections via creating subdirectories in `data` directory. New collection will be created if it doesn't exist in database.
 
@@ -169,5 +172,5 @@ const { seedDatabase } = require('mongo-seeding');
 
 1. To sum everything up: Subdirectories of base directory represent database collections. Files in collection directories represent documents. Simple as that.
 
- ### Samples
+ ## Samples
  Take a look at [samples repository](https://github.com/pkosiec/mongo-seeding-samples) to see more examples how to define data structure properly!
