@@ -8,6 +8,8 @@ export interface DatabaseConfig {
   host: string;
   port: number;
   name: string;
+  username?: string;
+  password?: string;
 }
 
 export interface AppConfig {
@@ -25,6 +27,8 @@ export const defaultConfig: AppConfig = {
     host: '127.0.0.1',
     port: 27017,
     name: 'database',
+    username: undefined,
+    password: undefined,
   },
   dataPath: resolve(__dirname, '../../data'),
   dropDatabase: false,
