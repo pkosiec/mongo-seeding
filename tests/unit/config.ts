@@ -11,6 +11,8 @@ describe('Loading config', () => {
       database: {
         port: 3000,
         host: 'mongo',
+        username: 'test',
+        password: '123',
       },
       dataPath: '/',
       replaceIdWithUnderscoreId: true,
@@ -25,6 +27,8 @@ describe('Loading config', () => {
         host: 'mongo',
         port: 3000,
         name: 'database',
+        username: 'test',
+        password: '123',
       },
       dataPath: '/',
       dropDatabase: false,

@@ -47,7 +47,18 @@ export class DatabaseConnector {
     await this.client.close();
   }
 
-  getDbConnectionUri = ({ host, port, name, protocol }: DatabaseConfig) => {
-    return `${protocol}://${host}:${port}/${name}`;
+  getDbConnectionUri = ({
+    protocol,
+    host,
+    port,
+    name,
+    username,
+    password,
+  }: DatabaseConfig) => {
+    let credentials = '';
+    if (username) {
+      credentials = `${username}${password ? `:${password}` : ''}@`;
+    }
+    return `${protocol}://${credentials}${host}:${port}/${name}`;
   };
 }

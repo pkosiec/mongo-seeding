@@ -73,6 +73,8 @@ const config = {
     host: '127.0.0.1',
     port: 27017,
     name: 'database',
+    username: undefined,
+    password: undefined,
   },
   dataPath: path.resolve(__dirname, '../data'),
   dropDatabase: false,
