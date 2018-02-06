@@ -10,6 +10,11 @@ jest.mock('../../src/helpers', () => ({
       resolve();
     }),
   ),
+  checkTimeoutExpired: jest
+    .fn()
+    .mockReturnValueOnce(false)
+    .mockReturnValueOnce(false)
+    .mockReturnValue(true),
 }));
 import { sleep } from '../../src/helpers';
 import { Database } from '../../src/Database';
@@ -56,7 +61,7 @@ describe('Connecting to database', () => {
     expect(uri).toBe(expectedUri);
   });
 
-  it('should retry connecting to DB when connection refused', async () => {
+  it('should retry connecting to DB within given time limit', async () => {
     const getConnectionRefusedError = () => {
       const connectionRefusedError = {
         name: 'MongoNetworkError',
@@ -66,44 +71,32 @@ describe('Connecting to database', () => {
       return new Promise((_, reject) => reject(connectionRefusedError));
     };
 
-    const result = new MongoClient();
-    result.db = jest.fn().mockReturnValue({});
+    const result = new Database(jest.genMockFromModule('mongodb'));
+    (result.db as any) = jest.fn().mockReturnValue({});
     MongoClient.connect = jest
       .fn()
       .mockReturnValueOnce(getConnectionRefusedError())
       .mockReturnValueOnce(getConnectionRefusedError())
       .mockReturnValue(new Promise((resolve, _) => resolve(result)));
 
-    const reconnectTimeout = 20;
-    await databaseConnector.connect(dbConfig, reconnectTimeout);
-    expect(sleep).toBeCalledWith(reconnectTimeout);
+    const reconnectTimeoutInSeconds = 2;
+    await databaseConnector.connect(dbConfig, reconnectTimeoutInSeconds);
     expect(sleep).toHaveBeenCalledTimes(2);
     expect(result.db).toHaveBeenCalledTimes(1);
-  });
-
-  it('should return DB instance on success', async () => {
-    MongoClient.connect = jest
-      .fn()
-      .mockReturnValue(
-        new Promise((resolve, _) =>
-          resolve(new Database(jest.genMockFromModule('mongodb'))),
-        ),
-      );
-
-    const reconnectTimeout = 20;
-    const result = await databaseConnector.connect(dbConfig, reconnectTimeout);
     expect(result).toBeInstanceOf(Database);
   });
 
-  it('should throw error other than connection refused', async () => {
+  it('should fail after given connection timeout', async () => {
     MongoClient.connect = jest.fn().mockReturnValue(
       new Promise((_, reject) => {
         reject(new Error('MongoError'));
       }),
     );
 
-    await expect(databaseConnector.connect(dbConfig, 0)).rejects.toThrow(
-      'MongoError',
-    );
+    const reconnectTimeoutInSeconds = 3;
+    await expect(
+      databaseConnector.connect(dbConfig, reconnectTimeoutInSeconds),
+    ).rejects.toThrow('Timeout');
+    expect(sleep).toHaveBeenCalledTimes(3);
   });
 });

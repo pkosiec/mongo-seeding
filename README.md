@@ -80,7 +80,7 @@ const config = {
   dropDatabase: false,
   replaceIdWithUnderscoreId: false,
   supportedExtensions: ['json', 'js'],
-  reconnectTimeout: 2000,
+  reconnectTimeoutInSeconds: 10,
 };
 ```
 
