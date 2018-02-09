@@ -1,4 +1,4 @@
-import { sleep } from '../../src/helpers';
+import { sleep, checkTimeoutExpired } from '../../src/helpers';
 
 jest.useFakeTimers();
 
@@ -11,5 +11,15 @@ describe('Helper functions', () => {
       expect.any(Function),
       sleepTime,
     );
+  });
+
+  it('should check if time expired', () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const expectedTimeout = new Date();
+    expectedTimeout.setMinutes(expectedTimeout.getMinutes() - 1);
+
+    expect(checkTimeoutExpired(tomorrow.getTime(), 5)).toBeFalsy();
+    expect(checkTimeoutExpired(expectedTimeout.getTime(), 5)).toBeTruthy();
   });
 });

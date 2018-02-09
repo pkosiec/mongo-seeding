@@ -18,7 +18,7 @@ export interface AppConfig {
   dropDatabase: boolean;
   replaceIdWithUnderscoreId: boolean;
   supportedExtensions: string[];
-  reconnectTimeout: number;
+  reconnectTimeoutInSeconds: number;
 }
 
 export const defaultConfig: AppConfig = {
@@ -34,7 +34,7 @@ export const defaultConfig: AppConfig = {
   dropDatabase: false,
   replaceIdWithUnderscoreId: false,
   supportedExtensions: ['json', 'js'],
-  reconnectTimeout: 2000,
+  reconnectTimeoutInSeconds: 10,
 };
 
 export const getConfig = (ownConfig: DeepPartial<AppConfig>): AppConfig => {
