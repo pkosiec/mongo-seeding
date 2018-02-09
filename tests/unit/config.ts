@@ -16,7 +16,7 @@ describe('Loading config', () => {
       },
       dataPath: '/',
       replaceIdWithUnderscoreId: true,
-      reconnectTimeout: 100,
+      reconnectTimeoutInSeconds: 20,
       supportedExtensions: ['md', 'txt'],
     };
     const config = getConfig(partialConfig);
@@ -34,7 +34,7 @@ describe('Loading config', () => {
       dropDatabase: false,
       replaceIdWithUnderscoreId: true,
       supportedExtensions: ['md', 'txt'],
-      reconnectTimeout: 100,
+      reconnectTimeoutInSeconds: 20,
     };
     expect(config).toEqual(expectedConfig);
   });
@@ -47,7 +47,7 @@ describe('Loading config', () => {
         host: undefined,
       },
       replaceIdWithUnderscoreId: undefined,
-      reconnectTimeout: undefined,
+      reconnectTimeoutInSeconds: undefined,
     };
     const config = getConfig(partialConfig);
     expect(config).toEqual(defaultConfig);

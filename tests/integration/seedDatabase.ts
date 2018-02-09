@@ -13,10 +13,13 @@ const databaseConnector = new DatabaseConnector(new MongoClient());
 let database: Database;
 
 beforeAll(async () => {
-  database = await databaseConnector.connect({
-    ...defaultConfig.database,
-    name: DATABASE_NAME,
-  });
+  database = await databaseConnector.connect(
+    {
+      ...defaultConfig.database,
+      name: DATABASE_NAME,
+    },
+    3,
+  );
   await database.drop();
 });
 

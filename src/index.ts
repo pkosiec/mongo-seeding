@@ -13,7 +13,7 @@ export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
   try {
     const database = await databaseConnector.connect(
       config.database,
-      config.reconnectTimeout,
+      config.reconnectTimeoutInSeconds,
     );
 
     if (config.dropDatabase) {
