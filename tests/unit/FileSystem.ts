@@ -1,6 +1,5 @@
-import { fileSystem } from '../../src/FileSystem';
+import { fileSystem } from '../../src/data-processing';
 
-// Import mocks
 jest.mock('fs', () => ({
   lstatSync: jest.fn().mockReturnValue({
     isDirectory: jest
@@ -20,19 +19,24 @@ jest.mock('fs', () => ({
     ]),
 }));
 
-describe('Reading files', () => {
-  it('should list all files in directory', () => {
-    const fileNames = fileSystem.listFileNames('/any/path');
-    expect(fileNames).toEqual([
-      'test1.txt',
-      'testDirectory',
-      '.hiddenDirectory',
-      '.test2',
-    ]);
-  });
+jest.mock('mockFiles/test1.json', () => ({ number: 1 }), { virtual: true });
+jest.mock(
+  'mockFiles/test2.js',
+  () => ({
+    value: {
+      second: true,
+    },
+  }),
+  { virtual: true },
+);
+jest.mock('mockFiles/test3.json', () => ({ string: 'three' }), {
+  virtual: true,
+});
 
+describe('FileSystem module', () => {
   it('should list all directories that are not empty or hidden', () => {
     const dirs = fileSystem.listValidDirectories('/any/path');
+
     expect(dirs).toEqual(['testDirectory']);
   });
 
@@ -46,10 +50,12 @@ describe('Reading files', () => {
       'data-import.js',
     ];
     const supportedExtensions = ['js', 'json'];
+
     const supportedDocuments = fileSystem.filterSupportedDocumentFileNames(
       fileNames,
       supportedExtensions,
     );
+
     expect(supportedDocuments).toEqual([
       'file1.json',
       'file2.js',
@@ -59,34 +65,18 @@ describe('Reading files', () => {
 
   it('should ignore hidden files and files with no extension', () => {
     const ignoreFile = fileSystem.shouldIgnoreFile('test.extension'.split('.'));
-    expect(ignoreFile).toBeFalsy();
-
     const ignoreHiddenFile = fileSystem.shouldIgnoreFile('.test.js'.split('.'));
-    expect(ignoreHiddenFile).toBeTruthy();
-
     const ignoreFileWithNoExtension = fileSystem.shouldIgnoreFile(
       'test'.split('.'),
     );
-    expect(ignoreFileWithNoExtension).toBeTruthy();
-
     const ignoreHiddenFileWithNoExtension = fileSystem.shouldIgnoreFile(
       '.test'.split('.'),
     );
-    expect(ignoreHiddenFileWithNoExtension).toBeTruthy();
-  });
 
-  jest.mock('mockFiles/test1.json', () => ({ number: 1 }), { virtual: true });
-  jest.mock(
-    'mockFiles/test2.js',
-    () => ({
-      value: {
-        second: true,
-      },
-    }),
-    { virtual: true },
-  );
-  jest.mock('mockFiles/test3.json', () => ({ string: 'three' }), {
-    virtual: true,
+    expect(ignoreFile).toBeFalsy();
+    expect(ignoreHiddenFile).toBeTruthy();
+    expect(ignoreFileWithNoExtension).toBeTruthy();
+    expect(ignoreHiddenFileWithNoExtension).toBeTruthy();
   });
 
   it('should get documents content array from array of file names', () => {
@@ -95,8 +85,6 @@ describe('Reading files', () => {
       'mockFiles/test2.js',
       'mockFiles/test3.json',
     ];
-
-    const actualContentArray = fileSystem.readFilesContent(documentFilePaths);
     const expectedContentArray = [
       {
         number: 1,
@@ -110,6 +98,8 @@ describe('Reading files', () => {
         string: 'three',
       },
     ];
+
+    const actualContentArray = fileSystem.readFilesContent(documentFilePaths);
 
     expect(actualContentArray).toEqual(expectedContentArray);
   });

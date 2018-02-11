@@ -1,9 +1,9 @@
 import {
-  getConfig,
   DeepPartial,
   AppConfig,
+  getConfig,
   defaultConfig,
-} from '../../src/config';
+} from '../../src/common';
 
 describe('Loading config', () => {
   it('should merge config with default one', () => {
@@ -14,13 +14,11 @@ describe('Loading config', () => {
         username: 'test',
         password: '123',
       },
-      dataPath: '/',
+      inputPath: '/',
       replaceIdWithUnderscoreId: true,
       reconnectTimeoutInSeconds: 20,
       supportedExtensions: ['md', 'txt'],
     };
-    const config = getConfig(partialConfig);
-
     const expectedConfig: DeepPartial<AppConfig> = {
       database: {
         protocol: 'mongodb',
@@ -30,12 +28,15 @@ describe('Loading config', () => {
         username: 'test',
         password: '123',
       },
-      dataPath: '/',
+      inputPath: '/',
       dropDatabase: false,
       replaceIdWithUnderscoreId: true,
       supportedExtensions: ['md', 'txt'],
       reconnectTimeoutInSeconds: 20,
     };
+
+    const config = getConfig(partialConfig);
+
     expect(config).toEqual(expectedConfig);
   });
 
@@ -49,7 +50,9 @@ describe('Loading config', () => {
       replaceIdWithUnderscoreId: undefined,
       reconnectTimeoutInSeconds: undefined,
     };
+
     const config = getConfig(partialConfig);
+
     expect(config).toEqual(defaultConfig);
   });
 });
