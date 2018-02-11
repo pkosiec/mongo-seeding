@@ -4,6 +4,7 @@ import { DataImporter } from './DataImporter';
 import { DataPopulator } from './DataPopulator';
 import { log } from './logger';
 import { MongoClient } from 'mongodb';
+import { DataTransformer } from 'DataTransformer';
 
 export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
   log('Starting...');
@@ -21,8 +22,19 @@ export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
       await database.drop();
     }
 
-    const collections = new DataPopulator().populate(config.dataPath);
-    await new DataImporter(database).importData(collections);
+    let collections = new DataPopulator().populate(
+      config.dataPath,
+      config.supportedExtensions,
+    );
+
+    if (config.replaceIdWithUnderscoreId) {
+      collections = new DataTransformer().transform(
+        collections,
+        DataTransformer.replaceDocumentIdWithUnderscoreId,
+      );
+    }
+
+    await new DataImporter(database).import(collections);
   } catch (err) {
     throw wrapError(err);
   } finally {
