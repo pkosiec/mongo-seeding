@@ -1,12 +1,11 @@
 import { MongoClient } from 'mongodb';
-
-import { getConfig } from './config';
-import { DatabaseConnector } from './DatabaseConnector';
-import { DataImporter } from './DataImporter';
-import { DataPopulator } from './DataPopulator';
-import { DataTransformer } from './DataTransformer';
-import { log } from './utils';
-import { DeepPartial, AppConfig } from './types';
+import { log, getConfig, DeepPartial, AppConfig } from './common';
+import { DatabaseConnector } from './database';
+import {
+  DataPopulator,
+  DataTransformer,
+  DataImporter,
+} from './data-processing';
 
 export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
   log('Starting...');

@@ -1,6 +1,6 @@
 import * as extend from 'extend';
 import { resolve } from 'path';
-import { AppConfig, DeepPartial } from './types';
+import { AppConfig, DeepPartial } from '.';
 
 export const defaultConfig: AppConfig = {
   database: {
