@@ -1,10 +1,10 @@
-export interface Collection {
-  name: string;
-  documents: string[];
-}
+import { CollectionToImport } from './types';
 
 export class DataPopulator {
-  populate(dataPath: string): Collection[] {
+  populate(
+    dataPath: string,
+    supportedExtensions: string[],
+  ): CollectionToImport[] {
     return [];
   }
 }

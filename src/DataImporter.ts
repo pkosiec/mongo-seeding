@@ -3,27 +3,27 @@ import { Database } from './Database';
 import { fileSystem } from './FileSystem';
 import { AppConfig } from './config';
 import { log } from './logger';
-import { Collection } from './DataPopulator';
+import { CollectionToImport } from './types';
 
-export interface CollectionToImport {
-  name: string;
-  directoryName: string;
-  directoryPath: string;
-  shouldCreate: boolean;
-}
+// export interface CollectionToImport {
+//   name: string;
+//   directoryName: string;
+//   directoryPath: string;
+//   shouldCreate: boolean;
+// }
 
 export class DataImporter {
   // static DIRECTORY_NAME_PATTERN_SEPARATOR = '-';
 
   constructor(public db: Database) {}
 
-  async import(collections: Collection[]) {
+  async import(collections: CollectionToImport[]) {
     for (const collection of collections) {
       await this.importCollection(collection);
     }
   }
 
-  async importCollection(collection: Collection) {
+  async importCollection(collection: CollectionToImport) {
     this.db.insertDocumentsIntoCollection(
       collection.documents,
       collection.name,
@@ -144,23 +144,5 @@ export class DataImporter {
   //   }
 
   //   return collectionName;
-  // }
-
-  // replaceDocumentIdWithUnderscoreId(
-  //   documents: Array<{ id?: string | ObjectId }>,
-  // ) {
-  //   return documents.map(document => {
-  //     if (typeof document.id === 'undefined') {
-  //       return document;
-  //     }
-
-  //     const documentToInsert = {
-  //       ...document,
-  //       _id: document.id,
-  //     };
-
-  //     delete documentToInsert.id;
-  //     return documentToInsert;
-  //   });
   // }
 }
