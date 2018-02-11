@@ -1,7 +1,6 @@
 import { MongoClient, Db } from 'mongodb';
-import { Database } from './Database';
-import { sleep, checkTimeoutExpired, log } from './utils';
-import { DatabaseConfig } from './types';
+import { DatabaseConfig, log } from '../common';
+import { Database, sleep, checkTimeoutExpired } from '.';
 
 export class DatabaseConnector {
   static SLEEP_INTERVAL_MILLIS = 500;

@@ -1,5 +1,5 @@
-import { CollectionToImport } from './types';
 import { ObjectId } from 'mongodb';
+import { CollectionToImport } from '../common';
 
 export class DataTransformer {
   static replaceDocumentIdWithUnderscoreId(

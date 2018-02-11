@@ -1,6 +1,5 @@
-import { CollectionToImport } from './types';
-import { Database } from './Database';
-import { log } from './utils';
+import { Database } from '../database';
+import { CollectionToImport, log } from '../common';
 
 export class DataImporter {
   constructor(public db: Database) {}

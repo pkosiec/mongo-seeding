@@ -1,7 +1,6 @@
-import { CollectionToImport } from './types';
-import { fileSystem } from './FileSystem';
-import { log } from './utils';
 import { ObjectId } from 'mongodb';
+import { CollectionToImport, log } from '../common';
+import { fileSystem } from '.';
 
 export class DataPopulator {
   static DIRECTORY_NAME_PATTERN_SEPARATOR = '-';
