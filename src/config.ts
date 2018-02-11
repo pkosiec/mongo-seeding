@@ -11,7 +11,7 @@ export const defaultConfig: AppConfig = {
     username: undefined,
     password: undefined,
   },
-  dataPath: resolve(__dirname, '../../data'),
+  inputPath: resolve(__dirname, '../../data'),
   dropDatabase: false,
   replaceIdWithUnderscoreId: false,
   supportedExtensions: ['json', 'js'],

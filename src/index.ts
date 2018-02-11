@@ -26,7 +26,7 @@ export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
     }
 
     let collections = new DataPopulator(config.supportedExtensions).populate(
-      config.dataPath,
+      config.inputPath,
     );
 
     if (config.replaceIdWithUnderscoreId) {
