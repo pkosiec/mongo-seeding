@@ -1,25 +1,6 @@
 import * as extend from 'extend';
 import { resolve } from 'path';
-
-export type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };
-
-export interface DatabaseConfig {
-  protocol: string;
-  host: string;
-  port: number;
-  name: string;
-  username?: string;
-  password?: string;
-}
-
-export interface AppConfig {
-  database: DatabaseConfig;
-  dataPath: string;
-  dropDatabase: boolean;
-  replaceIdWithUnderscoreId: boolean;
-  supportedExtensions: string[];
-  reconnectTimeoutInSeconds: number;
-}
+import { AppConfig, DeepPartial } from './types';
 
 export const defaultConfig: AppConfig = {
   database: {

@@ -1,44 +1,47 @@
 import { CollectionToImport } from './types';
 import { fileSystem } from './FileSystem';
-import { log } from './logger';
+import { log } from './utils';
 import { ObjectId } from 'mongodb';
 
 export class DataPopulator {
   static DIRECTORY_NAME_PATTERN_SEPARATOR = '-';
 
-  populate(
-    inputDirectory: string,
-    supportedExtensions: string[],
-  ): CollectionToImport[] {
-    const collectionsDirectories = fileSystem.listValidDirectories(
-      inputDirectory,
-    );
+  constructor(public supportedExtensions: string[]) {}
 
-    return collectionsDirectories.reduce(
-      (collections: CollectionToImport[], collectionDirectory: string) => {
-        const name = this.getCollectionName(collectionDirectory);
-        const relativePath = `${inputDirectory}/${collectionDirectory}`;
-        const documents = this.populateDocuments(
-          relativePath,
-          supportedExtensions,
-        );
+  populate(inputDirectory: string): CollectionToImport[] {
+    const subdirectories = fileSystem.listValidDirectories(inputDirectory);
+    return this.readCollections(subdirectories, inputDirectory);
+  }
 
-        if (documents) {
-          collections.push({
-            name,
-            documents,
-          });
+  readCollections(directories: string[], inputDirectory: string) {
+    return directories.reduce(
+      (collections: CollectionToImport[], directoryName: string) => {
+        const relativePath = `${inputDirectory}/${directoryName}`;
+        const collection = this.readCollection(relativePath, directoryName);
+        if (collection) {
+          collections.push(collection);
         }
-
         return collections;
       },
       [],
     );
   }
 
-  populateDocuments(collectionPath: string, supportedExtensions: string[]) {
-    const fileNames = fileSystem.listFileNames(collectionPath);
+  readCollection(path: string, directoryName: string) {
+    const name = this.getCollectionName(directoryName);
+    const documents = this.populateDocumentsContent(path);
+    if (!documents) {
+      return null;
+    }
 
+    return {
+      name,
+      documents,
+    };
+  }
+
+  populateDocumentsContent(collectionPath: string) {
+    const fileNames = fileSystem.listFileNames(collectionPath);
     if (fileNames.length === 0) {
       log(`Directory '${collectionPath}' is empty. Skipping...`);
       return;
@@ -46,9 +49,8 @@ export class DataPopulator {
 
     const documentFileNames = fileSystem.filterSupportedDocumentFileNames(
       fileNames,
-      supportedExtensions,
+      this.supportedExtensions,
     );
-
     if (documentFileNames.length === 0) {
       log(
         `No supported files found in directory '${collectionPath}'. Skipping...`,
@@ -59,7 +61,6 @@ export class DataPopulator {
     const documentPaths = documentFileNames.map(
       fileName => `${collectionPath}/${fileName}`,
     );
-
     return fileSystem.readFilesContent(documentPaths);
   }
 

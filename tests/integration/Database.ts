@@ -8,10 +8,13 @@ const databaseConnector = new DatabaseConnector(new MongoClient());
 let database: Database;
 
 beforeAll(async () => {
-  database = await databaseConnector.connect({
-    ...defaultConfig.database,
-    name: 'Database',
-  });
+  database = await databaseConnector.connect(
+    {
+      ...defaultConfig.database,
+      name: 'Database',
+    },
+    10,
+  );
   await database.db.dropDatabase();
 });
 
@@ -24,22 +27,6 @@ afterAll(async () => {
 });
 
 describe('Doing database operations', () => {
-  it('should get collections names in form of array', async () => {
-    await database.db.createCollection('test');
-    await database.db.createCollection('test2');
-
-    const result = await database.getExistingCollectionsArray();
-    expect(result).toEqual(['test', 'test2']);
-  });
-
-  it('should be able to create collection', async () => {
-    await database.createCollection('testingCollection');
-
-    await expect(database.getExistingCollectionsArray()).resolves.toContain(
-      'testingCollection',
-    );
-  });
-
   it('should insert documents into collection', async () => {
     const documents = [
       {

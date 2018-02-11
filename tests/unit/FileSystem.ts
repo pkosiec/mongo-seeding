@@ -90,13 +90,14 @@ describe('Reading files', () => {
   });
 
   it('should get documents content array from array of file names', () => {
-    const documentFileNames = ['test1.json', 'test2.js', 'test3.json'];
-    const contentArray = fileSystem.getFilesContentArray(
-      'mockFiles',
-      documentFileNames,
-    );
+    const documentFilePaths = [
+      'mockFiles/test1.json',
+      'mockFiles/test2.js',
+      'mockFiles/test3.json',
+    ];
 
-    expect(contentArray).toEqual([
+    const actualContentArray = fileSystem.readFilesContent(documentFilePaths);
+    const expectedContentArray = [
       {
         number: 1,
       },
@@ -108,6 +109,8 @@ describe('Reading files', () => {
       {
         string: 'three',
       },
-    ]);
+    ];
+
+    expect(actualContentArray).toEqual(expectedContentArray);
   });
 });
