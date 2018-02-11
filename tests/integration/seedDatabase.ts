@@ -78,10 +78,11 @@ describe('Seeding database', () => {
 
     await expect(seedDatabase(config)).resolves.toBeUndefined();
 
-    const collectionArray = await database.getExistingCollectionsArray();
-    expect(collectionArray).toHaveLength(2);
-    expect(collectionArray).toContainEqual(collection1);
-    expect(collectionArray).toContainEqual(collection2);
+    const collectionArray = await database.db.listCollections().toArray();
+    const collectionNames = collectionArray.map(collection => collection.name);
+    expect(collectionNames).toHaveLength(2);
+    expect(collectionNames).toContainEqual(collection1);
+    expect(collectionNames).toContainEqual(collection2);
     const collection1Documents = await database.db
       .collection(collection1)
       .find()
