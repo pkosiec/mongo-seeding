@@ -4,7 +4,7 @@ import { log } from './logger';
 export class Database {
   constructor(public db: Db) {}
 
-  async getExistingCollectionsArray(): Promise<string[]> {
+  async listExistingCollections(): Promise<string[]> {
     const collections = await this.db.listCollections().toArray();
     return collections.map(collection => collection.name);
   }
