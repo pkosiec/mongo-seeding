@@ -1,10 +1,11 @@
 import { mkdirSync, removeSync, existsSync, writeFileSync } from 'fs-extra';
 import { MongoClient } from 'mongodb';
 
-import { DeepPartial, AppConfig, defaultConfig } from '../../src/config';
+import { defaultConfig } from '../../src/config';
 import { seedDatabase } from '../../src/index';
 import { DatabaseConnector } from '../../src/DatabaseConnector';
 import { Database } from '../../src/Database';
+import { DeepPartial, AppConfig } from '../../src/types';
 
 const DATABASE_NAME = 'seedDatabase';
 const TEMP_DIRECTORY_PATH = __dirname + '/_temp-seedDatabase';

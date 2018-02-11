@@ -1,5 +1,4 @@
 import { Db } from 'mongodb';
-import { log } from './logger';
 
 export class Database {
   constructor(public db: Db) {}
@@ -13,7 +12,6 @@ export class Database {
   }
 
   async drop() {
-    log('Dropping database...');
     await this.db.dropDatabase();
   }
 }

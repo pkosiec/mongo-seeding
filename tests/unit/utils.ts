@@ -1,11 +1,12 @@
-import { sleep, checkTimeoutExpired } from '../../src/helpers';
+import { sleep, checkTimeoutExpired } from '../../src/utils';
 
 jest.useFakeTimers();
 
 describe('Helper functions', () => {
   it('should wait given time', () => {
     const sleepTime = 500;
-    sleep(sleepTime);
+
+    expect(sleep(sleepTime)).resolves.toBeUndefined();
     expect(setTimeout).toHaveBeenCalledTimes(1);
     expect(setTimeout).toHaveBeenLastCalledWith(
       expect.any(Function),
