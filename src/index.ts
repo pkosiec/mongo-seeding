@@ -4,7 +4,7 @@ import { DataImporter } from './DataImporter';
 import { DataPopulator } from './DataPopulator';
 import { log } from './logger';
 import { MongoClient } from 'mongodb';
-import { DataTransformer } from 'DataTransformer';
+import { DataTransformer } from './DataTransformer';
 
 export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
   log('Starting...');

@@ -1,22 +1,25 @@
 import { CollectionToImport } from './types';
+import { ObjectId } from 'mongodb';
 
 export class DataTransformer {
   static replaceDocumentIdWithUnderscoreId(
     collection: CollectionToImport,
   ): CollectionToImport {
-    const documents = collection.documents.map(document => {
-      if (typeof document.id === 'undefined') {
-        return document;
-      }
+    const documents = collection.documents.map(
+      (document: { id?: string | ObjectId }) => {
+        if (typeof document.id === 'undefined') {
+          return document;
+        }
 
-      const documentToInsert = {
-        ...document,
-        _id: document.id,
-      };
+        const documentToInsert = {
+          ...document,
+          _id: document.id,
+        };
 
-      delete documentToInsert.id;
-      return documentToInsert;
-    });
+        delete documentToInsert.id;
+        return documentToInsert;
+      },
+    );
 
     return {
       ...collection,
