@@ -13,7 +13,7 @@ export interface DatabaseConfig {
 
 export interface AppConfig {
   database: DatabaseConfig;
-  dataPath: string;
+  inputPath: string;
   dropDatabase: boolean;
   replaceIdWithUnderscoreId: boolean;
   supportedExtensions: string[];
