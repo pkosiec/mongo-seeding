@@ -1,6 +1,7 @@
 import { AppConfig, getConfig, DeepPartial } from './config';
 import { DatabaseConnector } from './DatabaseConnector';
 import { DataImporter } from './DataImporter';
+import { DataPopulator } from './DataPopulator';
 import { log } from './logger';
 import { MongoClient } from 'mongodb';
 
@@ -19,7 +20,9 @@ export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
     if (config.dropDatabase) {
       await database.drop();
     }
-    await new DataImporter(database).importData(config);
+
+    const collections = new DataPopulator().populate(config.dataPath);
+    await new DataImporter(database).importData(collections);
   } catch (err) {
     throw wrapError(err);
   } finally {

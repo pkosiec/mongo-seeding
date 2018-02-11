@@ -3,6 +3,7 @@ import { Database } from './Database';
 import { fileSystem } from './FileSystem';
 import { AppConfig } from './config';
 import { log } from './logger';
+import { Collection } from './DataPopulator';
 
 export interface CollectionToImport {
   name: string;
@@ -12,143 +13,154 @@ export interface CollectionToImport {
 }
 
 export class DataImporter {
-  static DIRECTORY_NAME_PATTERN_SEPARATOR = '-';
+  // static DIRECTORY_NAME_PATTERN_SEPARATOR = '-';
 
   constructor(public db: Database) {}
 
-  async importData(config: AppConfig): Promise<void> {
-    const inputDirectory = config.dataPath;
-    const existingCollections = await this.db.getExistingCollectionsArray();
-    const collectionsToImport = this.getCollectionsToImport(
-      inputDirectory,
-      existingCollections,
-    );
-
-    for (const collection of collectionsToImport) {
-      if (collection.shouldCreate) {
-        log(`Creating collection '${collection.name}'...`);
-        await this.db.createCollection(collection.name);
-      }
-
-      await this.importCollection(
-        collection.name,
-        collection.directoryPath,
-        config,
-      );
+  async import(collections: Collection[]) {
+    for (const collection of collections) {
+      await this.importCollection(collection);
     }
   }
 
-  getCollectionsToImport(
-    inputDirectory: string,
-    existingCollections: string[] = [],
-  ): CollectionToImport[] {
-    const collectionsDirectories = fileSystem.listValidDirectories(
-      inputDirectory,
+  async importCollection(collection: Collection) {
+    this.db.insertDocumentsIntoCollection(
+      collection.documents,
+      collection.name,
     );
-    const collectionsToImport = collectionsDirectories.map(
-      collectionDirectory => {
-        return this.getCollectionToImport(
-          collectionDirectory,
-          existingCollections,
-          inputDirectory,
-        );
-      },
-    );
-
-    return collectionsToImport;
   }
 
-  async importCollection(
-    collectionName: string,
-    collectionPath: string,
-    config: AppConfig,
-  ) {
-    const fileNames = fileSystem.listFileNames(collectionPath);
+  // async importData(config: AppConfig): Promise<void> {
+  //   const inputDirectory = config.dataPath;
+  //   const existingCollections = await this.db.listExistingCollections();
+  //   const collectionsToImport = this.populateCollectionsToImport(
+  //     inputDirectory,
+  //     existingCollections,
+  //   );
 
-    if (fileNames.length === 0) {
-      log(`Directory '${collectionPath}' is empty. Skipping...`);
-      return;
-    }
+  //   for (const collection of collectionsToImport) {
+  //     if (collection.shouldCreate) {
+  //       log(`Creating collection '${collection.name}'...`);
+  //       await this.db.createCollection(collection.name);
+  //     }
 
-    const documentFileNames = fileSystem.getSupportedDocumentFileNames(
-      fileNames,
-      config.supportedExtensions,
-    );
+  //     await this.importCollection(
+  //       collection.name,
+  //       collection.directoryPath,
+  //       config,
+  //     );
+  //   }
+  // }
 
-    if (documentFileNames.length === 0) {
-      log(`No documents found for collection '${collectionName}'. Skipping...`);
-      return;
-    }
+  // populateCollectionsToImport(
+  //   inputDirectory: string,
+  //   existingCollections: string[] = [],
+  // ): CollectionToImport[] {
+  //   const collectionsDirectories = fileSystem.listValidDirectories(
+  //     inputDirectory,
+  //   );
+  //   const collectionsToImport = collectionsDirectories.map(
+  //     collectionDirectory => {
+  //       return this.getCollectionToImport(
+  //         collectionDirectory,
+  //         existingCollections,
+  //         inputDirectory,
+  //       );
+  //     },
+  //   );
 
-    log(`Inserting documents into collection '${collectionName}'...`);
+  //   return collectionsToImport;
+  // }
 
-    const documentsContentArray = fileSystem.getFilesContentArray(
-      collectionPath,
-      documentFileNames,
-    );
+  // async importCollection(
+  //   collectionName: string,
+  //   collectionPath: string,
+  //   config: AppConfig,
+  // ) {
+  //   const fileNames = fileSystem.listFileNames(collectionPath);
 
-    const documentsToInsert = config.replaceIdWithUnderscoreId
-      ? this.replaceDocumentIdWithUnderscoreId(documentsContentArray)
-      : documentsContentArray;
-    this.db.insertDocumentsIntoCollection(documentsToInsert, collectionName);
-  }
+  //   if (fileNames.length === 0) {
+  //     log(`Directory '${collectionPath}' is empty. Skipping...`);
+  //     return;
+  //   }
 
-  getCollectionToImport(
-    collectionDirectory: string,
-    existingCollections: string[],
-    inputDirectory: string,
-  ): CollectionToImport {
-    const collectionName = this.getCollectionName(collectionDirectory);
+  //   const documentFileNames = fileSystem.filterSupportedDocumentFileNames(
+  //     fileNames,
+  //     config.supportedExtensions,
+  //   );
 
-    return {
-      name: collectionName,
-      shouldCreate: this.shouldCreateCollection(
-        collectionName,
-        existingCollections,
-      ),
-      directoryName: collectionDirectory,
-      directoryPath: `${inputDirectory}/${collectionDirectory}`,
-    };
-  }
+  //   if (documentFileNames.length === 0) {
+  //     log(`No documents found for collection '${collectionName}'. Skipping...`);
+  //     return;
+  //   }
 
-  shouldCreateCollection(
-    collection: string,
-    existingCollections: string[] = [],
-  ) {
-    return existingCollections.indexOf(collection) === -1;
-  }
+  //   log(`Inserting documents into collection '${collectionName}'...`);
+  //   const documentPaths = documentFileNames.map(
+  //     fileName => `${collectionName}/${fileName}`,
+  //   );
+  //   const documentsContentArray = fileSystem.readFilesContent(documentPaths);
 
-  getCollectionName(directoryName: string) {
-    // Directory name pattern: {import order}-{collection name}
-    // TODO: Use Regex and allow more separators
-    let collectionName;
+  //   const documentsToInsert = config.replaceIdWithUnderscoreId
+  //     ? this.replaceDocumentIdWithUnderscoreId(documentsContentArray)
+  //     : documentsContentArray;
+  //   this.db.insertDocumentsIntoCollection(documentsToInsert, collectionName);
+  // }
 
-    if (directoryName.includes(DataImporter.DIRECTORY_NAME_PATTERN_SEPARATOR)) {
-      collectionName = directoryName.split(
-        DataImporter.DIRECTORY_NAME_PATTERN_SEPARATOR,
-      )[1];
-    } else {
-      collectionName = directoryName;
-    }
+  // getCollectionToImport(
+  //   collectionDirectory: string,
+  //   existingCollections: string[],
+  //   inputDirectory: string,
+  // ): CollectionToImport {
+  //   const collectionName = this.getCollectionName(collectionDirectory);
+  //   return {
+  //     name: collectionName,
+  //     shouldCreate: this.shouldCreateCollection(
+  //       collectionName,
+  //       existingCollections,
+  //     ),
+  //     directoryName: collectionDirectory,
+  //     directoryPath: `${inputDirectory}/${collectionDirectory}`,
+  //   };
+  // }
 
-    return collectionName;
-  }
+  // shouldCreateCollection(
+  //   collection: string,
+  //   existingCollections: string[] = [],
+  // ) {
+  //   return existingCollections.indexOf(collection) === -1;
+  // }
 
-  replaceDocumentIdWithUnderscoreId(
-    documents: Array<{ id?: string | ObjectId }>,
-  ) {
-    return documents.map(document => {
-      if (typeof document.id === 'undefined') {
-        return document;
-      }
+  // getCollectionName(directoryName: string) {
+  //   // Directory name pattern: {import order}-{collection name}
+  //   // TODO: Use Regex and allow more separators
+  //   let collectionName;
 
-      const documentToInsert = {
-        ...document,
-        _id: document.id,
-      };
+  //   if (directoryName.includes(DataImporter.DIRECTORY_NAME_PATTERN_SEPARATOR)) {
+  //     collectionName = directoryName.split(
+  //       DataImporter.DIRECTORY_NAME_PATTERN_SEPARATOR,
+  //     )[1];
+  //   } else {
+  //     collectionName = directoryName;
+  //   }
 
-      delete documentToInsert.id;
-      return documentToInsert;
-    });
-  }
+  //   return collectionName;
+  // }
+
+  // replaceDocumentIdWithUnderscoreId(
+  //   documents: Array<{ id?: string | ObjectId }>,
+  // ) {
+  //   return documents.map(document => {
+  //     if (typeof document.id === 'undefined') {
+  //       return document;
+  //     }
+
+  //     const documentToInsert = {
+  //       ...document,
+  //       _id: document.id,
+  //     };
+
+  //     delete documentToInsert.id;
+  //     return documentToInsert;
+  //   });
+  // }
 }

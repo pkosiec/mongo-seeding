@@ -33,7 +33,7 @@ export class FileSystem {
     return stats.isDirectory();
   }
 
-  getSupportedDocumentFileNames(
+  filterSupportedDocumentFileNames(
     fileNames: string[],
     supportedExtensions: string[],
   ) {
@@ -60,17 +60,11 @@ export class FileSystem {
     return isHidden || hasNoExtension;
   }
 
-  getFilesContentArray(directory: string, fileNames: string[]) {
-    const documentsContentArray = fileNames.reduce<any[]>(
-      (arr: any[], fileName) => {
-        const filePath = `${directory}/${fileName}`;
-        const fileContent: any = require(filePath);
-        return arr.concat(fileContent);
-      },
-      [],
-    );
-
-    return documentsContentArray;
+  readFilesContent(filePaths: string[]) {
+    return filePaths.reduce<any[]>((arr: any[], filePath) => {
+      const fileContent: any = require(filePath);
+      return arr.concat(fileContent);
+    }, []);
   }
 }
 

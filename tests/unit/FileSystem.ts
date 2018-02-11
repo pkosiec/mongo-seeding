@@ -46,7 +46,7 @@ describe('Reading files', () => {
       'data-import.js',
     ];
     const supportedExtensions = ['js', 'json'];
-    const supportedDocuments = fileSystem.getSupportedDocumentFileNames(
+    const supportedDocuments = fileSystem.filterSupportedDocumentFileNames(
       fileNames,
       supportedExtensions,
     );
