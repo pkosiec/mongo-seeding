@@ -1,4 +1,4 @@
-import { sleep, checkTimeoutExpired } from '../../src/utils';
+import { sleep, checkTimeoutExpired } from '../../src/database';
 
 jest.useFakeTimers();
 
