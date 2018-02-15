@@ -11,11 +11,11 @@ export const defaultConfig: AppConfig = {
     username: undefined,
     password: undefined,
   },
-  inputPath: resolve(__dirname, '../../data'),
-  dropDatabase: false,
-  replaceIdWithUnderscoreId: false,
-  supportedExtensions: ['json', 'js'],
-  reconnectTimeoutInSeconds: 10,
+  inputPath: resolve(__dirname, '../../data'), // input directory with import data structure
+  dropDatabase: false, // drops database before import
+  replaceIdWithUnderscoreId: false, // rewrites `id` property to `_id` for every document
+  supportedExtensions: ['json', 'js'], // files that should be imported
+  reconnectTimeoutInSeconds: 10, // maximum time of waiting for successful MongoDB connection
 };
 
 export const getConfig = (ownConfig: DeepPartial<AppConfig>): AppConfig => {
