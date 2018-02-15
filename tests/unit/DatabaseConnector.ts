@@ -1,10 +1,10 @@
 import { MongoClient } from 'mongodb';
 
-import { DatabaseConfig } from '../../src/config';
-import { DatabaseConnector } from '../../src/DatabaseConnector';
+import { DatabaseConnector, sleep, Database } from '../../src/database';
+import { DatabaseConfig } from '../../src/common';
 
 // Import mocks
-jest.mock('../../src/helpers', () => ({
+jest.mock('../../src/database/timeUtils', () => ({
   sleep: jest.fn().mockReturnValue(
     new Promise((resolve, _) => {
       resolve();
@@ -16,8 +16,6 @@ jest.mock('../../src/helpers', () => ({
     .mockReturnValueOnce(false)
     .mockReturnValue(true),
 }));
-import { sleep } from '../../src/helpers';
-import { Database } from '../../src/Database';
 
 const databaseConnector = new DatabaseConnector(new MongoClient());
 const dbConfig: DatabaseConfig = {
@@ -27,10 +25,10 @@ const dbConfig: DatabaseConfig = {
   name: 'database',
 };
 
-describe('Connecting to database', () => {
+describe('DatabaseConnector', () => {
   it('should return valid DB connection URI', () => {
-    const uri = databaseConnector.getDbConnectionUri(dbConfig);
     const expectedUri = 'mongodb://127.0.0.1:27017/database';
+    const uri = databaseConnector.getDbConnectionUri(dbConfig);
     expect(uri).toBe(expectedUri);
   });
 
@@ -42,8 +40,8 @@ describe('Connecting to database', () => {
       port: 27017,
       name: 'authDb',
     };
-    const uri = databaseConnector.getDbConnectionUri(authConfig);
     const expectedUri = 'mongodb://user@10.10.10.1:27017/authDb';
+    const uri = databaseConnector.getDbConnectionUri(authConfig);
     expect(uri).toBe(expectedUri);
   });
 
@@ -96,7 +94,7 @@ describe('Connecting to database', () => {
     const reconnectTimeoutInSeconds = 3;
     await expect(
       databaseConnector.connect(dbConfig, reconnectTimeoutInSeconds),
-    ).rejects.toThrow('Timeout');
+    ).rejects.toThrowError('Timeout');
     expect(sleep).toHaveBeenCalledTimes(3);
   });
 });

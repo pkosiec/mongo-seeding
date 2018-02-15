@@ -1,8 +1,11 @@
-import { AppConfig, getConfig, DeepPartial } from './config';
-import { DatabaseConnector } from './DatabaseConnector';
-import { DataImporter } from './DataImporter';
-import { log } from './logger';
 import { MongoClient } from 'mongodb';
+import { log, getConfig, DeepPartial, AppConfig } from './common';
+import { DatabaseConnector } from './database';
+import {
+  DataPopulator,
+  DataTransformer,
+  DataImporter,
+} from './data-processing';
 
 export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
   log('Starting...');
@@ -17,9 +20,22 @@ export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
     );
 
     if (config.dropDatabase) {
+      log('Dropping database...');
       await database.drop();
     }
-    await new DataImporter(database).importData(config);
+
+    let collections = new DataPopulator(config.supportedExtensions).populate(
+      config.inputPath,
+    );
+
+    if (config.replaceIdWithUnderscoreId) {
+      collections = new DataTransformer().transform(
+        collections,
+        DataTransformer.replaceDocumentIdWithUnderscoreId,
+      );
+    }
+
+    await new DataImporter(database).import(collections);
   } catch (err) {
     throw wrapError(err);
   } finally {

@@ -1,17 +1,7 @@
 import { Db } from 'mongodb';
-import { log } from './logger';
 
 export class Database {
   constructor(public db: Db) {}
-
-  async getExistingCollectionsArray(): Promise<string[]> {
-    const collections = await this.db.listCollections().toArray();
-    return collections.map(collection => collection.name);
-  }
-
-  async createCollection(collectionName: string) {
-    await this.db.createCollection(collectionName);
-  }
 
   async insertDocumentsIntoCollection(
     documentsToInsert: any[],
@@ -22,7 +12,6 @@ export class Database {
   }
 
   async drop() {
-    log('Dropping database...');
     await this.db.dropDatabase();
   }
 }
