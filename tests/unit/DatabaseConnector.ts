@@ -94,7 +94,7 @@ describe('DatabaseConnector', () => {
     const reconnectTimeoutInSeconds = 3;
     await expect(
       databaseConnector.connect(dbConfig, reconnectTimeoutInSeconds),
-    ).rejects.toThrow('Timeout');
+    ).rejects.toThrowError('Timeout');
     expect(sleep).toHaveBeenCalledTimes(3);
   });
 });
