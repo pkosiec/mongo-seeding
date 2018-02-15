@@ -90,13 +90,13 @@ describe('DataPopulator', () => {
 
   it('should skip empty directories', () => {
     const dataPopulator = new DataPopulator(defaultConfig.supportedExtensions);
-    const path1 = `${TEMP_DIRECTORY_PATH}/SkipEmptyDir1`;
-    const path2 = `${TEMP_DIRECTORY_PATH}/SkipEmptyDir2`;
-    mkdirSync(path1);
-    mkdirSync(path2);
+    const directory1 = 'SkipEmptyDir1';
+    const directory2 = 'SkipEmptyDir2';
+    mkdirSync(`${TEMP_DIRECTORY_PATH}/${directory1}`);
+    mkdirSync(`${TEMP_DIRECTORY_PATH}/${directory2}`);
 
     const collections = dataPopulator.readCollections(
-      ['SkipEmptyDir1', 'SkipEmptyDir2'],
+      [directory1, directory2],
       TEMP_DIRECTORY_PATH,
     );
     expect(collections).toHaveLength(0);
