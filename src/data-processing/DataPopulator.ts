@@ -3,8 +3,6 @@ import { CollectionToImport, log } from '../common';
 import { fileSystem } from '.';
 
 export class DataPopulator {
-  static DIRECTORY_NAME_PATTERN_SEPARATOR = '-';
-
   supportedExtensions: string[];
 
   constructor(supportedExtensions: string[]) {
@@ -72,15 +70,10 @@ export class DataPopulator {
   }
 
   getCollectionName(directoryName: string) {
-    // Directory name pattern: {import order}-{collection name}
-    // TODO: Use Regex and allow more separators
+    const separators = /\s*[-_\.\s]\s*/;
     let collectionName;
-    if (
-      directoryName.includes(DataPopulator.DIRECTORY_NAME_PATTERN_SEPARATOR)
-    ) {
-      collectionName = directoryName.split(
-        DataPopulator.DIRECTORY_NAME_PATTERN_SEPARATOR,
-      )[1];
+    if (directoryName.match(separators)) {
+      collectionName = directoryName.split(separators)[1];
     } else {
       collectionName = directoryName;
     }

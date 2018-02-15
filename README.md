@@ -104,7 +104,7 @@ const { seedDatabase } = require('mongo-seeding');
 
     **Naming convention**
     - If you don't care about import order - just name directories simply with collection names - i.e. `categories`, `posts`, `comments`, etc.   
-    - To keep your own import order, name directories as `$IMPORT_NUMBER-$COLLECTION_NAME` - i.e. `1-categories`, `2-posts`, `3-comments`. Import number has to be separated with collection name via dash (`-`).
+    - To keep your own import order, construct directory name with a number, separator and actual collection name - i.e. `1-categories`, `2_posts`, `3.comments`, `4 tags`, etc. Supported separators between import number and collection name: `-`, `_`, `.` or space.
 
 1. We have collections - now it's time to define documents. It can be done via creating files in collections directories.
 
