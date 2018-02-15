@@ -33,7 +33,7 @@ jest.mock('mockFiles/test3.json', () => ({ string: 'three' }), {
   virtual: true,
 });
 
-describe('FileSystem module', () => {
+describe('FileSystem', () => {
   it('should list all directories that are not empty or hidden', () => {
     const dirs = fileSystem.listValidDirectories('/any/path');
 

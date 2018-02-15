@@ -2,7 +2,7 @@ import { sleep, checkTimeoutExpired } from '../../src/database';
 
 jest.useFakeTimers();
 
-describe('Helper functions', () => {
+describe('sleep function', () => {
   it('should wait given time', () => {
     const sleepTime = 500;
 
@@ -13,7 +13,9 @@ describe('Helper functions', () => {
       sleepTime,
     );
   });
+});
 
+describe('checkTimeoutExpired function', () => {
   it('should check if time expired', () => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
