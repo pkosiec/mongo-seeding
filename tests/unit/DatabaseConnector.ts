@@ -25,7 +25,7 @@ const dbConfig: DatabaseConfig = {
   name: 'database',
 };
 
-describe('Database Connector', () => {
+describe('DatabaseConnector', () => {
   it('should return valid DB connection URI', () => {
     const expectedUri = 'mongodb://127.0.0.1:27017/database';
     const uri = databaseConnector.getDbConnectionUri(dbConfig);

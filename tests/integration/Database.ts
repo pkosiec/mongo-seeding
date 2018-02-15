@@ -6,7 +6,7 @@ import {
   removeUnderscoreIdProperty,
   createCollection,
   listExistingCollections,
-} from '../helpers';
+} from '../_helpers';
 
 const databaseConnector = new DatabaseConnector(new MongoClient());
 let database: Database;
@@ -30,7 +30,7 @@ afterAll(async () => {
   await databaseConnector.close();
 });
 
-describe('Database module', () => {
+describe('Database', () => {
   it('should insert documents into collection', async () => {
     const documents = [
       {

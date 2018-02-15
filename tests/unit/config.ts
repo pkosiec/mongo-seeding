@@ -5,7 +5,7 @@ import {
   defaultConfig,
 } from '../../src/common';
 
-describe('Loading config', () => {
+describe('Config', () => {
   it('should merge config with default one', () => {
     const partialConfig: DeepPartial<AppConfig> = {
       database: {

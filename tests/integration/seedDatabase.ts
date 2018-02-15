@@ -4,6 +4,7 @@ import { mkdirSync, removeSync, existsSync, writeFileSync } from 'fs-extra';
 import { DatabaseConnector, Database } from '../../src/database';
 import { defaultConfig, DeepPartial, AppConfig } from '../../src/common';
 import { seedDatabase } from '../../src/index';
+import { listExistingCollections, createCollection } from '../_helpers';
 
 const DATABASE_NAME = 'seedDatabase';
 const TEMP_DIRECTORY_PATH = __dirname + '/_temp-seedDatabase';
@@ -49,6 +50,7 @@ function createSampleFiles(collectionNames: string[], directoryPath: string) {
   writeFileSync(
     `${collectionPaths[0]}/test1.json`,
     JSON.stringify({
+      id: 'testing',
       number: 1,
       name: 'one',
     }),
@@ -62,7 +64,10 @@ function createSampleFiles(collectionNames: string[], directoryPath: string) {
   );
   writeFileSync(
     `${collectionPaths[1]}/test3.json`,
-    JSON.stringify([{ number: 3, name: 'three' }, { number: 4, name: 'four' }]),
+    JSON.stringify([
+      { id: 'test', number: 3, name: 'three' },
+      { number: 4, name: 'four' },
+    ]),
   );
 }
 
@@ -76,6 +81,7 @@ describe('Mongo Seeding', () => {
       database: {
         name: DATABASE_NAME,
       },
+      replaceIdWithUnderscoreId: true,
     };
 
     await expect(seedDatabase(config)).resolves.toBeUndefined();
@@ -93,6 +99,7 @@ describe('Mongo Seeding', () => {
       .toArray();
     expect(collection1Documents).toContainEqual(
       expect.objectContaining({
+        _id: 'testing',
         number: 1,
         name: 'one',
       }),
@@ -103,12 +110,11 @@ describe('Mongo Seeding', () => {
         name: 'two',
       }),
     );
-    expect(collection2Documents).toContainEqual(
-      expect.objectContaining({
-        number: 3,
-        name: 'three',
-      }),
-    );
+    expect(collection2Documents).toContainEqual({
+      _id: 'test',
+      number: 3,
+      name: 'three',
+    });
     expect(collection2Documents).toContainEqual(
       expect.objectContaining({
         number: 4,
@@ -117,12 +123,31 @@ describe('Mongo Seeding', () => {
     );
   });
 
+  it('should drop database before importing data', async () => {
+    const expectedCollectionNames = ['CollectionOne', 'CollectionTwo'];
+    createSampleFiles(expectedCollectionNames, TEMP_DIRECTORY_PATH);
+
+    const config: DeepPartial<AppConfig> = {
+      inputPath: TEMP_DIRECTORY_PATH,
+      database: {
+        name: DATABASE_NAME,
+      },
+      dropDatabase: true,
+    };
+
+    await createCollection(database.db, 'ShouldBeRemoved');
+
+    await expect(seedDatabase(config)).resolves.toBeUndefined();
+    const collections = await listExistingCollections(database.db);
+    expect(collections).toHaveLength(2);
+    expect(collections).toContainEqual('CollectionOne');
+    expect(collections).toContainEqual('CollectionTwo');
+  });
+
   it('should throw error when wrong path given', async () => {
     const config: DeepPartial<AppConfig> = {
       inputPath: '/this/path/surely/doesnt/exist',
     };
-    await expect(seedDatabase(config)).rejects.toThrowError(
-      "Error: ENOENT: no such file or directory, scandir '/this/path/surely/doesnt/exist",
-    );
+    await expect(seedDatabase(config)).rejects.toThrowError('Error: ENOENT');
   });
 });
