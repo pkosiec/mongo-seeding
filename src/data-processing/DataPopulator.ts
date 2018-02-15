@@ -5,7 +5,15 @@ import { fileSystem } from '.';
 export class DataPopulator {
   static DIRECTORY_NAME_PATTERN_SEPARATOR = '-';
 
-  constructor(public supportedExtensions: string[]) {}
+  supportedExtensions: string[];
+
+  constructor(supportedExtensions: string[]) {
+    if (supportedExtensions.length === 0) {
+      throw new Error('Array of supported extensions must not be empty');
+    }
+
+    this.supportedExtensions = supportedExtensions;
+  }
 
   populate(inputDirectory: string): CollectionToImport[] {
     const subdirectories = fileSystem.listValidDirectories(inputDirectory);
