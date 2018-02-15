@@ -9,18 +9,33 @@ describe('DataPopulator', () => {
 
   it('should get proper collection name from directory name', () => {
     const dataPopulator = new DataPopulator(['js']);
-    const testCollectionName = 'TestCollection';
+    const collectionName = 'TestCollection';
+    const collectionNumberName = '1';
 
     const collectionWithoutNumber = dataPopulator.getCollectionName(
-      testCollectionName,
+      collectionName,
     );
-    const collectionWithDashSeparator = dataPopulator.getCollectionName(
-      `1-${testCollectionName}`,
+    const collectionWithDash = dataPopulator.getCollectionName(
+      `1-${collectionName}`,
     );
-    const collectionWithNumberName = dataPopulator.getCollectionName(`1`);
+    const collectionWithUnderscore = dataPopulator.getCollectionName(
+      `1_${collectionName}`,
+    );
+    const collectionWithDot = dataPopulator.getCollectionName(
+      `1.${collectionName}`,
+    );
+    const collectionWithSpace = dataPopulator.getCollectionName(
+      `1 ${collectionName}`,
+    );
+    const collectionWithNumberName = dataPopulator.getCollectionName(
+      collectionNumberName,
+    );
 
-    expect(collectionWithoutNumber).toBe(testCollectionName);
-    expect(collectionWithDashSeparator).toBe(testCollectionName);
-    expect(collectionWithNumberName).toBe('1');
+    expect(collectionWithoutNumber).toBe(collectionName);
+    expect(collectionWithDash).toBe(collectionName);
+    expect(collectionWithUnderscore).toBe(collectionName);
+    expect(collectionWithDot).toBe(collectionName);
+    expect(collectionWithSpace).toBe(collectionName);
+    expect(collectionWithNumberName).toBe(collectionNumberName);
   });
 });
