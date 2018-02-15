@@ -1,18 +1,20 @@
 import { Db, MongoClient } from 'mongodb';
 
-import { defaultConfig } from '../../src/config';
-import { DatabaseConnector } from '../../src/DatabaseConnector';
-import { Database } from '../../src/Database';
+import { DatabaseConnector, Database } from '../../src/database';
+import { defaultConfig } from '../../src/common';
 
-describe('Connecting to database', () => {
+describe('DatabaseConnector', () => {
   it('should connect to database and close connection', async () => {
     const databaseConnector = new DatabaseConnector(new MongoClient());
-    const database = await databaseConnector.connect(defaultConfig.database);
+
+    const database = await databaseConnector.connect(
+      defaultConfig.database,
+      10,
+    );
+    const collections = await database.db.listCollections().toArray();
 
     expect(database).toBeInstanceOf(Database);
     expect(database.db).toBeInstanceOf(Db);
-
-    const collections = await database.db.listCollections().toArray();
     expect(collections).toBeInstanceOf(Array);
 
     await expect(databaseConnector.close()).resolves.toBeUndefined();
