@@ -7,7 +7,7 @@ import { seedDatabase } from '../../src/index';
 import { listExistingCollections, createCollection } from '../_helpers';
 
 const DATABASE_NAME = 'seedDatabase';
-const TEMP_DIRECTORY_PATH = __dirname + '/_temp-seedDatabase';
+const TEMP_DIRECTORY_PATH = __dirname + '/.temp-seedDatabase';
 
 const databaseConnector = new DatabaseConnector(new MongoClient());
 let database: Database;

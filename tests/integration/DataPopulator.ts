@@ -9,7 +9,7 @@ import {
 } from '../../src/common';
 import { DataPopulator } from '../../src/data-processing';
 
-const TEMP_DIRECTORY_PATH = __dirname + '/_temp-DataPopulator';
+const TEMP_DIRECTORY_PATH = __dirname + '/.temp-DataPopulator';
 
 beforeEach(async () => {
   if (!existsSync(TEMP_DIRECTORY_PATH)) {
