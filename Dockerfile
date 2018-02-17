@@ -7,7 +7,7 @@ WORKDIR /app
 # Install git
 #
 RUN apk add --update git && \
-  rm -rf /tmp/* /var/cache/apk/*
+    rm -rf /tmp/* /var/cache/apk/*
 
 #
 # Install dependencies
@@ -29,4 +29,5 @@ COPY ./tests/ /app/tests/
 # Run tests on container start
 #
 
-CMD npm test -- --ci --coverage && cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage --language typescript 
+CMD npm test -- --ci --coverage && \
+    cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage --language typescript 
