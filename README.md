@@ -64,6 +64,10 @@ You can overwrite any configuration property you want by passing partial config 
 
 The object passed as a parameter for `seedDatabase` method is merged with default configuration object. You can pass `{}` to use all default settings.
 
+There are two ways to define database connection configuration:
+- via `database` object, overwriting properties you want
+- via `databaseConnectionUri` string, i.e. `mongodb://127.0.0.1:27017/testing`
+
 **Default configuration object**:
 
 ```javascript
@@ -76,6 +80,7 @@ const config = {
     username: undefined,
     password: undefined,
   },
+  databaseConnectionUri: undefined, // if defined, it will be used instead of `database` object
   inputPath: resolve(__dirname, '../../data'), // input directory with import data structure
   dropDatabase: false, // drops database before import
   replaceIdWithUnderscoreId: false, // rewrites `id` property to `_id` for every document
