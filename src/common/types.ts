@@ -13,6 +13,7 @@ export interface DatabaseConfig {
 
 export interface AppConfig {
   database: DatabaseConfig;
+  databaseConnectionUri?: string;
   inputPath: string;
   dropDatabase: boolean;
   replaceIdWithUnderscoreId: boolean;
