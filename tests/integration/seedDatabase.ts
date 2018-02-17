@@ -150,4 +150,15 @@ describe('Mongo Seeding', () => {
     };
     await expect(seedDatabase(config)).rejects.toThrowError('Error: ENOENT');
   });
+
+  it('should throw error when cannot connect to database', async () => {
+    const expectedCollectionNames = ['Collection1', 'Collection2'];
+    createSampleFiles(expectedCollectionNames, TEMP_DIRECTORY_PATH);
+    const config: DeepPartial<AppConfig> = {
+      databaseConnectionUri: "mongodb://unresolved.host:27017/name",
+      reconnectTimeoutInSeconds: 0,
+      inputPath: TEMP_DIRECTORY_PATH
+    }
+    await expect(seedDatabase(config)).rejects.toThrowError("Timeout");
+  })
 });

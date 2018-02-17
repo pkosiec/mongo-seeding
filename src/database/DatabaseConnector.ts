@@ -10,6 +10,8 @@ export interface DatabaseConnectorConfig {
 export class DatabaseConnector {
   static SLEEP_INTERVAL_MILLIS = 500;
 
+  currentDbName?: string;
+
   constructor(public client: MongoClient, public reconnectTimeoutInSeconds: number) { }
 
   async connect({
@@ -33,16 +35,14 @@ export class DatabaseConnector {
 
   async connectWithUri(dbConnectionUri: string, dbName: string): Promise<Database> {
     log(`Connecting to ${dbConnectionUri}...`);
-
     const startMillis = new Date().getTime();
     const reconnectTimeoutMillis = this.reconnectTimeoutInSeconds * 1000;
+    this.currentDbName = dbName;
     let client: MongoClient | undefined;
     do {
       try {
         client = await MongoClient.connect(dbConnectionUri, { ignoreUndefined: true });
       } catch (err) {
-        log(`${err.message}\nRetrying...`);
-        await sleep(DatabaseConnector.SLEEP_INTERVAL_MILLIS);
         if (checkTimeoutExpired(startMillis, reconnectTimeoutMillis)) {
           throw new Error(
             `Timeout ${this.reconnectTimeoutInSeconds}s expired while connecting to database due to: ${
@@ -50,6 +50,9 @@ export class DatabaseConnector {
             }: ${err.message}`,
           );
         }
+
+        log(`${err.message}\nRetrying...`);
+        await sleep(DatabaseConnector.SLEEP_INTERVAL_MILLIS);
       }
     } while (!client);
 
@@ -61,11 +64,12 @@ export class DatabaseConnector {
   }
 
   async close() {
-    log('Closing connection...');
-    if (!this.client) {
+    log('Closing connection...')
+    if (!this.client || !this.client.isConnected(this.currentDbName!)) {
       return;
     }
-    await this.client.close();
+    
+    await this.client.close(true);
   }
 
   getDbConnectionUri({
