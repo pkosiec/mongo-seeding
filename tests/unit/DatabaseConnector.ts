@@ -17,7 +17,7 @@ jest.mock('../../src/database/timeUtils', () => ({
     .mockReturnValue(true),
 }));
 
-const databaseConnector = new DatabaseConnector(new MongoClient(), 5);
+const databaseConnector = new DatabaseConnector(new MongoClient(), 3);
 const dbConfig: DatabaseConfig = {
   protocol: 'mongodb',
   host: '127.0.0.1',
@@ -90,7 +90,6 @@ describe('DatabaseConnector', () => {
       .mockReturnValueOnce(getConnectionRefusedError())
       .mockReturnValue(new Promise((resolve, _) => resolve(result)));
 
-    const reconnectTimeoutInSeconds = 2;
     await databaseConnector.connect({databaseConfig: dbConfig});
     expect(sleep).toHaveBeenCalledTimes(2);
     expect(result.db).toHaveBeenCalledTimes(1);
@@ -104,10 +103,9 @@ describe('DatabaseConnector', () => {
       }),
     );
 
-    const reconnectTimeoutInSeconds = 3;
     await expect(
       databaseConnector.connect({databaseConfig: dbConfig}),
     ).rejects.toThrowError('Timeout');
-    expect(sleep).toHaveBeenCalledTimes(3);
+    expect(sleep).toHaveBeenCalledTimes(2);
   });
 });
