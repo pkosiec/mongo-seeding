@@ -11,6 +11,6 @@ before_script:
 
 script:
 # Run tests
-  - docker run --rm --network="host" $IMAGE_NAME:$TRAVIS_BUILD_NUMBER
+  - docker run --rm --network="host" -e CODACY_PROJECT_TOKEN=$CODACY_PROJECT_TOKEN $IMAGE_NAME:$TRAVIS_BUILD_NUMBER
 
 

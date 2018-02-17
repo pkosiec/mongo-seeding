@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "@types/mongodb": "^3.0.5",
+    "codacy-coverage": "^2.0.3",
     "debug": "^3.1.0",
     "extend": "^3.0.1",
     "mongodb": "^3.0.2"
@@ -66,6 +67,11 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "json"
+    ],
     "testRegex": "(/tests/[^_].*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
       "ts",
