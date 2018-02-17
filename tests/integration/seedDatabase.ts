@@ -9,16 +9,16 @@ import { listExistingCollections, createCollection } from '../_helpers';
 const DATABASE_NAME = 'seedDatabase';
 const TEMP_DIRECTORY_PATH = __dirname + '/.temp-seedDatabase';
 
-const databaseConnector = new DatabaseConnector(new MongoClient());
+const databaseConnector = new DatabaseConnector(new MongoClient(), 3);
 let database: Database;
 
 beforeAll(async () => {
-  database = await databaseConnector.connect(
-    {
+  database = await databaseConnector.connect({
+    databaseConfig: {
       ...defaultConfig.database,
       name: DATABASE_NAME,
-    },
-    3,
+    }
+  }
   );
   await database.drop();
 });

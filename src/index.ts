@@ -11,13 +11,13 @@ export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
   log('Starting...');
 
   const config = getConfig(partialConfig);
-  const databaseConnector = new DatabaseConnector(new MongoClient());
+  const databaseConnector = new DatabaseConnector(new MongoClient(), config.reconnectTimeoutInSeconds);
 
   try {
-    const database = await databaseConnector.connect(
-      config.database,
-      config.reconnectTimeoutInSeconds,
-    );
+    const database = await databaseConnector.connect({
+      databaseConnectionUri: config.databaseConnectionUri,
+      databaseConfig: config.database,
+    });
 
     if (config.dropDatabase) {
       log('Dropping database...');
