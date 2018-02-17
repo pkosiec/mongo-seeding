@@ -8,16 +8,17 @@ import {
   listExistingCollections,
 } from '../_helpers';
 
-const databaseConnector = new DatabaseConnector(new MongoClient());
+const databaseConnector = new DatabaseConnector(new MongoClient(), 5);
 let database: Database;
 
 beforeAll(async () => {
   database = await databaseConnector.connect(
     {
-      ...defaultConfig.database,
-      name: 'Database',
-    },
-    10,
+      databaseConfig: {
+        ...defaultConfig.database,
+        name: 'Database',
+      }
+    }
   );
   await database.db.dropDatabase();
 });

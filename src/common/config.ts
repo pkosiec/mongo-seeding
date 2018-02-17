@@ -11,6 +11,7 @@ export const defaultConfig: AppConfig = {
     username: undefined,
     password: undefined,
   },
+  databaseConnectionUri: undefined,
   inputPath: resolve(__dirname, '../../data'), // input directory with import data structure
   dropDatabase: false, // drops database before import
   replaceIdWithUnderscoreId: false, // rewrites `id` property to `_id` for every document
