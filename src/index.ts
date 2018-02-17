@@ -14,16 +14,6 @@ export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
   const databaseConnector = new DatabaseConnector(new MongoClient(), config.reconnectTimeoutInSeconds);
 
   try {
-    const database = await databaseConnector.connect({
-      databaseConnectionUri: config.databaseConnectionUri,
-      databaseConfig: config.database,
-    });
-
-    if (config.dropDatabase) {
-      log('Dropping database...');
-      await database.drop();
-    }
-
     let collections = new DataPopulator(config.supportedExtensions).populate(
       config.inputPath,
     );
@@ -33,6 +23,21 @@ export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
         collections,
         DataTransformer.replaceDocumentIdWithUnderscoreId,
       );
+    }
+
+    if (collections.length === 0) {
+      log('No data to import. Finishing...');
+      return;
+    }
+
+    const database = await databaseConnector.connect({
+      databaseConnectionUri: config.databaseConnectionUri,
+      databaseConfig: config.database,
+    });
+
+    if (config.dropDatabase) {
+      log('Dropping database...');
+      await database.drop();
     }
 
     await new DataImporter(database).import(collections);
