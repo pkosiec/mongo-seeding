@@ -17,7 +17,7 @@ jest.mock('../../src/database/timeUtils', () => ({
     .mockReturnValue(true),
 }));
 
-const databaseConnector = new DatabaseConnector(new MongoClient());
+const databaseConnector = new DatabaseConnector(new MongoClient(), 5);
 const dbConfig: DatabaseConfig = {
   protocol: 'mongodb',
   host: '127.0.0.1',
@@ -26,6 +26,10 @@ const dbConfig: DatabaseConfig = {
 };
 
 describe('DatabaseConnector', () => {
+  it('should throw error when trying connecting without config', async () => {
+    await expect(databaseConnector.connect({})).rejects.toThrow()
+  })
+
   it('should return valid DB connection URI', () => {
     const expectedUri = 'mongodb://127.0.0.1:27017/database';
     const uri = databaseConnector.getDbConnectionUri(dbConfig);
@@ -59,6 +63,15 @@ describe('DatabaseConnector', () => {
     expect(uri).toBe(expectedUri);
   });
 
+  it('should return valid database name from URI', ()=> {
+    const uri = 'mongodb://user@10.10.10.1:27017/dbName';
+    const expectedDbName = "dbName";
+    
+    const dbName = databaseConnector.getDbName(uri);
+    
+    expect(dbName).toEqual(expectedDbName);
+  });
+
   it('should retry connecting to DB within given time limit', async () => {
     const getConnectionRefusedError = () => {
       const connectionRefusedError = {
@@ -78,7 +91,7 @@ describe('DatabaseConnector', () => {
       .mockReturnValue(new Promise((resolve, _) => resolve(result)));
 
     const reconnectTimeoutInSeconds = 2;
-    await databaseConnector.connect(dbConfig, reconnectTimeoutInSeconds);
+    await databaseConnector.connect({databaseConfig: dbConfig});
     expect(sleep).toHaveBeenCalledTimes(2);
     expect(result.db).toHaveBeenCalledTimes(1);
     expect(result).toBeInstanceOf(Database);
@@ -93,7 +106,7 @@ describe('DatabaseConnector', () => {
 
     const reconnectTimeoutInSeconds = 3;
     await expect(
-      databaseConnector.connect(dbConfig, reconnectTimeoutInSeconds),
+      databaseConnector.connect({databaseConfig: dbConfig}),
     ).rejects.toThrowError('Timeout');
     expect(sleep).toHaveBeenCalledTimes(3);
   });
