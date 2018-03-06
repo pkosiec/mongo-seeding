@@ -19,7 +19,7 @@ npm install mongo-seeding --save
     ```javascript
     const { seedDatabase } = require('mongo-seeding');
     ```
-1. Define partial configuration object. The object will be merged with default config object (see [Configuration](#configuration) section). Therefore, you can specify only the keys with different values than default ones.
+1. Define partial configuration object. The object will be merged with default config object (see [Configuration](#configuration) section). Therefore, you can specify only the keys with different values than default ones, for example:
 
     ```javascript
     const path = require('path');
@@ -30,7 +30,7 @@ npm install mongo-seeding --save
         port: 27017,
         name: 'mydatabase',
       },
-      dataPath: path.resolve(__dirname, '../data'),
+      inputPath: path.resolve(__dirname, '../data'),
       dropDatabase: true,
     };
     ```
@@ -80,7 +80,7 @@ const config = {
     username: undefined,
     password: undefined,
   },
-  databaseConnectionUri: undefined, // if defined, it will be used instead of `database` object
+  databaseConnectionUri: undefined, // if defined, it will be used for DB connection instead of `database` object
   inputPath: resolve(__dirname, '../../data'), // input directory with import data structure
   dropDatabase: false, // drops database before import
   replaceIdWithUnderscoreId: false, // rewrites `id` property to `_id` for every document
