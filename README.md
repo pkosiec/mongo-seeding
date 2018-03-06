@@ -30,7 +30,7 @@ npm install mongo-seeding --save
         port: 27017,
         name: 'mydatabase',
       },
-      dataPath: path.resolve(__dirname, '../data'),
+      inputPath: path.resolve(__dirname, '../data'),
       dropDatabase: true,
     };
     ```
