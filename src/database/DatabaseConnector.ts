@@ -10,13 +10,17 @@ export interface DatabaseConnectorConfig {
 export class DatabaseConnector {
   static SLEEP_INTERVAL_MILLIS = 500;
   static DEFAULT_DB_NAME = 'admin';
+  static DEFAULT_RECONNECT_TIME_IN_SECONDS = 10;
 
-  currentDbName?: string;
+  client?: MongoClient;
+  reconnectTimeoutInSeconds: number;
 
-  constructor(
-    public client: MongoClient,
-    public reconnectTimeoutInSeconds: number,
-  ) {}
+  constructor(reconnectTimeoutInSeconds?: number) {
+    this.reconnectTimeoutInSeconds =
+      reconnectTimeoutInSeconds != null
+        ? reconnectTimeoutInSeconds
+        : DatabaseConnector.DEFAULT_RECONNECT_TIME_IN_SECONDS;
+  }
 
   async connect({
     databaseConnectionUri,
@@ -45,7 +49,6 @@ export class DatabaseConnector {
     log(`Connecting to ${dbConnectionUri}...`);
     const startMillis = new Date().getTime();
     const reconnectTimeoutMillis = this.reconnectTimeoutInSeconds * 1000;
-    this.currentDbName = dbName;
     let client: MongoClient | undefined;
     do {
       try {
@@ -77,7 +80,7 @@ export class DatabaseConnector {
 
   async close() {
     log('Closing connection...');
-    if (!this.client || !this.client.isConnected(this.currentDbName!)) {
+    if (!this.client || !this.client.isConnected()) {
       return;
     }
 

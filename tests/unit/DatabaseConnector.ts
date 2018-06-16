@@ -17,7 +17,7 @@ jest.mock('../../src/database/timeUtils', () => ({
     .mockReturnValue(true),
 }));
 
-const databaseConnector = new DatabaseConnector(new MongoClient(), 3);
+const databaseConnector = new DatabaseConnector();
 const dbConfig: DatabaseConfig = {
   protocol: 'mongodb',
   host: '127.0.0.1',

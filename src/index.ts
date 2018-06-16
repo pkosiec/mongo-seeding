@@ -11,7 +11,7 @@ export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
   log('Starting...');
 
   const config = getConfig(partialConfig);
-  const databaseConnector = new DatabaseConnector(new MongoClient(), config.reconnectTimeoutInSeconds);
+  const databaseConnector = new DatabaseConnector(config.reconnectTimeoutInSeconds);
 
   try {
     let collections = new DataPopulator(config.supportedExtensions).populate(

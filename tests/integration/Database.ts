@@ -8,7 +8,7 @@ import {
   listExistingCollections,
 } from '../_helpers';
 
-const databaseConnector = new DatabaseConnector(new MongoClient(), 5);
+const databaseConnector = new DatabaseConnector();
 let database: Database;
 
 beforeAll(async () => {
