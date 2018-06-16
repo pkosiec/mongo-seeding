@@ -26,6 +26,13 @@ COPY ./src/ /app/src/
 COPY ./tests/ /app/tests/
 
 #
+# Build app
+#
+
+RUN npm run build
+RUN npm run build-cleanup
+
+#
 # Run tests on container start
 #
 
