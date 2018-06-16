@@ -43,24 +43,24 @@
     "precommit": "lint-staged"
   },
   "dependencies": {
-    "@types/mongodb": "^3.0.7",
+    "@types/mongodb": "^3.0.10",
     "debug": "^3.1.0",
     "extend": "^3.0.1",
-    "mongodb": "^3.0.7"
+    "mongodb": "^3.0.10"
   },
   "devDependencies": {
     "@types/extend": "^3.0.0",
-    "@types/fs-extra": "^5.0.2",
-    "@types/jest": "^22.2.3",
+    "@types/fs-extra": "^5.0.3",
+    "@types/jest": "^23.1.0",
     "codacy-coverage": "^3.0.0",
-    "fs-extra": "^5.0.0",
+    "fs-extra": "^6.0.0",
     "husky": "^0.14.3",
-    "jest": "^22.4.3",
-    "lint-staged": "^7.0.5",
-    "prettier": "^1.12.1",
-    "ts-jest": "^22.4.4",
-    "tslint": "^5.8.0",
-    "typescript": "^2.8.3"
+    "jest": "^23.1.0",
+    "lint-staged": "^7.2.0",
+    "prettier": "^1.13.0",
+    "ts-jest": "^22.4.6",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.0"
   },
   "jest": {
     "verbose": false,
