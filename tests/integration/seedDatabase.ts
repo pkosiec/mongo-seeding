@@ -9,7 +9,7 @@ import { listExistingCollections, createCollection } from '../_helpers';
 const DATABASE_NAME = 'seedDatabase';
 const TEMP_DIRECTORY_PATH = __dirname + '/.temp-seedDatabase';
 
-const databaseConnector = new DatabaseConnector(new MongoClient(), 3);
+const databaseConnector = new DatabaseConnector();
 let database: Database;
 
 beforeAll(async () => {

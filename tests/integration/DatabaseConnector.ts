@@ -5,7 +5,7 @@ import { defaultConfig } from '../../src/common';
 
 describe('DatabaseConnector', () => {
   it('should connect to database and close connection with config object', async () => {
-    const databaseConnector = new DatabaseConnector(new MongoClient(), 10);
+    const databaseConnector = new DatabaseConnector();
 
     const database = await databaseConnector.connect(
       {
@@ -22,7 +22,7 @@ describe('DatabaseConnector', () => {
   });
 
   it('should connect to database and close connection using URI', async () => {
-    const databaseConnector = new DatabaseConnector(new MongoClient(), 10);
+    const databaseConnector = new DatabaseConnector();
 
     const database = await databaseConnector.connect(
       {
