@@ -27,8 +27,8 @@ const dbConfig: DatabaseConfig = {
 
 describe('DatabaseConnector', () => {
   it('should throw error when trying connecting without config', async () => {
-    await expect(databaseConnector.connect({})).rejects.toThrow()
-  })
+    await expect(databaseConnector.connect({})).rejects.toThrow();
+  });
 
   it('should return valid DB connection URI', () => {
     const expectedUri = 'mongodb://127.0.0.1:27017/database';
@@ -63,13 +63,43 @@ describe('DatabaseConnector', () => {
     expect(uri).toBe(expectedUri);
   });
 
-  it('should return valid database name from URI', ()=> {
-    const uri = 'mongodb://user@10.10.10.1:27017/dbName';
-    const expectedDbName = "dbName";
-    
-    const dbName = databaseConnector.getDbName(uri);
-    
-    expect(dbName).toEqual(expectedDbName);
+  it('should return valid database name from URI', () => {
+    interface Test {
+      url: string;
+      expectedDbName: string;
+    }
+
+    const tests: Test[] = [
+      {
+        url: 'mongodb://user@10.10.10.1:27017/dbName',
+        expectedDbName: "dbName"
+      },
+      {
+        url: 'mongodb://user@10.10.10.1:27017/dbName?retryWrites=true',
+        expectedDbName: "dbName"
+      },
+      {
+        url: 'mongodb://user@10.10.10.1:27017/dbName?retryWrites=true&something=false',
+        expectedDbName: "dbName"
+      },
+      {
+        url: 'mongodb://user@10.10.10.1:27017/?retryWrites=true',
+        expectedDbName: "admin"
+      },
+      {
+        url: 'mongodb://user@10.10.10.1:27017',
+        expectedDbName: "admin"
+      },
+      {
+        url: 'mongodb://10.10.10.1',
+        expectedDbName: "admin"
+      }
+    ];
+
+    for (const {url, expectedDbName} of tests) {
+      const dbName = databaseConnector.getDbName(url);
+      expect(dbName).toEqual(expectedDbName);
+    }
   });
 
   it('should retry connecting to DB within given time limit', async () => {
@@ -90,7 +120,7 @@ describe('DatabaseConnector', () => {
       .mockReturnValueOnce(getConnectionRefusedError())
       .mockReturnValue(new Promise((resolve, _) => resolve(result)));
 
-    await databaseConnector.connect({databaseConfig: dbConfig});
+    await databaseConnector.connect({ databaseConfig: dbConfig });
     expect(sleep).toHaveBeenCalledTimes(2);
     expect(result.db).toHaveBeenCalledTimes(1);
     expect(result).toBeInstanceOf(Database);
@@ -104,7 +134,7 @@ describe('DatabaseConnector', () => {
     );
 
     await expect(
-      databaseConnector.connect({databaseConfig: dbConfig}),
+      databaseConnector.connect({ databaseConfig: dbConfig }),
     ).rejects.toThrowError('Timeout');
     expect(sleep).toHaveBeenCalledTimes(2);
   });
