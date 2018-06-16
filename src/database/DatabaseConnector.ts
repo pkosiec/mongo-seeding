@@ -9,31 +9,39 @@ export interface DatabaseConnectorConfig {
 
 export class DatabaseConnector {
   static SLEEP_INTERVAL_MILLIS = 500;
+  static DEFAULT_DB_NAME = 'admin';
 
   currentDbName?: string;
 
-  constructor(public client: MongoClient, public reconnectTimeoutInSeconds: number) { }
+  constructor(
+    public client: MongoClient,
+    public reconnectTimeoutInSeconds: number,
+  ) {}
 
   async connect({
     databaseConnectionUri,
     databaseConfig,
-  }: DatabaseConnectorConfig
-  ): Promise<Database> {
+  }: DatabaseConnectorConfig): Promise<Database> {
     let uri, databaseName;
     if (databaseConnectionUri) {
       uri = databaseConnectionUri;
-      databaseName = this.getDbName(databaseConnectionUri)
+      databaseName = this.getDbName(databaseConnectionUri);
     } else if (databaseConfig) {
       uri = this.getDbConnectionUri(databaseConfig);
-      databaseName = databaseConfig.name
+      databaseName = databaseConfig.name;
     } else {
-      throw new Error("You have to pass connection URI or database config object");
+      throw new Error(
+        'You have to pass connection URI or database config object',
+      );
     }
 
     return this.connectWithUri(uri, databaseName);
   }
 
-  async connectWithUri(dbConnectionUri: string, dbName: string): Promise<Database> {
+  async connectWithUri(
+    dbConnectionUri: string,
+    dbName: string,
+  ): Promise<Database> {
     log(`Connecting to ${dbConnectionUri}...`);
     const startMillis = new Date().getTime();
     const reconnectTimeoutMillis = this.reconnectTimeoutInSeconds * 1000;
@@ -41,13 +49,17 @@ export class DatabaseConnector {
     let client: MongoClient | undefined;
     do {
       try {
-        client = await MongoClient.connect(dbConnectionUri, { ignoreUndefined: true });
+        client = await MongoClient.connect(dbConnectionUri, {
+          ignoreUndefined: true,
+        });
       } catch (err) {
         if (checkTimeoutExpired(startMillis, reconnectTimeoutMillis)) {
           throw new Error(
-            `Timeout ${this.reconnectTimeoutInSeconds}s expired while connecting to database due to: ${
-            err.name
-            }: ${err.message}`,
+            `Timeout ${
+              this.reconnectTimeoutInSeconds
+            }s expired while connecting to database due to: ${err.name}: ${
+              err.message
+            }`,
           );
         }
 
@@ -64,11 +76,11 @@ export class DatabaseConnector {
   }
 
   async close() {
-    log('Closing connection...')
+    log('Closing connection...');
     if (!this.client || !this.client.isConnected(this.currentDbName!)) {
       return;
     }
-    
+
     await this.client.close(true);
   }
 
@@ -85,10 +97,18 @@ export class DatabaseConnector {
       credentials = `${username}${password ? `:${password}` : ''}@`;
     }
     return `${protocol}://${credentials}${host}:${port}/${name}`;
-  };
+  }
 
   getDbName(dbConnectionUri: string) {
-    const parts = dbConnectionUri.split('/');
-    return parts[parts.length - 1];
+    const url = dbConnectionUri.replace('mongodb://', '');
+    const parts = url.split('/');
+    if (parts.length === 1) {
+      // Database not given, return the default one
+      return DatabaseConnector.DEFAULT_DB_NAME;
+    }
+
+    const lastPart = parts[parts.length - 1];
+    const givenDbName = lastPart.split('?')[0];
+    return givenDbName ? givenDbName : DatabaseConnector.DEFAULT_DB_NAME;
   }
 }
