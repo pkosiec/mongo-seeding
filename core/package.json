@@ -1,0 +1,83 @@
+{
+  "name": "mongo-seeding",
+  "description": "The ultimate solution for populating your MongoDB database. Define the data in JSON or JavaScript. Import collections and documents!",
+  "keywords": [
+    "mongo",
+    "mongodb",
+    "seed",
+    "db-seed",
+    "database",
+    "seeding",
+    "db"
+  ],
+  "tags": [
+    "mongo",
+    "mongodb",
+    "seed",
+    "db-seed",
+    "database",
+    "seeding",
+    "db"
+  ],
+  "author": {
+    "name": "Paweł Kosiec",
+    "email": "pawel@kosiec.net",
+    "url": "https://www.kosiec.net"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pkosiec/mongo-seeding"
+  },
+  "bugs": {
+    "url": "https://github.com/pkosiec/mongo-seeding/issues"
+  },
+  "version": "2.0.5",
+  "main": "dist/index.js",
+  "files": [ "dist/"],
+  "license": "MIT",
+  "scripts": {
+    "test": "jest",
+    "test-unit": "jest unit",
+    "test-integration": "jest integration",
+    "test-watch": "jest --watch --coverage",
+    "build": "npm run build-cleanup; tsc",
+    "build-cleanup": "rm -rf ./dist",
+    "preversion": "npm run test; npm run build"
+  },
+  "dependencies": {
+    "@types/mongodb": "^3.0.0",
+    "debug": "^3.1.0",
+    "extend": "^3.0.0",
+    "mongodb": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/extend": "^3.0.0",
+    "@types/fs-extra": "^5.0.0",
+    "@types/jest": "^23.1.0",
+    "codacy-coverage": "^3.0.0",
+    "fs-extra": "^6.0.0",
+    "jest": "^23.1.0",
+    "ts-jest": "^22.4.0",
+    "typescript": "^2.9.0"
+  },
+  "jest": {
+    "verbose": false,
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "json"
+    ],
+    "testRegex": "(/tests/[^_].*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
+}
