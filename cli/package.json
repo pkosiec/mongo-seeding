@@ -1,0 +1,64 @@
+{
+  "name": "mongo-seeding-cli",
+  "description": "The ultimate solution for populating your MongoDB database. Define the data in JSON or JavaScript. Import collections and documents!",
+  "version": "2.0.1",
+  "license": "MIT",
+  "keywords": [
+    "mongo",
+    "mongodb",
+    "seed",
+    "db-seed",
+    "database",
+    "seeding",
+    "db",
+    "cli",
+    "command-line",
+    "command-line-interface",
+    "command",
+    "line",
+    "interface"
+  ],
+  "tags": [
+    "mongo",
+    "mongodb",
+    "seed",
+    "db-seed",
+    "database",
+    "seeding",
+    "db",
+    "cli",
+    "command-line",
+    "command-line-interface",
+    "command",
+    "line",
+    "interface"
+  ],
+  "author": {
+    "name": "Paweł Kosiec",
+    "email": "pawel@kosiec.net",
+    "url": "https://www.kosiec.net"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pkosiec/mongo-seeding"
+  },
+  "main": "dist/index.js",
+  "files": ["dist/", "bin/"],
+  "bin": {
+    "seed": "bin/seed.js"
+  },
+  "scripts": {
+    "build": "npm run build-cleanup; tsc",
+    "build-cleanup": "rm -rf ./dist",
+    "preversion": "npm run build"
+  },
+  "dependencies": {
+    "@types/node": "^10.3.0",
+    "command-line-args": "^5.0.0",
+    "command-line-usage": "^5.0.0",
+    "mongo-seeding": "^2.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^2.9.0"
+  }
+}

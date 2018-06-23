@@ -1,0 +1,24 @@
+{
+  "name": "mongo-seeding-samples",
+  "description": "Samples for Mongo Seeding solutions",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Paweł Kosiec",
+    "email": "pawel@kosiec.net",
+    "url": "https://www.kosiec.net"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pkosiec/mongo-seeding"
+  },
+  "dependencies": {
+    "@types/node": "^10.3.5",
+    "mongodb": "^3.0.10"
+  },
+  "devDependencies": {
+    "@types/mongodb": "^3.0.21",
+    "typescript": "^2.9.2"
+  }
+}

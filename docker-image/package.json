@@ -1,0 +1,47 @@
+{
+  "name": "mongo-seeding-docker-image",
+  "private": true,
+  "description": "Fill your MongoDB database with data in easy way. Use TypeScript, JavaScript and JSON files to define the data!",
+  "version": "2.0.1",
+  "license": "MIT",
+  "keywords": [
+    "mongo",
+    "mongodb",
+    "seed",
+    "db-seed",
+    "database",
+    "seeding",
+    "db",
+    "typescript",
+    "ts"
+  ],
+  "tags": [
+    "mongo",
+    "mongodb",
+    "seed",
+    "db-seed",
+    "database",
+    "seeding",
+    "db",
+    "typescript",
+    "ts"
+  ],
+  "author": {
+    "name": "Paweł Kosiec",
+    "email": "pawel@kosiec.net"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pkosiec/mongo-seeding"
+  },
+  "scripts": {
+    "start": "ts-node -r tsconfig-paths/register src/index.ts"
+  },
+  "dependencies": {
+    "@types/node": "^10.0.0",
+    "mongo-seeding": "^2.0.0",
+    "ts-node": "^7.0.0",
+    "tsconfig-paths": "^3.4.0",
+    "typescript": "^2.9.0"
+  }
+}

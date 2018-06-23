@@ -15,8 +15,7 @@
         "unified-signatures": false,
         "no-var-requires": false,
         "no-console": false,
-        "quotemark": false,
-        "semicolon": false
+        "quotemark": false
     },
     "jsRules": {}
 }
