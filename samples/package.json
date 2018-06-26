@@ -1,7 +1,7 @@
 {
   "name": "mongo-seeding-samples",
   "description": "Samples for Mongo Seeding solutions",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "private": true,
   "license": "MIT",
   "author": {

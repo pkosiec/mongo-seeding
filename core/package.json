@@ -31,9 +31,11 @@
   "bugs": {
     "url": "https://github.com/pkosiec/mongo-seeding/issues"
   },
-  "version": "2.0.5",
+  "version": "2.1.0",
   "main": "dist/index.js",
-  "files": [ "dist/"],
+  "files": [
+    "dist/"
+  ],
   "license": "MIT",
   "scripts": {
     "test": "jest",

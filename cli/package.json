@@ -1,7 +1,7 @@
 {
   "name": "mongo-seeding-cli",
   "description": "The ultimate solution for populating your MongoDB database. Define the data in JSON or JavaScript. Import collections and documents!",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "license": "MIT",
   "keywords": [
     "mongo",
@@ -43,7 +43,10 @@
     "url": "https://github.com/pkosiec/mongo-seeding"
   },
   "main": "dist/index.js",
-  "files": ["dist/", "bin/"],
+  "files": [
+    "dist/",
+    "bin/"
+  ],
   "bin": {
     "seed": "bin/seed.js"
   },
@@ -56,7 +59,7 @@
     "@types/node": "^10.3.0",
     "command-line-args": "^5.0.0",
     "command-line-usage": "^5.0.0",
-    "mongo-seeding": "^2.0.0"
+    "mongo-seeding": "^2.1.0"
   },
   "devDependencies": {
     "typescript": "^2.9.0"
