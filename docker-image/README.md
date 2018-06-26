@@ -1,33 +1,40 @@
 ![Mongo Seeding](https://raw.githubusercontent.com/pkosiec/mongo-seeding/master/assets/logo.png)
 
 # Mongo Seeding Docker Image
+
 [![Build Status](https://travis-ci.org/pkosiec/mongo-seeding-docker.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding-docker) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg)]() [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6a3945df88604e9b912e967116ba9bd8)](https://www.codacy.com/app/pkosiec/mongo-seeding-cli?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pkosiec/mongo-seeding-cli&amp;utm_campaign=Badge_Grade)
 
-Fill your MongoDB database with data in easy way using Docker image! Additional TypeScript support included!
+The ultimate solution for populating your MongoDB database. Define the data in JSON, JavaScript or TypeScript. Import collections and documents!
 
 [![Docker image](http://dockeri.co/image/pkosiec/mongo-seeding)](https://hub.docker.com/r/pkosiec/mongo-seeding/)
 
-
-## Looking for different type of database seed solution?
-- JavaScript/TypeScript library: [Mongo Seeding](https://github.com/pkosiec/mongo-seeding)
-- Command line tool: [Mongo Seeding CLI](https://github.com/pkosiec/mongo-seeding-cli)
-
 ## Usage
-Just pull & run the image! Mount your input directories and specify environment variables for your custom settings. See [Configuration](#configuration) section for details.
 
-```bash
-docker pull pkosiec/mongo-seeding
-docker run --rm --network="host" -e DB_NAME=testdb -e DB_PORT=27017 -e DB_HOST=127.0.0.1 -v /my-data/:/app/data/ pkosiec/mongo-seeding
-```
+1. Follow the [tutorial](https://github.com/pkosiec/mongo-seeding/tree/master/docs/define-import-data.md) to define documents and collections to import. See [`samples`](https://github.com/pkosiec/mongo-seeding/tree/master/samples) directory 
+1. Pull the latest version of Mongo Seeding image
+
+  ```bash
+  docker pull pkosiec/mongo-seeding:latest
+  ```
+
+1. Run the image. Mount your input directories and specify environment variables for your custom settings:
+
+  ```bash
+  docker run --rm --network="host" -e DB_NAME=testdb -e DB_PORT=27017 -e DB_HOST=127.0.0.1 -v /my-data/:/app/data/ pkosiec/mongo-seeding
+  ```
+
+  See [Configuration](#configuration) section for details.
 
 ## Configuration
-### Volumes
-Mount your directories with `-v source:destination` option.
+
+### Mounting volumes
+
+Mount your directories with `-v {source}:{destination}` parameter.
 
 | Source | Destination | Required | Description |
-|:------:|:-----------:|:--------:|:-----------:|
-| Absolute path to data | `/app/data/`| yes | Path to directory containing import data structure specified above |
-| Absolute path to helpers | `/app/helpers` | no | Optional path for directory containing `js` or `ts` files with helper functions
+|--------|-------------|----------|-------------|
+| Absolute path to data | `/app/data/`| yes | Path to directory with import data |
+| Absolute path to helpers | `/app/helpers` | no | Path for directory with helper functions (`js` or `ts` files)
 | Absolute path to models | `/app/models` | no | Optional for TypeScript users: Path to directory with models (classes, interfaces, etc.) - see samples |
 
 **Example:**
@@ -37,168 +44,76 @@ docker run --rm --network="host" -v /my/data/:/app/data/ -v /my/models/:/app/mod
 ```
 
 ### Environmental variables
-Specify environmental variables with `-e key=value` option.
 
-| Name          | Required | Default Value  | Description         |
-| ------------- |:--------:|:-------------:| --------------------:|
-| DB_CONNECTION_URI | no | *undefined* | If defined, the URI will be used for establishing connection to database, ignoring values given in `DB_*` environmental variables (i.e. `DB_HOST`, `DB_PORT`, etc.).
-| DB_HOST | no | 127.0.0.1 | MongoDB database host |
-| DB_PORT | no | 27017 | MongoDB database port |
-| DB_NAME | no | database | Name of the database |
-| DB_USERNAME | no | *undefined* | Username for connecting with database that requires authentication |
-| DB_PASSWORD | no | *undefined* | Password for connecting with database that requires authentication |
-| DROP_DATABASE | no | false | Drop database before importing data |
-| REPLACE_ID_TO_UNDERSCORE_ID | no | false | Replaces `id` property with `_id` for every document it imports. Handy especially for ORM-s in TypeScript. | 
-| RECONNECT_TIMEOUT_IN_SECONDS | no | 10 | Maximum time, in which app should keep trying connecting to database |
+Specify environmental variables with `-e {key}={value}` parameter.
 
-**Example:**
+| Name        | Default Value  | Description         |
+|-------------|----------------|---------------------|
+| DB_CONNECTION_URI | *`undefined`* | If defined, the URI is used for establishing connection to database, ignoring values given in `DB_*` environmental variables (e.g. `DB_HOST`, `DB_PORT`, etc.).
+| DB_HOST | `127.0.0.1` | MongoDB database host |
+| DB_PORT | `27017` | MongoDB database port |
+| DB_NAME | `database` | Name of the database |
+| DB_USERNAME | *`undefined`* | Username for connecting with database that requires authentication |
+| DB_PASSWORD | *`undefined`* | Password for connecting with database that requires authentication |
+| DROP_DATABASE | `false` | Dropping database before data import |
+| REPLACE_ID_TO_UNDERSCORE_ID | `false` | Replacing `id` property with `_id` for every document during import; useful for ORMs | 
+| RECONNECT_TIMEOUT_IN_SECONDS | `10` | Maximum time, in which app should keep trying connecting to database |
+
+**Examples:**
 
 ```bash
 docker run --rm --network="host" -e DB_NAME=mydbname -e RECONNECT_TIMEOUT_IN_SECONDS=5 -e DROP_DATABASE=true -v /my/data/:/app/data/ pkosiec/mongo-seeding
 ```
 
-or, as an alternative:
+Alternative:
 
 ```bash
 docker run --rm --network="host" -e DB_CONNECTION_URI='mongodb://127.0.0.1:27017/mydbname' -e RECONNECT_TIMEOUT_IN_SECONDS=5 -e DROP_DATABASE=true -v /my/data/:/app/data/ pkosiec/mongo-seeding
 ```
 
-## Preparing data to import
-1. Create a new base directory. In this example, it'll be named `data`.
-1. Define a few collections via creating subdirectories in `data` directory. New collection will be created if it doesn't exist in database.
-
-    **Naming convention**
-    - If you don't care about import order - just name directories simply with collection names - i.e. `categories`, `posts`, `comments`, etc.   
-    - To keep your own import order, construct directory name with a number, separator and actual collection name - i.e. `1-categories`, `2_posts`, `3.comments`, `4 tags`, etc. Supported separators between import number and collection name: `-`, `_`, `.` or space.
-
-1. We have collections - now it's time to define documents. It can be done via creating files in collections directories.
-
-    **A few things to know**: 
-    - Collection directory can contain multiple files
-    - Every file can contain single objects or array of objects
-    - One object represents one MongoDB document
-    - Supported extensions: `.ts`, `js`, `json`
-    - In `ts` files export object or array of objects via `export = objectOrArray`
-    - In `js` files export object or array of objects via `module.exports =   objectOrArray`.
-
-    **Some examples**:
-    `object.ts` ( will result in creating single MongoDB document):
-
-    ```js
-    export = {
-      name: "Parrot"
-    }
-    ```
-
-    `array.ts` (it will create 2 documents):
-
-    ```js
-    export = [
-      {
-        name: "Dog"
-      },
-      {
-        name: "Cat"
-      }
-    ]
-    ```
-
-    `object.js` (creates single MongoDB document):
-
-    ```js
-    module.exports = {
-      name: "Parrot"
-    }
-    ```
-
-    `array.js` (imports 2 documents):
-
-    ```js
-    module.exports = [
-      {
-        name: "Dog"
-      },
-      {
-        name: "Cat"
-      }
-    ]
-    ```
-
-    `object.json` (represent 1 MongoDB document):
-
-    ```json
-    {
-      "name": "Penguin",
-    }
-    ```
-
-    `array.json` (creates two different documents):
-
-    ```json
-    [
-      {
-        "name": "Hamster"
-      },
-      {
-        "name": "Crocodile"
-      }
-    ]
-    ```
-
-1. The complete file structure should look like this:
-
-    ```
-    data
-    +-- tsconfig.json // Optional for using TypeScript (see **Advanced features** section)
-    +-- 1-categories
-    |   +-- cat.js
-    |   +-- dogs.js
-    |   +-- other-animals.json
-    +-- 2-posts
-    |   +-- post-about-my-cat.json
-    |   +-- dog-posts.js
-    |   +-- random-stuff.ts
-    +-- 3-media
-    |   +-- cat-image.ts
-    |   +-- dog.js
-    ```
-
-1. To sum everything up: Subdirectories of base directory represent database collections. Files in collection directories represent documents. Simple as that.
-
-## Samples
-Take a look at [samples repository](https://github.com/pkosiec/mongo-seeding-samples) to see Mongo Seeding TS in action! 
-
 ## Advanced features
 
-### Typechecking with TypeScript
-- mount directory with models running Docker image - `-v /path/to/models/:/app/models`)
-- in files defining documents, write in TypeScript and use `.ts` extension
-- whenever you want to import a class or an interface from mounted models directory, just import it via `import { YourClass } from '@models/YourClass';` (assuming that `YourClass.ts` is located in`/path/to/models/`)
-- while running Docker image, `@models` is just an alias for mounted directory `/app/models`. But, of course locally you'll want to have proper path configured. To do so, create `tsconfig.json` somewhere in `data` directory or upper level. Include path aliases definition:
+### Type checking
 
-    ```json
-    {
-        "compilerOptions": {
-            "baseUrl": "./",
-            "paths": {                 
-                "@models/*": ["../relative/path/to/models/*"],
-                "@helpers/*": ["../relative/path/to/helpers/*"],
-            },
-        }
+You can easily use type checking, writing code in TypeScript. However, because paths in Docker container are different than on your host machine, you have to use aliases.
+To mount a directory with models, add Docker run parameter `-v /path/to/models/:/app/models`.
+While running Docker image, `@models` is an alias for mounted directory `/app/models`.
+
+Whenever you need to import a class or an interface from mounted models directory, assuming that `YourClass.ts` is located in`/path/to/models/` on your host machine, use:
+
+```javascript
+import { YourClass } from '@models/YourClass';`
+```
+
+In order to get the IDE features on your host machine, map the alias to your models path. Create `tsconfig.json` in `data` directory or in an upper level directory. Include path aliases definition:
+
+```json
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "paths": {                 
+            "@models/*": ["../relative/path/to/models/*"],
+            "@helpers/*": ["../relative/path/to/helpers/*"],
+        },
     }
-    ```
-    Go to [samples section](#samples) to see type check in action!
+}
+```
 
+To see this feature in action, see the [samples]((https://github.com/pkosiec/mongo-seeding/tree/master/samples) directory.
 
 ### Helper functions
-- mount directory with helpers running Docker image - `-v /path/to/helpers/:/app/helpers`)
-- you can also mount directory with helper functions for mapping simple string array to more complex objects (with filling random data, etc.). Import is as easy as
-`import { mapToBlogPosts } from '@helpers/mapToBlogPosts';` (assuming that `mapToBlogPosts.ts` is located in `/path/to/helpers/`)
 
-    Take a look at [samples section](#samples) to see helpers in action!
+To mount a directory with helper functions, add Docker run parameter `-v /path/to/helpers/:/app/helpers`. In files that describes MongoDB documents, you can import helper functions in the following way. This example assumes that a `mapToBlogPosts.ts` file is located in `/path/to/helpers/` path on your host machine.
+
+```javascript
+import { mapToBlogPosts } from '@helpers/mapToBlogPosts';`
+```
+
+To see helpers in action, see the [samples]((https://github.com/pkosiec/mongo-seeding/tree/master/samples) directory.
 
 ## Building your own Docker image
-Do you want to build a customized image with DB connection configured and all data imported? No problem.
+
+You can prepare customized Docker image with configuration and copied import data.
 
 1. Prepare Dockerfile:
 
@@ -240,7 +155,7 @@ Do you want to build a customized image with DB connection configured and all da
     docker build -t custom-mongo-seeding .
     ```
 
-1. Run it!
+1. Run the image
 
     ```bash
     docker run --rm --network="host" custom-mongo-seeding
