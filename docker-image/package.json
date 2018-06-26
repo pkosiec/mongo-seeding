@@ -2,7 +2,7 @@
   "name": "mongo-seeding-docker-image",
   "private": true,
   "description": "Fill your MongoDB database with data in easy way. Use TypeScript, JavaScript and JSON files to define the data!",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "license": "MIT",
   "keywords": [
     "mongo",
@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@types/node": "^10.0.0",
-    "mongo-seeding": "^2.0.0",
+    "mongo-seeding": "^2.1.0",
     "ts-node": "^7.0.0",
     "tsconfig-paths": "^3.4.0",
     "typescript": "^2.9.0"
