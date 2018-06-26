@@ -25,7 +25,7 @@ The following example assumes that the MongoDB is running on `mongodb://127.0.0.
     };
 
     seedDatabase(config).then(() => {
-      console.log("Success)
+      console.log("Success")
     }).catch(err => {
       console.log("Error", err)
     });
