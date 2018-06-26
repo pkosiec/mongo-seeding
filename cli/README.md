@@ -2,7 +2,7 @@
 
 # Mongo Seeding CLI
 
-[![npm version](https://badge.fury.io/js/mongo-seeding-cli.svg)](https://npmjs.org/package/mongo-seeding-cli) [![David](https://img.shields.io/david/pkosiec/mongo-seeding-cli.svg)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding-cli.svg)]() [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6a3945df88604e9b912e967116ba9bd8)](https://www.codacy.com/app/pkosiec/mongo-seeding-cli?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pkosiec/mongo-seeding-cli&amp;utm_campaign=Badge_Grade)
+[![npm version](https://badge.fury.io/js/mongo-seeding-cli.svg)](https://npmjs.org/package/mongo-seeding-cli) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg?path=cli)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg?path=cli)]()
 
 The ultimate solution for populating your MongoDB database. Define the data in JSON or JavaScript. Import collections and documents using command line interface!
 

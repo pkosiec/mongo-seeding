@@ -2,7 +2,7 @@
 
 # Mongo Seeding Docker Image
 
-[![Build Status](https://travis-ci.org/pkosiec/mongo-seeding-docker.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding-docker) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg)]() [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6a3945df88604e9b912e967116ba9bd8)](https://www.codacy.com/app/pkosiec/mongo-seeding-cli?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pkosiec/mongo-seeding-cli&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/pkosiec/mongo-seeding-docker.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding-docker) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg?path=docker-image)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg?path=docker-image)]()
 
 The ultimate solution for populating your MongoDB database. Define the data in JSON, JavaScript or TypeScript. Import collections and documents!
 
