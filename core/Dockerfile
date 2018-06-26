@@ -1,6 +1,9 @@
+# Run with context of the upper level directory
+
 FROM node:9-alpine
 LABEL Maintainer Pawel Kosiec <pawel@kosiec.net>
 
+ENV DIR ./core
 WORKDIR /app
 
 #
@@ -13,17 +16,17 @@ RUN apk add --update git && \
 # Install dependencies
 #
 
-COPY package.json package-lock.json /app/
+COPY $DIR/package.json package-lock.json /app/
 RUN npm i
 
 #
 # Copy app sources
 #
 
-COPY ./.git/ /app/.git/
-COPY ./tsconfig.json /app/
-COPY ./src/ /app/src/
-COPY ./tests/ /app/tests/
+COPY ./.git/ /.git/
+COPY $DIR/tsconfig.json /app/
+COPY $DIR/src/ /app/src/
+COPY $DIR/tests/ /app/tests/
 
 #
 # Build app

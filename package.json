@@ -1,24 +1,5 @@
 {
-  "name": "mongo-seeding",
-  "description": "Fill your MongoDB database with data in easy way. Use JSON and JavaScript files to define the data!",
-  "keywords": [
-    "mongo",
-    "mongodb",
-    "seed",
-    "db-seed",
-    "database",
-    "seeding",
-    "db"
-  ],
-  "tags": [
-    "mongo",
-    "mongodb",
-    "seed",
-    "db-seed",
-    "database",
-    "seeding",
-    "db"
-  ],
+  "private": true,
   "author": {
     "name": "Paweł Kosiec",
     "email": "pawel@kosiec.net",
@@ -31,64 +12,24 @@
   "bugs": {
     "url": "https://github.com/pkosiec/mongo-seeding/issues"
   },
-  "version": "2.0.5",
-  "main": "index.js",
-  "license": "MIT",
   "scripts": {
-    "test": "jest",
-    "test-unit": "jest unit",
-    "test-integration": "jest integration",
-    "test-watch": "jest --watch --coverage",
-    "build": "npm run build-cleanup; tsc",
-    "build-cleanup": "rm -rf ./dist",
     "precommit": "lint-staged"
   },
-  "dependencies": {
-    "@types/mongodb": "^3.0.21",
-    "debug": "^3.1.0",
-    "extend": "^3.0.1",
-    "mongodb": "^3.0.10"
-  },
   "devDependencies": {
-    "@types/extend": "^3.0.0",
-    "@types/fs-extra": "^5.0.3",
-    "@types/jest": "^23.1.1",
-    "codacy-coverage": "^3.0.0",
-    "fs-extra": "^6.0.0",
     "husky": "^0.14.3",
-    "jest": "^23.1.0",
-    "lint-staged": "^7.2.0",
-    "prettier": "^1.13.0",
-    "ts-jest": "^22.4.6",
-    "tslint": "^5.10.0",
-    "typescript": "^2.9.0"
-  },
-  "jest": {
-    "verbose": false,
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "coverageReporters": [
-      "text",
-      "lcov",
-      "json"
-    ],
-    "testRegex": "(/tests/[^_].*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
+    "lerna": "^2.11.0",
+    "lerna-changelog": "^0.8.0",
+    "lint-staged": "^7.0.0",
+    "prettier": "^1.11.1",
+    "tslint": "^5.10.0"
   },
   "lint-staged": {
     "linters": {
-      "{src,tests}/**/*.{ts,js,json}": [
+      "**/*.{ts,js,json}": [
         "prettier --write",
         "git add"
       ]
     }
-  }
+  },
+  "dependencies": {}
 }
