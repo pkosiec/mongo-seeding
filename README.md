@@ -4,17 +4,29 @@
 
 [![GitHub version](https://badge.fury.io/gh/pkosiec%2Fmongo-seeding.svg)](https://badge.fury.io/gh/pkosiec%2Fmongo-seeding) [![Build Status](https://travis-ci.org/pkosiec/mongo-seeding.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding) [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 
-The ultimate solution for populating your MongoDB database. Oh, and it is blazing fast :rocket: 
+The ultimate solution for populating your MongoDB database. :rocket: 
 
 Define the data in JSON, JavaScript or even TypeScript. Use JS library, install CLI or run Docker image!
 
-## How it works
+## What is it for?
+
+Mongo Seeding is a flexible tool for importing data into MongoDB database.
+
+It's great for:
+- testing database queries, automatically or manually
+- preparing ready-to-go development environment for your application
+- setting initial state for your application
+- defining import data without writing too much, using all JavaScript features
+- making sure that that your input data is correctly defined with type checking
+- applications which uses Docker Compose
+
+## How it works?
 
 1. Define the data with JavaScript, JSON or TypeScript
-1. Use one of the Mongo Seeding solutions:
-    - JavaScript library
-    - Command line interface (CLI)
-    - Docker image
+1. Use one of the Mongo Seeding solutions, depending on your need: 
+    - [JavaScript library](./core)
+    - [Command line interface (CLI)](./cli)
+    - [Docker image](./docker-image)
 1. ???
 1. Profit!
 
