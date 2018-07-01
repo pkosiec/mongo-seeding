@@ -32,7 +32,7 @@ It's great for:
 
 ## Prepare the data to import
 
-Before you begin, define collections and documents for MongoDB import. Read the **[tutorial](./docs/define-import-data.md)** in `docs` directory.
+Before you begin, define collections and documents for MongoDB import. Read the **[tutorial](./docs/define-import-data.md)** to learn, how to do that.
 
 ## Seed database programmatically
 

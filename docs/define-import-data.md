@@ -22,72 +22,72 @@ The following snippets represents different files in collection directories.
 
 **TypeScript Examples**
 
-    Importing the following file, `object.ts`, results in creating single MongoDB document:
+Importing the following file, `object.ts`, results in creating single MongoDB document:
 
-    ```javascript
-    export = {
-      name: "Parrot"
-    }
-    ```
+```javascript
+export = {
+  name: "Parrot"
+}
+```
 
-    The following file, `array.ts`, defines two MongoDB documents:
+The following file, `array.ts`, defines two MongoDB documents:
 
-    ```javascript
-    export = [
-      {
-        name: "Dog"
-      },
-      {
-        name: "Cat"
-      }
-    ]
-    ```
+```javascript
+export = [
+  {
+    name: "Dog"
+  },
+  {
+    name: "Cat"
+  }
+]
+```
 
-    **JavaScript Examples**
+**JavaScript Examples**
 
-    Importing the following file, `object.js`, results in creating single MongoDB document:
+Importing the following file, `object.js`, results in creating single MongoDB document:
 
-    ```javascript
-    module.exports = {
-      name: "Parrot"
-    }
-    ```
+```javascript
+module.exports = {
+  name: "Parrot"
+}
+```
 
-    The following file, `array.js`, defines 2 documents to import:
+The following file, `array.js`, defines 2 documents to import:
 
-    ```javascript
-    module.exports = [
-      {
-        name: "Dog"
-      },
-      {
-        name: "Cat"
-      }
-    ]
-    ```
+```javascript
+module.exports = [
+  {
+    name: "Dog"
+  },
+  {
+    name: "Cat"
+  }
+]
+```
 
-    **JSON Examples**
+**JSON Examples**
 
-    Importing the following file, `object.json`, results in creating single MongoDB document:
+Importing the following file, `object.json`, results in creating single MongoDB document:
 
-    ```json
-    {
-      "name": "Penguin",
-    }
-    ```
+```json
+{
+  "name": "Penguin",
+}
+```
 
-    The following file, `array.json`, defines 2 documents to import:
+The following file, `array.json`, defines 2 documents to import:
 
-    ```json
-    [
-      {
-        "name": "Hamster"
-      },
-      {
-        "name": "Crocodile"
-      }
-    ]
-    ```
+```json
+[
+  {
+    "name": "Hamster"
+  },
+  {
+    "name": "Crocodile"
+  }
+]
+```
 
 ## Directory structure
 
