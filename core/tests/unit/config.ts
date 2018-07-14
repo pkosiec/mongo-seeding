@@ -30,6 +30,7 @@ describe('Config', () => {
       },
       inputPath: '/',
       dropDatabase: false,
+      dropCollection: false,
       replaceIdWithUnderscoreId: true,
       supportedExtensions: ['md', 'txt'],
       reconnectTimeoutInSeconds: 20,
