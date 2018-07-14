@@ -2,7 +2,7 @@
   "name": "mongo-seeding-docker-image",
   "private": true,
   "description": "The ultimate Docker image for populating your MongoDB database.",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "license": "MIT",
   "keywords": [
     "mongo",
@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@types/node": "^10.5.0",
-    "mongo-seeding": "^2.1.0",
+    "mongo-seeding": "^2.2.0",
     "ts-node": "^7.0.0",
     "tsconfig-paths": "^3.4.2",
     "typescript": "^2.9.0"
