@@ -31,7 +31,7 @@
   "bugs": {
     "url": "https://github.com/pkosiec/mongo-seeding/issues"
   },
-  "version": "2.1.0",
+  "version": "2.2.0",
   "main": "dist/index.js",
   "files": [
     "dist/"
@@ -56,12 +56,12 @@
     "@types/extend": "^3.0.0",
     "@types/fs-extra": "^5.0.4",
     "@types/jest": "^23.1.6",
+    "babel-core": "^6.26.3",
     "codacy-coverage": "^3.0.0",
     "fs-extra": "^6.0.0",
     "jest": "^23.4.0",
     "ts-jest": "^23.0.0",
-    "typescript": "^2.9.0",
-    "babel-core": "^6.26.3"
+    "typescript": "^2.9.0"
   },
   "jest": {
     "verbose": false,
