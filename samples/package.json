@@ -1,6 +1,6 @@
 {
   "name": "mongo-seeding-samples",
-  "description": "Samples for Mongo Seeding solutions",
+  "description": "Samples for Mongo Seeding library, CLI and Docker Image",
   "version": "2.1.0",
   "private": true,
   "license": "MIT",
@@ -14,11 +14,11 @@
     "url": "https://github.com/pkosiec/mongo-seeding"
   },
   "dependencies": {
-    "@types/node": "^10.3.5",
-    "mongodb": "^3.0.10"
+    "@types/node": "^10.5.0",
+    "mongodb": "^3.1.0"
   },
   "devDependencies": {
-    "@types/mongodb": "^3.0.21",
-    "typescript": "^2.9.2"
+    "@types/mongodb": "^3.1.0",
+    "typescript": "^2.9.0"
   }
 }
