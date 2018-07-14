@@ -26,7 +26,7 @@ after_success:
 - echo "Package version $NPM_VERSION";
 - export TAG=`if [[ $TRAVIS_PULL_REQUEST == "false" ]] && [[ $TRAVIS_BRANCH == "master" ]]; then
   echo "latest"; else
-  echo $TRAVIS_PULL_REQUEST_BRANCH;
+  echo "PR-$TRAVIS_PULL_REQUEST_BRANCH";
   fi`
 - if [[ $TRAVIS_PULL_REQUEST == "false" ]] && [[ $TRAVIS_BRANCH == "master" ]]; then
   export ALREADY_EXISTS=$(curl https://hub.docker.com/v2/repositories/$DOCKER_IMAGE_REPOSITORY/tags/?page_size=10000 | jq -r "[.results | .[] | .name == \"$NPM_VERSION\"] | any");
