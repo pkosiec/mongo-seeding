@@ -2,7 +2,7 @@
 
 # Mongo Seeding Docker Image
 
-[![Build Status](https://travis-ci.org/pkosiec/mongo-seeding-docker.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding-docker) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg?path=docker-image)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg?path=docker-image)]()
+[![Build Status](https://travis-ci.org/pkosiec/mongo-seeding.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg?path=docker-image)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg?path=docker-image)]()
 
 The ultimate solution for populating your MongoDB database. Define the data in JSON, JavaScript or TypeScript. Import collections and documents!
 
@@ -55,7 +55,8 @@ Specify environmental variables with `-e {key}={value}` parameter.
 | DB_NAME | `database` | Name of the database |
 | DB_USERNAME | *`undefined`* | Username for connecting with database that requires authentication |
 | DB_PASSWORD | *`undefined`* | Password for connecting with database that requires authentication |
-| DROP_DATABASE | `false` | Dropping database before data import |
+| DROP_DATABASE | `false` | Dropping entire database before data import |
+| DROP_COLLECTION | `false` | Dropping every collection that is being imported |
 | REPLACE_ID_TO_UNDERSCORE_ID | `false` | Replacing `id` property with `_id` for every document during import; useful for ORMs | 
 | RECONNECT_TIMEOUT_IN_SECONDS | `10` | Maximum time, in which app should keep trying connecting to database |
 

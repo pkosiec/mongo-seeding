@@ -73,4 +73,17 @@ describe('Database', () => {
     await database.drop();
     await expect(listExistingCollections(database.db)).resolves.toEqual([]);
   });
+
+  it('should drop collection', async () => {
+    await createCollection(database.db, 'first');
+    await createCollection(database.db, 'second');
+
+    const collections = await listExistingCollections(database.db);
+    await expect(collections).toHaveLength(2);
+    await expect(collections).toContainEqual('first');
+    await expect(collections).toContainEqual('second');
+
+    await database.dropCollectionIfExists('first');
+    await expect(listExistingCollections(database.db)).resolves.toEqual(["second"]);
+  });
 });

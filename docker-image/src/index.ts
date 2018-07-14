@@ -1,6 +1,6 @@
 import { seedDatabase } from 'mongo-seeding';
 import { resolve } from 'path';
-import { DeepPartial, AppConfig } from 'mongo-seeding/common';
+import { DeepPartial, AppConfig } from 'mongo-seeding/dist/common';
 
 const env = process.env;
 const envOptions: DeepPartial<AppConfig> = {
@@ -16,6 +16,7 @@ const envOptions: DeepPartial<AppConfig> = {
     ? String(env.DB_CONNECTION_URI)
     : undefined,
   dropDatabase: env.DROP_DATABASE === 'true',
+  dropCollection: env.DROP_COLLECTION === 'true',
   replaceIdWithUnderscoreId: env.REPLACE_ID_TO_UNDERSCORE_ID === 'true',
   supportedExtensions: ['ts', 'js', 'json'],
   inputPath: resolve(__dirname, '../data'),

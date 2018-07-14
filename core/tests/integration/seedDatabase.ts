@@ -144,6 +144,30 @@ describe('Mongo Seeding', () => {
     expect(collections).toContainEqual('CollectionTwo');
   });
 
+  it('should drop collections before importing data', async () => {
+    const expectedCollectionNames = ['CollectionOne', 'CollectionTwo'];
+    createSampleFiles(expectedCollectionNames, TEMP_DIRECTORY_PATH);
+
+    await createCollection(database.db, 'CollectionOne');
+    await createCollection(database.db, 'ShouldNotBeRemoved');
+
+    const config: DeepPartial<AppConfig> = {
+      inputPath: TEMP_DIRECTORY_PATH,
+      database: {
+        name: DATABASE_NAME,
+      },
+      dropCollection: true,
+    };
+
+    await expect(seedDatabase(config)).resolves.toBeUndefined();
+
+    const collections = await listExistingCollections(database.db);
+    expect(collections).toHaveLength(3);
+    expect(collections).toContainEqual('CollectionOne');
+    expect(collections).toContainEqual('CollectionTwo');
+    expect(collections).toContainEqual('ShouldNotBeRemoved');
+  });
+
   it('should throw error when wrong path given', async () => {
     const config: DeepPartial<AppConfig> = {
       inputPath: '/this/path/surely/doesnt/exist',

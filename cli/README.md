@@ -45,7 +45,8 @@ You can use the following parameters while using `seed` binary:
 | `--db-name $DB_NAME` | `database` | Name of the database |
 | `--db-username $DB_USERNAME` | database | Username for connecting with database that requires authentication |
 | `--db-password $DB_PASSWORD` | database | Password for connecting with database that requires authentication |
-| `--drop-database` | `false` | Dropping database before data import |
+| `--drop-database` | `false` | Dropping entire database before data import |
+| `--drop-collection` | `false` | Dropping every collection that is being imported |
 | `--replace-id` | `false` | Replacing `id` property with `_id` for every document during data import |
 | `--reconnect-timeout` | `10` (seconds) | Maximum time of waiting for successful MongoDB connection|
 | `--help` or `-h` | n/a | Help
