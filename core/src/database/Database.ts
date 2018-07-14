@@ -8,10 +8,23 @@ export class Database {
     collectionName: string,
   ) {
     const documentsCopy = documentsToInsert.map(document => ({ ...document }));
-    await this.db.collection(collectionName).insertMany(documentsCopy);
+    return this.db.collection(collectionName).insertMany(documentsCopy);
   }
 
   async drop() {
-    await this.db.dropDatabase();
+    return this.db.dropDatabase();
+  }
+
+  async ifCollectionExist(collectionName:string):Promise<boolean> {
+    const collections = await this.db.collections();
+    return collections.map(collection => collection.collectionName).includes(collectionName);
+  }
+
+  async dropCollectionIfExists(collectionName:string) {
+    if (!await this.ifCollectionExist(collectionName)) {
+      return;
+    }
+    
+    return this.db.collection(collectionName).drop()
   }
 }

@@ -16,6 +16,7 @@ export interface AppConfig {
   databaseConnectionUri?: string;
   inputPath: string;
   dropDatabase: boolean;
+  dropCollection: boolean;
   replaceIdWithUnderscoreId: boolean;
   supportedExtensions: string[];
   reconnectTimeoutInSeconds: number;
