@@ -81,6 +81,7 @@ const config = {
     password: undefined,
   },
   databaseConnectionUri: undefined, // if defined, it will be used for DB connection instead of `database` object
+  dropCollection: false, // drops every collection that is being imported
   inputPath: resolve(__dirname, '../../data'), // input directory with import data structure
   dropDatabase: false, // drops database before import
   replaceIdWithUnderscoreId: false, // rewrites `id` property to `_id` for every document; useful for ORMs

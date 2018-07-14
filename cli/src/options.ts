@@ -68,6 +68,11 @@ export const optionsDefinition: CommandLineOptionDefinition[] = [
     type: Boolean,
   },
   {
+    name: 'drop-collection',
+    description: 'Drops collection before importing it',
+    type: Boolean,
+  },
+  {
     name: 'replace-id',
     description: 'Replaces `id` property with `_id` for every object to import',
     type: Boolean,
@@ -84,6 +89,7 @@ export interface CommandLineOptions {
   data?: string;
   [key: string]: string | number | boolean | undefined;
   'drop-database': boolean;
+  'drop-collection': boolean;
   'replace-id': boolean;
   'db-protocol'?: string;
   'db-host'?: string;
@@ -128,6 +134,7 @@ export const convertOptions = (
   databaseConnectionUri: options['db-uri'],
   inputPath: options.data ? resolve(options.data) : resolve('./'),
   dropDatabase: options['drop-database'],
+  dropCollection: options['drop-collection'],
   replaceIdWithUnderscoreId: options['replace-id'],
   reconnectTimeoutInSeconds: options['reconnect-timeout'],
 });

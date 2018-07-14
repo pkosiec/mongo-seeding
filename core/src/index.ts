@@ -1,4 +1,3 @@
-import { MongoClient } from 'mongodb';
 import { log, getConfig, DeepPartial, AppConfig } from './common';
 import { DatabaseConnector } from './database';
 import {
@@ -34,12 +33,19 @@ export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
       databaseConnectionUri: config.databaseConnectionUri,
       databaseConfig: config.database,
     });
+    
+    if (!config.dropDatabase && config.dropCollection) {
+      log('Dropping collections...');
+      for (const collection of collections) {
+          await database.dropCollectionIfExists(collection.name);
+      }
+    }
 
     if (config.dropDatabase) {
       log('Dropping database...');
       await database.drop();
     }
-
+    
     await new DataImporter(database).import(collections);
   } catch (err) {
     throw wrapError(err);
