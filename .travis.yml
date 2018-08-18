@@ -8,7 +8,7 @@ services:
   - mongodb
 
 script:
-- ./.ci/run_in_all_projects.sh script
+- . ./.ci/run_in_all_projects.sh script
 
 after_success:
-- ./.ci/run_in_all_projects.sh after_success
+- . ./.ci/run_in_all_projects.sh after_success
