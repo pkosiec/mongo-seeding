@@ -56,12 +56,12 @@
     "preversion": "npm run build"
   },
   "dependencies": {
-    "@types/node": "^10.5.0",
+    "@types/node": "^10.7.0",
     "command-line-args": "^5.0.0",
     "command-line-usage": "^5.0.0",
     "mongo-seeding": "^2.2.0"
   },
   "devDependencies": {
-    "typescript": "^2.9.0"
+    "typescript": "^3.0.0"
   }
 }
