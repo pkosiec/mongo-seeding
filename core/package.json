@@ -73,7 +73,7 @@
       "lcov",
       "json"
     ],
-    "testRegex": "(/tests/[^_].*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testRegex": "(/test/[^_].*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
