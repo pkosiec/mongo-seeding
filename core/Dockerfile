@@ -26,7 +26,7 @@ RUN npm i
 COPY ./.git/ /.git/
 COPY $DIR/tsconfig.json /app/
 COPY $DIR/src/ /app/src/
-COPY $DIR/tests/ /app/tests/
+COPY $DIR/test/ /app/test/
 
 #
 # Build app
