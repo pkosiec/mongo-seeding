@@ -1,35 +1,47 @@
 // Enable debug output for Mongo Seeding
 process.env.DEBUG = 'mongo-seeding';
 
+import * as commandLineArgs from 'command-line-args';
+import * as extend from 'extend';
 import { seedDatabase } from 'mongo-seeding';
 import {
-  populateOptions,
+  populateCommandLineOptions,
   optionsDefinition,
   shouldShowHelp,
   CommandLineOptions,
   validateOptions,
+  populateEnvOptions,
 } from './options';
 import { showHelp } from './help';
-
-import * as commandLineArgs from "command-line-args";
+import { AppConfig, DeepPartial } from 'mongo-seeding/dist/common';
 
 export const run = async () => {
-  const options: CommandLineOptions = commandLineArgs(optionsDefinition) as CommandLineOptions;
+  const options: CommandLineOptions = commandLineArgs(
+    optionsDefinition,
+  ) as CommandLineOptions;
 
   if (shouldShowHelp(options)) {
     showHelp();
     return;
   }
 
-  const partialConfig = populateOptions(options);
+  const config = getConfig(options);
+
   try {
     validateOptions(options);
-    await seedDatabase(partialConfig);
+    await seedDatabase(config);
   } catch (err) {
     printError(err);
   }
 
   process.exit(0);
+};
+
+const getConfig = (options: CommandLineOptions): DeepPartial<AppConfig> => {
+  const commandLineConfig = populateCommandLineOptions(options);
+  const envConfig = populateEnvOptions();
+  const config = {};
+  return extend(true, config, envConfig, commandLineConfig);
 };
 
 const printError = (err: Error) => {
