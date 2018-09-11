@@ -54,6 +54,7 @@ export class DatabaseConnector {
       try {
         client = await MongoClient.connect(dbConnectionUri, {
           ignoreUndefined: true,
+          useNewUrlParser: true,
         });
       } catch (err) {
         if (checkTimeoutExpired(startMillis, reconnectTimeoutMillis)) {
