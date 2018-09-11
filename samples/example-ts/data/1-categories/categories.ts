@@ -1,9 +1,12 @@
-import { mapToEntities } from "@helpers/index";
+import { mapToEntities } from "../../helpers";
+import { Category } from "../../models";
 
-const categories = [
+const categoryNames = [
   "Uncategorized",
   "Cats",
   "Dogs"
 ];
 
-export = mapToEntities(categories);
+const categories: Category[] = mapToEntities(categoryNames);
+
+export = categories

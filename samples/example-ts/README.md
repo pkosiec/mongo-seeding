@@ -1,0 +1,2 @@
+## WORK IN PROGRESS
+For a limited time the samples work only with new, unreleased Mongo Seeding CLI (3.0.0). Currently they break compatibility with current Mongo Seeding Docker Image. Please see examples for [latest stable version](https://github.com/pkosiec/mongo-seeding/tree/v2.2.0/samples).

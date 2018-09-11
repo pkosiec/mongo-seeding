@@ -3,7 +3,7 @@ process.env.DEBUG = 'mongo-seeding';
 
 import { seedDatabase } from 'mongo-seeding';
 import {
-  convertOptions,
+  populateOptions,
   optionsDefinition,
   shouldShowHelp,
   CommandLineOptions,
@@ -11,13 +11,17 @@ import {
 } from './options';
 import { showHelp } from './help';
 
-export const run = async (options: CommandLineOptions) => {
+import * as commandLineArgs from "command-line-args";
+
+export const run = async () => {
+  const options: CommandLineOptions = commandLineArgs(optionsDefinition) as CommandLineOptions;
+
   if (shouldShowHelp(options)) {
     showHelp();
     return;
   }
 
-  const partialConfig = convertOptions(options);
+  const partialConfig = populateOptions(options);
   try {
     validateOptions(options);
     await seedDatabase(partialConfig);
