@@ -5,7 +5,7 @@ This directory contains sample data for Mongo Seeding solutions.
 
 ## Directory structure
 - **`example`** directory contains example data for all Mongo Seeding solutions
-- **`example-ts`** directory contains TypeScript sample data, that is compatible with Mongo Seeding Docker image and custom TypeScript apps written with Mongo Seeding library.
+- **`example-ts`** directory contains TypeScript sample data, that is compatible with Mongo Seeding CLI, Mongo Seeding Docker image and custom TypeScript apps written with Mongo Seeding library.
 
 ## Import sample data
 The following example assumes that the MongoDB is running on `mongodb://127.0.0.1:27017` and the selected database is named `testing`.
@@ -48,7 +48,7 @@ The following example assumes that the MongoDB is running on `mongodb://127.0.0.
     Execute the following command:
 
     ```bash
-    docker run --rm --network="host" -e DB_NAME=testing -e DROP_DATABASE=true -e REPLACE_ID_TO_UNDERSCORE_ID=true -v /absolute/path/to/example-ts/data/:/app/data/ -v /absolute/path/to/example-ts/models/:/app/models -v /absolute/path/to/example-ts/helpers/:/app/helpers pkosiec/mongo-seeding
+    docker run --rm --network=host -v /absolute/path/to/samples/:/absolute/path/to/samples/ -w /absolute/path/to/samples/example-ts/data pkosiec/mongo-seeding
     ```
 
     Replace `absolute/path/to` with your absolute path to this cloned repository.
