@@ -16,9 +16,15 @@ import { showHelp } from './help';
 import { AppConfig, DeepPartial } from 'mongo-seeding/dist/common';
 
 export const run = async () => {
-  const options: CommandLineOptions = commandLineArgs(
-    optionsDefinition,
-  ) as CommandLineOptions;
+  let options: CommandLineOptions;
+
+  try {
+    options = commandLineArgs(optionsDefinition) as CommandLineOptions;
+  } catch (err) {
+    printError(err);
+    process.exit(0);
+    return;
+  }
 
   if (shouldShowHelp(options)) {
     showHelp();
