@@ -120,7 +120,7 @@ const validatePositiveNumber = (variable: number | undefined, name: string) => {
   }
 };
 
-export const populateOptions = (
+export const populateCommandLineOptions = (
   options: CommandLineOptions,
 ): DeepPartial<AppConfig> => ({
   database: {
@@ -137,5 +137,28 @@ export const populateOptions = (
   dropCollection: options['drop-collection'],
   replaceIdWithUnderscoreId: options['replace-id'],
   reconnectTimeoutInSeconds: options['reconnect-timeout'],
-  supportedExtensions: ["js", "json", "ts"]
 });
+
+export const populateEnvOptions = (): DeepPartial<AppConfig> => {
+  const env = process.env;
+  const envOptions: DeepPartial<AppConfig> = {
+    database: {
+      protocol: env.DB_PROTOCOL ? String(env.DB_PROTOCOL) : undefined,
+      host: env.DB_HOST ? String(env.DB_HOST) : undefined,
+      port: env.DB_PORT ? Number(env.DB_PORT) : undefined,
+      name: env.DB_NAME ? String(env.DB_NAME) : undefined,
+      username: env.DB_USERNAME ? String(env.DB_USERNAME) : undefined,
+      password: env.DB_PASSWORD ? String(env.DB_PASSWORD) : undefined,
+    },
+    databaseConnectionUri: env.DB_URI ? String(env.DB_URI) : undefined,
+    dropDatabase: env.DROP_DATABASE === 'true',
+    dropCollection: env.DROP_COLLECTION === 'true',
+    replaceIdWithUnderscoreId: env.REPLACE_ID === 'true',
+    supportedExtensions: ['ts', 'js', 'json'],
+    reconnectTimeoutInSeconds: env.RECONNECT_TIMEOUT
+      ? Number(env.RECONNECT_TIMEOUT)
+      : undefined,
+  };
+
+  return envOptions;
+};
