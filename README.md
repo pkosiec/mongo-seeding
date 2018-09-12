@@ -35,6 +35,7 @@ It's great for:
 There are many tools for MongoDB data import out there, including the official one - `mongoimport`. Why should you choose Mongo Seeding?
 
 ### Problem #1: JSON used for import data definition
+
 Every tool I found before creating Mongo Seeding support only JSON files. In my opinion, that is not the most convenient way of data definition. The biggest problems are data redundancy and lack of ability to write logic.
 
 Imagine that you want to import 10 very similar documents into `authors` collection. Every document is identical - except the name:
@@ -195,6 +196,7 @@ The Mongo Seeding CLI and Mongo Seeding Docker Image have TypeScript runtime bui
 You can use Mongo Seeding library in your projects with TypeScript runtime and enable importing TS files as well.
 
 ### Problem #3: No ultimate solution
+
 Tools like this should be as flexible as possible. Some developers need just CLI tool, and some want to import data programmatically. Before writing Mongo Seeding, I needed a ready-to-use Docker image and found none. Dockerizing an application is easy, but it takes time.
 
 That's why Mongo Seeding consists of:
