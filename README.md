@@ -19,7 +19,7 @@ It's great for:
 
 ## How does it work?
 
-1. Define documents for MongoDB import in JSON, JavaScript or TypeScript file(s). Read the **[tutorial](./docs/define-import-data.md)** to learn, how to do that. To see some examples, how to do that, navigate to the **[`samples`](./samples)** directory.
+1. Define documents for MongoDB import in JSON, JavaScript or TypeScript file(s). Read the **[tutorial](./docs/import-data-definition.md)** to learn, how to do that. To see some examples, how to do that, navigate to the **[`samples`](./samples)** directory.
 
 1. Use one of the Mongo Seeding tools, depending on your needs:
 
@@ -105,7 +105,7 @@ With every tool I've ever found, you would need to create 10 separate JSON files
 ]
 ```
 
-That doesn't look good - you did probably hear about [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) rule.
+That doesn't look good - you did probably hear about [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) principle.
 
 Imagine that now you have to change authors' email. You would probably use search and replace. But what if you would need change the data shape completely? This time you can also use IDE features like multiple cursors etc., but hey - it's a waste of time. What if you had a much more complicated data shape?
 
@@ -142,7 +142,7 @@ The difference should be noticeable. This way of defining import data feels just
 
 ### Problem #2: No data model validation
 
-In multiple JSON and JavaScript files which contains MongoDB documents definition, it's easy to make a mistake, especially in complex data structure. Sometimes a typo results in invalid data. See the example below for `people` collection definition:
+In multiple JSON files which contains MongoDB documents definition, it's easy to make a mistake, especially in complex data structure. Sometimes a typo results in invalid data. See the example below for `people` collection definition:
 
 ```json
 [

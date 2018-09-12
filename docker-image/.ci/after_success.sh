@@ -1,9 +1,11 @@
 #!/bin/bash
 
 echo "Tagging Docker image..."
-cd ./docker-image
 
+cd ./cli
 NPM_VERSION=$(node -p -e "require('./package.json').version");
+cd ..
+
 echo "Package version: $NPM_VERSION";
 
 TAG=$(if [[ $CI_PULL_REQUEST == "false" ]] && [[ $CI_BRANCH == "master" ]]; then
