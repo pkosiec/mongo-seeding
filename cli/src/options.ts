@@ -120,7 +120,7 @@ const validatePositiveNumber = (variable: number | undefined, name: string) => {
   }
 };
 
-export const convertOptions = (
+export const populateOptions = (
   options: CommandLineOptions,
 ): DeepPartial<AppConfig> => ({
   database: {
@@ -137,4 +137,5 @@ export const convertOptions = (
   dropCollection: options['drop-collection'],
   replaceIdWithUnderscoreId: options['replace-id'],
   reconnectTimeoutInSeconds: options['reconnect-timeout'],
+  supportedExtensions: ["js", "json", "ts"]
 });

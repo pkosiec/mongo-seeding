@@ -1,5 +1,5 @@
-import { getObjectId } from '@helpers/index';
-import { Post, Comment } from '@models/index';
+import { getObjectId } from "../../helpers";
+import { Post } from "../../models";
 
 const posts: Post[] = [
   {
