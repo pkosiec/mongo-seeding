@@ -3,6 +3,8 @@
 # Samples
 This directory contains sample data for Mongo Seeding solutions.
 
+**Note**: Work in progress!
+
 ## Directory structure
 - **`example`** directory contains example data for all Mongo Seeding solutions
 - **`example-ts`** directory contains TypeScript sample data, that is compatible with Mongo Seeding CLI, Mongo Seeding Docker image and custom TypeScript apps written with Mongo Seeding library.
