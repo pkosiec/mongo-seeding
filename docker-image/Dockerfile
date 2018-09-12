@@ -1,26 +1,39 @@
-FROM node:9-alpine
+# Run with context of the upper level directory
+
+#
+# Stage 1 
+#
+
+FROM node:10.10.0-alpine AS builder
 LABEL Maintainer Pawel Kosiec <pawel@kosiec.net>
 
 WORKDIR /app
 
-#
+# Copy sources
+COPY ./cli/package.json ./cli/package-lock.json ./cli/tsconfig.json /app/
+COPY ./cli/bin /app/bin/
+COPY ./cli/src /app/src/
+
 # Install dependencies
-#
+RUN npm install --no-optional
 
-COPY package.json package-lock.json /app/
-RUN npm install --production
+# Build app
+RUN npm run build
 
-#
-# Copy app sources
-#
-
-COPY ./tsconfig.json /app/
-COPY ./src/ /app/src/
+# Remove sources
+RUN rm -rf /app/src/
 
 #
-# Set environmental variables
+# Stage 2 
 #
 
-ENV DEBUG mongo-seeding
+FROM node:10.10.0-alpine
+WORKDIR /app
 
-CMD npm start
+# Copy built app
+COPY --from=builder /app/ /app/
+
+# Create a symlink for "seed" command
+RUN npm link
+
+CMD seed

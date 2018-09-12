@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Tagging Docker image..."
-cd ./docker-image
+cd ./cli
 
 NPM_VERSION=$(node -p -e "require('./package.json').version");
 echo "Package version: $NPM_VERSION";
