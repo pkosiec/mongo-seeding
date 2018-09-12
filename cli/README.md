@@ -26,16 +26,16 @@ In order to seed your database with data from current directory using default co
 seed
 ```
 
-You can specify custom settings with command line parameters. The following example imports data from `./example/data` directory using MongoDB connection URI `mongodb://127.0.0.1:27017/mydb`:
+You can specify custom settings with command line parameters. The following example imports data from `./example/data` directory using MongoDB connection URI `mongodb://127.0.0.1:27017/mydb` with option to drop database before import:
 
 ```bash
-seed -u 'mongodb://127.0.0.1:27017/mydb' -d ./example/data
+seed -u 'mongodb://127.0.0.1:27017/mydb' --drop-database ./example/data
 ```
 
 You can also use environmental variables to configure the CLI. For example:
 
 ```bash
-DB_URI='mongodb://127.0.0.1:27017/mydb' seed -d ./example/data
+DB_URI='mongodb://127.0.0.1:27017/mydb' DROP_DATABASE=true seed ./example/data
 ```
 
 Full configuration options are described in [Configuration](#configuration) section.
@@ -50,7 +50,7 @@ You can use the following parameters while using `seed` tool:
 
 | Name        | Default Value  | Description         |
 |-------------|----------------|---------------------|
-| `--data {PATH}` or `-d {PATH}` | current directory | Path to directory containing import data |
+| `{PATH}` | current directory | Path to directory containing import data |
 | `--db-uri {URI}` or `-u {URI}` | *`undefined`* | If defined, the URI will be used for establishing connection to database, ignoring values defined via other `db-*` parameters (e.g. `db-name`, `db-host`, etc.)
 | `--db-protocol {DB_PROTOCOL}` | `mongodb` | MongoDB database protocol |
 | `--db-host {DB_HOST}` | `127.0.0.1` | MongoDB database host |
