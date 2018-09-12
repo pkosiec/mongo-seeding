@@ -150,16 +150,14 @@ export const populateEnvOptions = (): DeepPartial<AppConfig> => {
       username: env.DB_USERNAME ? String(env.DB_USERNAME) : undefined,
       password: env.DB_PASSWORD ? String(env.DB_PASSWORD) : undefined,
     },
-    databaseConnectionUri: env.DB_CONNECTION_URI
-      ? String(env.DB_CONNECTION_URI)
-      : undefined,
-    inputPath: env.DATA_PATH ? resolve(env.DATA_PATH) : undefined,
+    databaseConnectionUri: env.DB_URI ? String(env.DB_URI) : undefined,
+    inputPath: env.PATH ? resolve(env.PATH) : undefined,
     dropDatabase: env.DROP_DATABASE === 'true',
     dropCollection: env.DROP_COLLECTION === 'true',
-    replaceIdWithUnderscoreId: env.REPLACE_ID_TO_UNDERSCORE_ID === 'true',
+    replaceIdWithUnderscoreId: env.REPLACE_ID === 'true',
     supportedExtensions: ['ts', 'js', 'json'],
-    reconnectTimeoutInSeconds: env.RECONNECT_TIMEOUT_IN_SECONDS
-      ? Number(env.RECONNECT_TIMEOUT_IN_SECONDS)
+    reconnectTimeoutInSeconds: env.RECONNECT_TIMEOUT
+      ? Number(env.RECONNECT_TIMEOUT)
       : undefined,
   };
 
