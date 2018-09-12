@@ -4,6 +4,7 @@ import { AppConfig, DeepPartial } from 'mongo-seeding/dist/common';
 export interface CommandLineOptionDefinition {
   name: string;
   alias?: string;
+  defaultOption?: boolean;
   description: string;
   type: StringConstructor | NumberConstructor | BooleanConstructor;
 }
@@ -15,6 +16,7 @@ export const optionsDefinition: CommandLineOptionDefinition[] = [
     description:
       'Path to directory containing import data; default: {bold Current directory}',
     type: String,
+    defaultOption: true,
   },
   {
     name: 'db-protocol',
