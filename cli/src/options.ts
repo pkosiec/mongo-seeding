@@ -151,7 +151,6 @@ export const populateEnvOptions = (): DeepPartial<AppConfig> => {
       password: env.DB_PASSWORD ? String(env.DB_PASSWORD) : undefined,
     },
     databaseConnectionUri: env.DB_URI ? String(env.DB_URI) : undefined,
-    inputPath: env.PATH ? resolve(env.PATH) : undefined,
     dropDatabase: env.DROP_DATABASE === 'true',
     dropCollection: env.DROP_COLLECTION === 'true',
     replaceIdWithUnderscoreId: env.REPLACE_ID === 'true',
