@@ -8,6 +8,8 @@ The ultimate solution for populating your MongoDB database :rocket:
 
 Define MongoDB documents in JSON, JavaScript or even TypeScript file(s). Use JS library, install CLI or run Docker image to import them!
 
+> **Note:** Currently the docs are referring to unreleased version 3.0.0, that is coming very soon. If you want to see docs for previous stable version, [click here](https://github.com/pkosiec/mongo-seeding/tree/v2.2.0). 
+
 ## Introduction
 
 Mongo Seeding is a flexible set of tools for importing data into MongoDB database. 
@@ -202,7 +204,7 @@ Tools like this should be as flexible as possible. Some developers need just CLI
 That's why Mongo Seeding consists of:
 - [JavaScript library](./core) - it can be installed straight from NPM and used in any JavaScript/TypeScript project,
 - [Command line interface (CLI)](./cli) - it can be installed globally and used from command line in any location,
-- [Docker image](./docker-image) with TypeScript runtime (built-in data model validation support) - it is good for containerized applications.
+- [Docker image](./docker-image) - it is good for containerized applications.
 
 All tools you'll ever need for seeding your MongoDB database.
 
