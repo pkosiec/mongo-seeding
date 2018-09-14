@@ -4,7 +4,6 @@ The directory contains the following documents:
 
 - **[`import-data-definition.md`](./import-data-definition.md)** describes how to define documents and collections for MongoDB database import.
 
-
 ## Details of Mongo Seeding solutions
 
 Usage, configuration and all other details of Mongo Seeding packages are described in Readme files in respective directories:

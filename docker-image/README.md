@@ -45,7 +45,7 @@ The Docker image is basically a containerized CLI tool. Therefore, oo configure 
 
 ## Docker image customization
 
-You can prepare customized Docker image with configuration and copied import data.
+You can prepare a customized Docker image for data import. It allows you to prepare image that contains import data inside and is already configured for your needs.
 
 1. Prepare Dockerfile:
 
@@ -88,3 +88,5 @@ You can prepare customized Docker image with configuration and copied import dat
     ```bash
     docker run --rm --network="host" custom-mongo-seeding
     ```
+
+See [**examples**](../examples) directory for an example of custom Docker image. 

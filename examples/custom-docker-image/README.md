@@ -1,6 +1,9 @@
-# Custom Docker Image
-This example shows how to build your own Docker image based on Mongo Seeding image. It allows you to prepare image that contains import data inside and is already configured for your needs.
+# Custom Docker image
+This example presents how to build your own Docker image based on [Mongo Seeding Docker image](../docker-image). It allows you to prepare image that contains import data inside and is already configured for your needs.
 
+## Usage
+
+1. After cloning the repository, navigate to this directory.
 1. To build the image, run:
 
     ```bash

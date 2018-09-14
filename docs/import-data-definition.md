@@ -1,4 +1,5 @@
 # Import data definition
+
 This tutorial will guide you how to define the data for seeding your MongoDB database.
 
 ## Creating directory structure
@@ -16,13 +17,31 @@ This tutorial will guide you how to define the data for seeding your MongoDB dat
     - In JavaScript files (`js` extension), use `module.exports = objectOrArray`.
     - In TypeScript files (`ts` extension), use `export = objectOrArray`.
 
-    See examples in [Import Data Examples](#import-data-examples) section of this document.
+    To see examples, see [Defining MongoDB documents](#defining-mongodb-documents) section of this document.
 
-> **Note:** TypeScript files are supported in Mongo Seeding CLI and Mongo Seeding Docker image. You can utilize static type checking in your custom app with Mongo Seeding library, but you have to include TypeScript runtime and then enable `ts` support in configuration.
+    > **Note:** TypeScript files are supported in Mongo Seeding CLI and Mongo Seeding Docker image. You can utilize static type checking in your custom app with Mongo Seeding library, but you have to include TypeScript runtime and then enable `ts` support in configuration.
 
-## Import Data Examples
+1. The following example visualizes the complete file structure of import data:
 
-The following snippets are very basic examples of files with MongoDB document(s) definition.
+    ```
+    .
+    ├── data // Root directory
+    │    ├── 1-categories // `categories` collection
+    │    │   ├── cat.js
+    │    │   ├── dogs.js
+    │    │   └── other-animals.json
+    │    ├── 2-posts // `posts` collection
+    │    │   ├── post-about-my-cat.json
+    │    │   ├── dog-posts.js
+    │    │   └── random-stuff.ts
+    │    └── 3-media // `media` collection
+    │        ├── cat-image.ts
+    │        └── dog.js
+    ```
+
+## Defining MongoDB documents
+
+The following snippets describes how to define MongoDB documents.
 
 **TypeScript Examples**
 
@@ -93,32 +112,12 @@ The following file, `array.json`, defines 2 documents to import:
 ]
 ```
 
-## Directory structure
-
-The following example visualizes the possible file structure of import data:
-
-    ```
-    .
-    ├── data // Root directory
-    │    ├── 1-categories // `categories` collection
-    │    │   ├── cat.js
-    │    │   ├── dogs.js
-    │    │   └── other-animals.json
-    │    ├── 2-posts // `posts` collection
-    │    │   ├── post-about-my-cat.json
-    │    │   ├── dog-posts.js
-    │    │   └── random-stuff.ts
-    │    └── 3-media // `media` collection
-    │        ├── cat-image.ts
-    │        └── dog.js
-    ```
-
-You can use different file extensions, as long as they are supported.
-
 ## JavaScript benefits
+
 Instead of using JSON files, the recommended way is to define the import data in JavaScript ones. You can use there all the benefits of JavaScript.
 
 ### Saving time
+
 For example, let's define 10 entities in JSON file for `person` collection. The result looks like this:
 
 ```json
@@ -189,6 +188,7 @@ module.exports = names.map(name => ({
 ```
 
 ### Using imports
+
 Obviously, in JavaScript files you can also import other files - external libraries, helper methods etc. It's also easy to write some data randomization rules - which are mostly essential for creating development sample data. Consider the following example of `people` collection import:
 
 ```javascript
@@ -263,3 +263,7 @@ With using TypeScript, you instantly see in your IDE that you made mistakes.
 The Mongo Seeding CLI and Mongo Seeding Docker Image have TypeScript runtime built-in. It means that you can take advantage of static type checking in TypeScript data definition files (`.ts` extension). You can also use Mongo Seeding library in your projects along with TypeScript runtime and enable importing TS files as well.
 
 Remember to define models in other directory that the one with import data! We don't want to try importing them, right?
+
+## Examples
+
+To see complete, ready to import sample data, navigate to [Examples](../examples) directory.

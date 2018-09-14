@@ -20,37 +20,47 @@ This example shows how to define import data in JavaScript and JSON files. It us
 
 ## Import data
 
-In order to import the sample data, use one of Mongo Seeding tools. The following instructions will result in sample data import to `testing` database.
+In order to import the sample data, use one of Mongo Seeding tools. The following instructions will result in sample data import to `testing` database. The database will be dropped before import.
 
 ### JavaScript library
 
-1. Create `index.js` file in this directory
-1. 
+1. Create `index.js` file in this directory with the following content:
+    
+    ```javascript
+    const path = require('path');
+    const { seedDatabase } = require('mongo-seeding');
 
+    const config = {
+    database: {
+        name: 'testing',
+    },
+    replaceIdWithUnderscoreId: true,
+    dropDatabase: true,
+    inputPath: path.resolve('./data'),
+    };
 
-Write a custom JavaScript application and include this snippet:
+    seedDatabase(config)
+    .then(() => {
+        console.log('Success');
+    })
+    .catch(err => {
+        console.log('Error', err);
+    });
+    ```
 
-```javascript
-const config = {
-database: {
-    name: 'testing',
-},
-replaceIdWithUnderscoreId: true,
-inputPath: path.resolve('path/to/example/data'),
-dropDatabase: true,
-};
+1. Run the following command:
+    
+    ```bash
+    npm install mongo-seeding --save
+    ```
 
-seedDatabase(config).then(() => {
-console.log("Success")
-}).catch(err => {
-console.log("Error", err)
-});
-```
+1. Run the newly created app to import data:
 
-Replace `path/to/example/data` with the path to `samples/example/data` in this cloned repository.
+    ```bash
+    DEBUG=mongo-seeding node index.js
+    ```
 
 To see the full description of the JS library usage, read the **[Readme](../core/README.md)** file of the Mongo Seeding.
-
 
 ### CLI
 
@@ -67,7 +77,7 @@ To see the full description of the CLI usage, read the **[Readme](../cli/README.
 Execute the following command:
 
 ```bash
-docker run --rm --network="host" -e DB_NAME=testing -v /absolute/path/to/examples/import-data/:/absolute/path/to/examples/import-data/ -w /absolute/path/to/examples/import-data/data pkosiec/mongo-seeding
+docker run --rm --network="host" -e DB_NAME=testing -e REPLACE_ID=true -e DROP_DATABASE=true -v /absolute/path/to/examples/import-data/:/absolute/path/to/examples/import-data/ -w /absolute/path/to/examples/import-data/data pkosiec/mongo-seeding
 ```
 
 Replace `absolute/path/to` with your absolute path to this cloned repository.
