@@ -1,7 +1,7 @@
-import { ObjectId } from 'mongodb';
-import { createHash } from 'crypto';
+const { ObjectId } = require('mongodb');
+const { createHash } = require('crypto');
 
-export const mapToEntities = (names: string[]) => {
+const mapToEntities = names => {
   return names.map(name => {
     const id = getObjectId(name);
 
@@ -12,7 +12,7 @@ export const mapToEntities = (names: string[]) => {
   });
 };
 
-export const getObjectId = (name: string): ObjectId => {
+const getObjectId = name => {
   const hash = createHash('sha1')
     .update(name, 'utf8')
     .digest('hex');
@@ -20,6 +20,12 @@ export const getObjectId = (name: string): ObjectId => {
   return new ObjectId(hash.substring(0, 24));
 };
 
-export const getObjectIds = (names: string[]): ObjectId[] => {
+const getObjectIds = names => {
   return names.map(name => getObjectId(name));
+};
+
+module.exports = {
+  mapToEntities,
+  getObjectId,
+  getObjectIds,
 };

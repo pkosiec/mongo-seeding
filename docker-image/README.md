@@ -12,7 +12,7 @@ Define MongoDB documents in JSON, JavaScript or even TypeScript file(s). Import 
 
 ## Usage
 
-1. Follow the [tutorial](https://github.com/pkosiec/mongo-seeding/tree/master/docs/import-data-definition.md) to define documents and collections to import. See [`samples`](https://github.com/pkosiec/mongo-seeding/tree/master/samples) directory for examples.
+1. Follow the [tutorial](https://github.com/pkosiec/mongo-seeding/tree/master/docs/import-data-definition.md) to define documents and collections to import.
 1. Pull the latest stable version of Mongo Seeding image. Check the version number in GitHub releases.
 
     ```bash
@@ -34,12 +34,13 @@ Define MongoDB documents in JSON, JavaScript or even TypeScript file(s). Import 
 1. Configure seeding with environmental variables. See the following example:
 
     ```bash
-     docker run --rm --network=host -v /absolute/path/to/samples/:/absolute/path/to/data/ -w    /absolute/path/to/data/ -e DB_URI='mongodb://127.0.0.1:27017/mydbname' -e   DROP_DATABASE=true pkosiec/mongo-seeding
+     docker run --rm --network=host -v /absolute/path/to/examples/:/absolute/path/to/data/ -w    /absolute/path/to/data/ -e DB_URI='mongodb://127.0.0.1:27017/mydbname' -e   DROP_DATABASE=true pkosiec/mongo-seeding
      ```
 
     See [Configuration](#configuration) section for details.
 
 ## Configuration
+
 The Docker image is basically a containerized CLI tool. Therefore, oo configure the project, use environmental variables described in [Environmental Variables](../cli/README.md#environmental-variables) section of the CLI tool. Specify them with `-e {key}={value}` parameters.
 
 ## Docker image customization

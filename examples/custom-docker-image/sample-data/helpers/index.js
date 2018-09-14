@@ -1,5 +1,5 @@
-const { ObjectId } = require("mongodb");
-const { createHash } = require("crypto");
+const { ObjectId } = require('mongodb');
+const { createHash } = require('crypto');
 
 const mapToEntities = names => {
   return names.map(name => {
@@ -7,15 +7,15 @@ const mapToEntities = names => {
 
     return {
       id,
-      name
+      name,
     };
   });
 };
 
 const getObjectId = name => {
-  const hash = createHash("sha1")
-    .update(name, "utf8")
-    .digest("hex");
+  const hash = createHash('sha1')
+    .update(name, 'utf8')
+    .digest('hex');
 
   return new ObjectId(hash.substring(0, 24));
 };
@@ -27,5 +27,5 @@ const getObjectIds = names => {
 module.exports = {
   mapToEntities,
   getObjectId,
-  getObjectIds
+  getObjectIds,
 };

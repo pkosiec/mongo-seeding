@@ -1,7 +1,6 @@
-import { getObjectId } from "../../helpers";
-import { Post } from "../../models";
+const { getObjectId } = require('../../helpers/index');
 
-const posts: Post[] = [
+const posts = [
   {
     id: getObjectId('post1'),
     title: 'Lorem ipsum',
@@ -39,4 +38,4 @@ const posts: Post[] = [
   },
 ];
 
-export = posts;
+module.exports = posts;

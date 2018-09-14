@@ -1,11 +1,6 @@
 {
   "version": "2.2.0",
-  "packages": [
-    "cli",
-    "core",
-    "docker-image",
-    "samples"
-  ],
+  "packages": ["cli", "core", "docker-image", "examples"],
   "command": {
     "publish": {
       "message": "Bump version to %s"
