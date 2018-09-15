@@ -1,4 +1,4 @@
-FROM mongo-seeding
+FROM pkosiec/mongo-seeding:latest
 
 WORKDIR /data-import/
 
