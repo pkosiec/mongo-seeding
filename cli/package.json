@@ -51,9 +51,13 @@
     "seed": "bin/seed.js"
   },
   "scripts": {
-    "build": "npm run build-cleanup; tsc",
-    "build-cleanup": "rm -rf ./dist",
-    "preversion": "npm run build"
+    "build": "npm run cleanup; tsc",
+    "cleanup": "rm -rf ./dist",
+    "preversion": "npm run build",
+    "test": "jest",
+    "test:unit": "jest unit",
+    "test:integration": "jest integration",
+    "test:watch": "jest --watch --coverage"
   },
   "dependencies": {
     "@types/node": "^10.9.0",
@@ -66,6 +70,30 @@
   },
   "devDependencies": {
     "@types/command-line-args": "^5.0.0",
-    "@types/extend": "^3.0.0"
+    "@types/extend": "^3.0.0",
+    "@types/jest": "^23.3.2",
+    "jest": "^23.6.0",
+    "mongodb": "^3.1.6",
+    "ts-jest": "^23.1.0"
+  },
+  "jest": {
+    "verbose": false,
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "json"
+    ],
+    "testRegex": "(/test/[^_][a-zA-Z0-9/]*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   }
 }

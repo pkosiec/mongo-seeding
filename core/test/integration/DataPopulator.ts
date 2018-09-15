@@ -1,12 +1,7 @@
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { removeSync } from 'fs-extra';
 
-import {
-  DeepPartial,
-  AppConfig,
-  getConfig,
-  defaultConfig,
-} from '../../src/common';
+import { defaultConfig } from '../../src/common';
 import { DataPopulator } from '../../src/data-processing';
 
 const TEMP_DIRECTORY_PATH = __dirname + '/.temp-DataPopulator';
@@ -90,18 +85,15 @@ describe('DataPopulator', () => {
 
   it('should skip empty directories', () => {
     const dataPopulator = new DataPopulator(defaultConfig.supportedExtensions);
-    const baseDir = "skipEmptyDirBase";
+    const baseDir = 'skipEmptyDirBase';
     const baseDirPath = `${TEMP_DIRECTORY_PATH}/${baseDir}`;
     const directory1 = 'SkipEmptyDir1';
     const directory2 = 'SkipEmptyDir2';
-    mkdirSync(baseDirPath)
+    mkdirSync(baseDirPath);
     mkdirSync(`${baseDirPath}/${directory1}`);
     mkdirSync(`${baseDirPath}/${directory2}`);
 
-    const collections = dataPopulator.populate(
-      TEMP_DIRECTORY_PATH,
-    );
+    const collections = dataPopulator.populate(TEMP_DIRECTORY_PATH);
     expect(collections).toHaveLength(0);
   });
-
 });

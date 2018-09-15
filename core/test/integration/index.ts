@@ -1,9 +1,8 @@
-import { MongoClient } from 'mongodb';
 import { mkdirSync, removeSync, existsSync, writeFileSync } from 'fs-extra';
 
 import { DatabaseConnector, Database } from '../../src/database';
 import { defaultConfig, DeepPartial, AppConfig } from '../../src/common';
-import { seedDatabase } from '../../src/index';
+import { seedDatabase } from '../../src';
 import { listExistingCollections, createCollection } from '../_helpers';
 
 const DATABASE_NAME = 'seedDatabase';
@@ -17,9 +16,8 @@ beforeAll(async () => {
     databaseConfig: {
       ...defaultConfig.database,
       name: DATABASE_NAME,
-    }
-  }
-  );
+    },
+  });
   await database.drop();
 });
 
@@ -179,10 +177,10 @@ describe('Mongo Seeding', () => {
     const expectedCollectionNames = ['Collection1', 'Collection2'];
     createSampleFiles(expectedCollectionNames, TEMP_DIRECTORY_PATH);
     const config: DeepPartial<AppConfig> = {
-      databaseConnectionUri: "mongodb://unresolved.host:27017/name",
+      databaseConnectionUri: 'mongodb://unresolved.host:27017/name',
       reconnectTimeoutInSeconds: 0,
-      inputPath: TEMP_DIRECTORY_PATH
-    }
-    await expect(seedDatabase(config)).rejects.toThrowError("Timeout");
-  })
+      inputPath: TEMP_DIRECTORY_PATH,
+    };
+    await expect(seedDatabase(config)).rejects.toThrowError('Timeout');
+  });
 });

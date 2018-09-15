@@ -1,15 +1,10 @@
 import { resolve } from 'path';
+import * as extend from 'extend';
 import { AppConfig, DeepPartial } from 'mongo-seeding/dist/common';
+import { throwOnNegativeNumber } from './validators';
+import { CommandLineOption, CommandLineArguments } from './types';
 
-export interface CommandLineOptionDefinition {
-  name: string;
-  alias?: string;
-  defaultOption?: boolean;
-  description: string;
-  type: StringConstructor | NumberConstructor | BooleanConstructor;
-}
-
-export const optionsDefinition: CommandLineOptionDefinition[] = [
+export const cliOptions: CommandLineOption[] = [
   {
     name: 'data',
     alias: 'd',
@@ -87,61 +82,42 @@ export const optionsDefinition: CommandLineOptionDefinition[] = [
   },
 ];
 
-export interface CommandLineOptions {
-  data?: string;
-  [key: string]: string | number | boolean | undefined;
-  'drop-database': boolean;
-  'drop-collection': boolean;
-  'replace-id': boolean;
-  'db-protocol'?: string;
-  'db-host'?: string;
-  'db-port'?: number;
-  'db-name'?: string;
-  'db-username'?: string;
-  'db-password'?: string;
-  'db-uri'?: string;
-  'reconnect-timeout'?: number;
+export const validateOptions = (options: CommandLineArguments) => {
+  throwOnNegativeNumber(options['db-port'], 'db-port');
+  throwOnNegativeNumber(options['reconnect-timeout'], 'reconnect-timeout');
+};
+
+export const createConfigFromOptions = (
+  cmdArgs: CommandLineArguments,
+): DeepPartial<AppConfig> => {
+  const commandLineConfig = populateCommandLineOptions(cmdArgs);
+  const envConfig = populateEnvOptions();
+  const config = {};
+  return extend(true, config, envConfig, commandLineConfig);
+};
+
+function populateCommandLineOptions(
+  options: CommandLineArguments,
+): DeepPartial<AppConfig> {
+  return {
+    database: {
+      protocol: options['db-protocol'],
+      host: options['db-host'],
+      port: options['db-port'],
+      name: options['db-name'],
+      username: options['db-username'],
+      password: options['db-password'],
+    },
+    databaseConnectionUri: options['db-uri'],
+    inputPath: options.data ? resolve(options.data) : resolve('./'),
+    dropDatabase: options['drop-database'],
+    dropCollection: options['drop-collection'],
+    replaceIdWithUnderscoreId: options['replace-id'],
+    reconnectTimeoutInSeconds: options['reconnect-timeout'],
+  };
 }
 
-export const shouldShowHelp = (options: CommandLineOptions) => {
-  return options.help;
-};
-
-export const validateOptions = (options: CommandLineOptions) => {
-  validatePositiveNumber(options['db-port'], 'db-port');
-  validatePositiveNumber(options['reconnect-timeout'], 'reconnect-timeout');
-};
-
-const validatePositiveNumber = (variable: number | undefined, name: string) => {
-  if (typeof variable !== 'undefined' && (isNaN(variable) || variable < 0)) {
-    const error = new Error(
-      `Value of '${name}' parameter should be a valid positive number`,
-    );
-    error.name = 'InvalidParameterError';
-    throw error;
-  }
-};
-
-export const populateCommandLineOptions = (
-  options: CommandLineOptions,
-): DeepPartial<AppConfig> => ({
-  database: {
-    protocol: options['db-protocol'],
-    host: options['db-host'],
-    port: options['db-port'],
-    name: options['db-name'],
-    username: options['db-username'],
-    password: options['db-password'],
-  },
-  databaseConnectionUri: options['db-uri'],
-  inputPath: options.data ? resolve(options.data) : resolve('./'),
-  dropDatabase: options['drop-database'],
-  dropCollection: options['drop-collection'],
-  replaceIdWithUnderscoreId: options['replace-id'],
-  reconnectTimeoutInSeconds: options['reconnect-timeout'],
-});
-
-export const populateEnvOptions = (): DeepPartial<AppConfig> => {
+function populateEnvOptions(): DeepPartial<AppConfig> {
   const env = process.env;
   const envOptions: DeepPartial<AppConfig> = {
     database: {
@@ -163,4 +139,4 @@ export const populateEnvOptions = (): DeepPartial<AppConfig> => {
   };
 
   return envOptions;
-};
+}
