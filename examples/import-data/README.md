@@ -1,6 +1,13 @@
 # Import data
 
-This example shows how to define import data in JavaScript and JSON files. It uses helper methods defined in `helpers` directory. They are imported in some files from `data` folder.
+This example shows how to define import data in JavaScript and JSON files. There are two collections defined: `categories` and `posts`.
+Data import files are prepared to show multiple possibilities of data definition. In some data import files there are used helper methods defined in `helpers` directory.
+
+## Prerequisites
+
+In order to run this example, you have to install the following tools:
+- [Docker](https://docker.com)
+- [NodeJS with NPM](https://nodejs.org)
 
 ## Preparations
 
@@ -11,8 +18,8 @@ This example shows how to define import data in JavaScript and JSON files. It us
     docker run --rm -p 27017:27017 mongo
     ```
 
-1.  Navigate to this directory.
-1.  To install all needed dependencies, run the following command:
+1.  Navigate to the `./example` directory.
+1.  To install all needed dependencies of import data, run the following command:
 
     ```bash
     npm install
@@ -24,7 +31,13 @@ In order to import the sample data, use one of Mongo Seeding tools. The followin
 
 ### JavaScript library
 
-1. Create `index.js` file in this directory with the following content:
+1. Initialize a new Node.js project in this directory (folder, which contains this Readme file) with the command:
+
+    ```
+    npm init -y
+    ```
+
+1. Create a new `index.js` file in the same directory with the following content:
     
     ```javascript
     const path = require('path');
@@ -36,7 +49,7 @@ In order to import the sample data, use one of Mongo Seeding tools. The followin
     },
     replaceIdWithUnderscoreId: true,
     dropDatabase: true,
-    inputPath: path.resolve('./data'),
+    inputPath: path.resolve('./example/data'),
     };
 
     seedDatabase(config)
@@ -48,7 +61,7 @@ In order to import the sample data, use one of Mongo Seeding tools. The followin
     });
     ```
 
-1. Run the following command:
+1. To install all dependencies used in your `index.js` application, run the command:
     
     ```bash
     npm install mongo-seeding --save
@@ -64,7 +77,7 @@ To see the full description of the JS library usage, read the **[Readme](../core
 
 ### CLI
 
-Make sure that you have the [Mongo Seeding CLI](../cli) installed. Then, run the following command from the current directory:
+Make sure that you have the [Mongo Seeding CLI](../cli) installed. Then, run the following command from the `./example` directory:
 
 ```bash
 seed --drop-database --replace-id --db-name testing
@@ -77,9 +90,9 @@ To see the full description of the CLI usage, read the **[Readme](../cli/README.
 Execute the following command:
 
 ```bash
-docker run --rm --network="host" -e DB_NAME=testing -e REPLACE_ID=true -e DROP_DATABASE=true -v /absolute/path/to/examples/import-data/:/absolute/path/to/examples/import-data/ -w /absolute/path/to/examples/import-data/data pkosiec/mongo-seeding
+docker run --rm --network="host" -e DB_NAME=testing -e REPLACE_ID=true -e DROP_DATABASE=true -v /absolute/path/to/examples/import-data/example/:/absolute/path/to/examples/import-data/example/ -w /absolute/path/to/examples/import-data/example/data pkosiec/mongo-seeding
 ```
 
-Replace `absolute/path/to` with your absolute path to this cloned repository.
+Replace `/absolute/path/to/` with your absolute path to this cloned repository.
 
 To read more how to run the Docker image with all configuration parameters, read the **[Readme](../docker-image/README.md)** file of the Mongo Seeding Docker image.
