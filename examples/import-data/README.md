@@ -5,9 +5,9 @@ Data import files are prepared to show multiple possibilities of data definition
 
 ## Prerequisites
 
-In order to run this example, you have to install the following tools:
-- [Docker](https://docker.com)
-- [NodeJS with NPM](https://nodejs.org)
+In order to run this example, it's recommended to install the following tools:
+- [Docker](https://docker.com) (optional) - to run MongoDB and Mongo Seeding Docker Image
+- [NodeJS with NPM](https://nodejs.org) (optional) - to run JavaScript example
 
 ## Preparations
 

@@ -19,7 +19,7 @@ It's great for:
 
 ## How does it work?
 
-1. Define documents for MongoDB import in JSON, JavaScript or TypeScript file(s). Read the **[tutorial](./docs/import-data-definition.md)** to learn, how to do that. To see some examples, navigate to the **[`examples`](./examples)** directory.
+1. Define documents for MongoDB import in JSON, JavaScript or TypeScript file(s). To learn, how to do that, read the **[import data definition](./docs/import-data-definition.md)** guide. To see some examples, navigate to the **[`examples`](./examples)** directory.
 
 1. Use one of the Mongo Seeding tools, depending on your needs:
 

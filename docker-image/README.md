@@ -12,7 +12,7 @@ Define MongoDB documents in JSON, JavaScript or even TypeScript file(s). Import 
 
 ## Usage
 
-1. Follow the [tutorial](https://github.com/pkosiec/mongo-seeding/tree/master/docs/import-data-definition.md) to define documents and collections to import.
+1. Follow the [tutorial](../docs/import-data-definition.md) to define documents and collections to import.
 1. Pull the latest stable version of Mongo Seeding image. Check the version number in GitHub releases.
 
     ```bash

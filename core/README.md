@@ -16,7 +16,7 @@ npm install mongo-seeding --save
 
 ## Usage
 
-1. Follow the [tutorial](https://github.com/pkosiec/mongo-seeding/tree/master/docs/import-data-definition.md) to define documents and collections to import.
+1. Follow the [tutorial](../docs/import-data-definition.md) to define documents and collections to import.
 1. Import the `seedDatabase` function:
 
     ```javascript
