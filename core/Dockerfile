@@ -1,7 +1,6 @@
 # Run with context of the upper level directory
 
 FROM node:10.10.0-alpine
-LABEL Maintainer Pawel Kosiec <pawel@kosiec.net>
 
 ENV DIR ./core
 WORKDIR /app
@@ -11,7 +10,7 @@ RUN apk add --update git && \
     rm -rf /tmp/* /var/cache/apk/*
 
 # Install dependencies
-COPY $DIR/package.json package-lock.json /app/
+COPY $DIR/package.json $DIR/package-lock.json /app/
 RUN npm i
 
 # Copy app sources
@@ -22,7 +21,10 @@ COPY $DIR/test/ /app/test/
 
 # Build app
 RUN npm run build
-RUN npm run build-cleanup
+# Remove built app
+RUN npm run cleanup
+
+ENV CI true
 
 # Run tests on container start
 CMD npm test -- --ci --coverage && \

@@ -2,24 +2,20 @@
 process.env.DEBUG = 'mongo-seeding';
 
 import * as commandLineArgs from 'command-line-args';
-import * as extend from 'extend';
 import { seedDatabase } from 'mongo-seeding';
 import {
-  populateCommandLineOptions,
-  optionsDefinition,
-  shouldShowHelp,
-  CommandLineOptions,
+  cliOptions,
   validateOptions,
-  populateEnvOptions,
+  createConfigFromOptions,
 } from './options';
-import { showHelp } from './help';
-import { AppConfig, DeepPartial } from 'mongo-seeding/dist/common';
+import { showHelp, shouldShowHelp } from './help';
+import { CommandLineArguments } from './types';
 
 export const run = async () => {
-  let options: CommandLineOptions;
+  let options: CommandLineArguments;
 
   try {
-    options = commandLineArgs(optionsDefinition) as CommandLineOptions;
+    options = commandLineArgs(cliOptions) as CommandLineArguments;
   } catch (err) {
     printError(err);
     process.exit(0);
@@ -31,7 +27,7 @@ export const run = async () => {
     return;
   }
 
-  const config = getConfig(options);
+  const config = createConfigFromOptions(options);
 
   try {
     validateOptions(options);
@@ -41,13 +37,6 @@ export const run = async () => {
   }
 
   process.exit(0);
-};
-
-const getConfig = (options: CommandLineOptions): DeepPartial<AppConfig> => {
-  const commandLineConfig = populateCommandLineOptions(options);
-  const envConfig = populateEnvOptions();
-  const config = {};
-  return extend(true, config, envConfig, commandLineConfig);
 };
 
 const printError = (err: Error) => {

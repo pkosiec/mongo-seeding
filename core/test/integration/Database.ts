@@ -1,5 +1,3 @@
-import { MongoClient } from 'mongodb';
-
 import { DatabaseConnector, Database } from '../../src/database';
 import { defaultConfig } from '../../src/common';
 import {
@@ -12,14 +10,12 @@ const databaseConnector = new DatabaseConnector();
 let database: Database;
 
 beforeAll(async () => {
-  database = await databaseConnector.connect(
-    {
-      databaseConfig: {
-        ...defaultConfig.database,
-        name: 'Database',
-      }
-    }
-  );
+  database = await databaseConnector.connect({
+    databaseConfig: {
+      ...defaultConfig.database,
+      name: 'Database',
+    },
+  });
   await database.db.dropDatabase();
 });
 
@@ -84,6 +80,8 @@ describe('Database', () => {
     await expect(collections).toContainEqual('second');
 
     await database.dropCollectionIfExists('first');
-    await expect(listExistingCollections(database.db)).resolves.toEqual(["second"]);
+    await expect(listExistingCollections(database.db)).resolves.toEqual([
+      'second',
+    ]);
   });
 });

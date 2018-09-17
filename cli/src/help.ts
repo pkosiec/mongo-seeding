@@ -1,6 +1,7 @@
 const getUsage = require('command-line-usage');
 const packageInfo = require('../package.json');
-import { optionsDefinition } from './options';
+import { cliOptions } from './options';
+import { CommandLineArguments } from './types';
 
 const helpSections = [
   {
@@ -16,7 +17,7 @@ const helpSections = [
   },
   {
     header: 'Parameters',
-    optionList: optionsDefinition,
+    optionList: cliOptions,
   },
   {
     content: `GitHub: {underline ${packageInfo.repository.url}}`,
@@ -25,4 +26,8 @@ const helpSections = [
 
 export const showHelp = () => {
   console.log(getUsage(helpSections));
+};
+
+export const shouldShowHelp = (options: CommandLineArguments) => {
+  return options.help;
 };

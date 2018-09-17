@@ -5,14 +5,15 @@
 #
 
 FROM node:10.10.0-alpine AS builder
-LABEL Maintainer Pawel Kosiec <pawel@kosiec.net>
+LABEL Maintainer="Pawel Kosiec <pawel@kosiec.net>"
 
+ENV CLI_DIR=./cli
 WORKDIR /app
 
 # Copy sources
-COPY ./cli/package.json ./cli/package-lock.json ./cli/tsconfig.json /app/
-COPY ./cli/bin /app/bin/
-COPY ./cli/src /app/src/
+COPY $CLI_DIR/package.json $CLI_DIR/package-lock.json $CLI_DIR/tsconfig.json /app/
+COPY $CLI_DIR/bin /app/bin/
+COPY $CLI_DIR/src /app/src/
 
 # Install dependencies
 RUN npm install --no-optional
