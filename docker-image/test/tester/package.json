@@ -1,0 +1,42 @@
+{
+  "name": "docker-image-tester",
+  "description": "Tester app for Mongo Seeding Docker Image",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Paweł Kosiec",
+    "email": "pawel@kosiec.net",
+    "url": "https://www.kosiec.net"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pkosiec/mongo-seeding"
+  },
+  "scripts": {
+    "start": "npm test",
+    "test": "jest"
+  },
+  "dependencies": {
+    "mongodb": "^3.1.3",
+    "jest": "^23.6.0"
+  },
+  "devDependencies": {},
+  "jest": {
+    "verbose": false,
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "json"
+    ],
+    "testRegex": "(/[^_][a-zA-Z0-9/]*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
+}

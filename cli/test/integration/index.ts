@@ -17,6 +17,11 @@ describe('CLI', () => {
   });
 
   it('should import data', async () => {
+    const dbConnectionUri = process.env.DB_URI
+      ? process.env.DB_URI
+      : 'mongodb://127.0.0.1:27017/clidb';
+    const databaseName = process.env.DB_NAME ? process.env.DB_NAME : 'clidb';
+
     const exit = jest
       .spyOn(process, 'exit')
       .mockImplementation(number => number);
@@ -27,14 +32,15 @@ describe('CLI', () => {
       '--replace-id',
       '--drop-collection',
       './test/integration/_importdata',
+      '--db-uri',
+      dbConnectionUri,
     ];
-    await run();
-    expect(console.error).not.toBeCalled();
 
-    const dbConnectionUri = process.env.DB_URI
-      ? process.env.DB_URI
-      : 'mongodb://127.0.0.1:27017/database';
-    const databaseName = process.env.DB_NAME ? process.env.DB_NAME : 'database';
+    await run();
+
+    expect(console.error).not.toBeCalled();
+    expect(exit).toBeCalledWith(0);
+
     const client = await MongoClient.connect(
       dbConnectionUri,
       { ignoreUndefined: true, useNewUrlParser: true },

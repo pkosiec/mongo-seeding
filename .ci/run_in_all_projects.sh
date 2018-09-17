@@ -2,6 +2,8 @@
 TASK_TYPE=$1
 CI_DIR_NAME=".ci"
 
+set -e
+
 echo "=== Task $TASK_TYPE ==="
 
 echo "Setting environmental variables..."
