@@ -8,7 +8,10 @@ describe('DatabaseConnector', () => {
     const databaseConnector = new DatabaseConnector();
 
     const database = await databaseConnector.connect({
-      databaseConfig: defaultConfig.database,
+      databaseConfig: {
+        ...defaultConfig.database,
+        name: 'coredb',
+      },
     });
     const collections = await database.db.listCollections().toArray();
 

@@ -13,7 +13,7 @@ beforeAll(async () => {
   database = await databaseConnector.connect({
     databaseConfig: {
       ...defaultConfig.database,
-      name: 'Database',
+      name: 'coredb',
     },
   });
   await database.db.dropDatabase();

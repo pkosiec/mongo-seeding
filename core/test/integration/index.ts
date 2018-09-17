@@ -5,7 +5,7 @@ import { defaultConfig, DeepPartial, AppConfig } from '../../src/common';
 import { seedDatabase } from '../../src';
 import { listExistingCollections, createCollection } from '../_helpers';
 
-const DATABASE_NAME = 'seedDatabase';
+const DATABASE_NAME = 'coredb';
 const TEMP_DIRECTORY_PATH = __dirname + '/.temp-seedDatabase';
 
 const databaseConnector = new DatabaseConnector();
