@@ -18,34 +18,35 @@ npm install -g mongo-seeding-cli
 
 ## Usage
 
-Before you begin, follow the [tutorial](https://github.com/pkosiec/mongo-seeding/tree/master/docs/import-data-definition.md) to define documents and collections to import. See [`samples`](https://github.com/pkosiec/mongo-seeding/tree/master/samples) directory for examples.
+1. Follow the [tutorial](../docs/import-data-definition.md) to define documents and collections to import.
+1. In order to seed your database with data from current directory using default configuration, run the following command:
 
-In order to seed your database with data from current directory using default configuration, run the following command:
+    ```bash
+    seed
+    ```
 
-```bash
-seed
-```
+1. You can specify custom settings with command line parameters. The following example imports data from `./example/data` directory using MongoDB connection URI `mongodb://127.0.0.1:27017/mydb` with option to drop database before import:
 
-You can specify custom settings with command line parameters. The following example imports data from `./example/data` directory using MongoDB connection URI `mongodb://127.0.0.1:27017/mydb` with option to drop database before import:
+    ```bash
+    seed -u 'mongodb://127.0.0.1:27017/mydb' --drop-database ./example/data
+    ```
 
-```bash
-seed -u 'mongodb://127.0.0.1:27017/mydb' --drop-database ./example/data
-```
+    You can also use environmental variables to configure the CLI. For example:
 
-You can also use environmental variables to configure the CLI. For example:
+    ```bash
+    DB_URI='mongodb://127.0.0.1:27017/mydb' DROP_DATABASE=true seed ./example/data
+    ```
 
-```bash
-DB_URI='mongodb://127.0.0.1:27017/mydb' DROP_DATABASE=true seed ./example/data
-```
-
-Full configuration options are described in [Configuration](#configuration) section.
+    Full configuration options are described in [Configuration](#configuration) section.
 
 ## Configuration
+
 You can configure data import with command line parameters or environmental variables.
 
 > **Note:** Command line parameters have always a higher priority over environmental variables.
 
 ## Command line parameters
+
 You can use the following parameters while using `seed` tool:
 
 | Name        | Default Value  | Description         |
@@ -65,6 +66,7 @@ You can use the following parameters while using `seed` tool:
 | `--help` or `-h` | n/a | Help
 
 ## Environmental variables
+
 You can use the following environmental variables while using `seed` tool:
 
 | Name        | Default Value  | Description         |

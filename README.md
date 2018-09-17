@@ -6,9 +6,7 @@
 
 The ultimate solution for populating your MongoDB database :rocket: 
 
-Define MongoDB documents in JSON, JavaScript or even TypeScript file(s). Use JS library, install CLI or run Docker image to import them!
-
-> **Note:** Currently the docs are referring to unreleased version 3.0.0, that is coming very soon. If you want to see docs for previous stable version, [click here](https://github.com/pkosiec/mongo-seeding/tree/v2.2.0). 
+Define MongoDB documents in JSON, JavaScript or even TypeScript file(s). Use JS library, install CLI or run Docker image to import them! 
 
 ## Introduction
 
@@ -21,7 +19,7 @@ It's great for:
 
 ## How does it work?
 
-1. Define documents for MongoDB import in JSON, JavaScript or TypeScript file(s). Read the **[tutorial](./docs/import-data-definition.md)** to learn, how to do that. To see some examples, how to do that, navigate to the **[`samples`](./samples)** directory.
+1. Define documents for MongoDB import in JSON, JavaScript or TypeScript file(s). To learn, how to do that, read the **[import data definition](./docs/import-data-definition.md)** guide. To see some examples, navigate to the **[`examples`](./examples)** directory.
 
 1. Use one of the Mongo Seeding tools, depending on your needs:
 

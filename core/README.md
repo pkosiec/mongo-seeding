@@ -1,11 +1,13 @@
 ![Mongo Seeding](https://raw.githubusercontent.com/pkosiec/mongo-seeding/master/docs/assets/logo.png)
 
 # Mongo Seeding
+
 [![npm version](https://badge.fury.io/js/mongo-seeding.svg)](https://npmjs.org/package/mongo-seeding) [![Build Status](https://travis-ci.org/pkosiec/mongo-seeding.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/9960aeeba19d4992b0df8781cd580eec)](https://www.codacy.com/app/pkosiec/mongo-seeding?utm_source=github.com&utm_medium=referral&utm_content=pkosiec/mongo-seeding&utm_campaign=Badge_Coverage) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9960aeeba19d4992b0df8781cd580eec)](https://www.codacy.com/app/pkosiec/mongo-seeding?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pkosiec/mongo-seeding&amp;utm_campaign=Badge_Grade) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg?path=core)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg?path=core)]()
 
 The ultimate solution for populating your MongoDB database. Define the data in JSON or JavaScript. Import collections and documents!
 
 ## Installation
+
 To install the app, run the following command:
 
 ```bash
@@ -14,7 +16,7 @@ npm install mongo-seeding --save
 
 ## Usage
 
-1. Follow the [tutorial](https://github.com/pkosiec/mongo-seeding/tree/master/docs/import-data-definition.md) to define documents and collections to import. See [`samples`](https://github.com/pkosiec/mongo-seeding/tree/master/samples) directory for examples.
+1. Follow the [tutorial](../docs/import-data-definition.md) to define documents and collections to import.
 1. Import the `seedDatabase` function:
 
     ```javascript
