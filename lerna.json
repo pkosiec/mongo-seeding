@@ -1,6 +1,9 @@
 {
-  "version": "2.2.0",
-  "packages": ["cli", "core", "docker-image"],
+  "version": "3.0.0-0",
+  "packages": [
+    "cli",
+    "core"
+  ],
   "command": {
     "publish": {
       "message": "Bump version to %s"
