@@ -8,13 +8,10 @@ cd ..
 
 echo "Package version: $NPM_VERSION";
 
-TAG=$(if [[ $CI_PULL_REQUEST == "false" ]] && [[ $CI_BRANCH == "master" ]]; then
-  echo "latest";
-  elif [[ $CI_PULL_REQUEST == "false" ]]; then
-  echo "snapshot-branch-$CI_BRANCH";
-  else
-  echo "snapshot-PR-$CI_PULL_REQUEST_BRANCH";
-fi)
+if [[ $CI_PULL_REQUEST == "false" ]] && [[ $CI_BRANCH != "master" ]]; then
+  echo "Skipping pushing image for a branch $CI_BRANCH";
+  exit 0;
+fi
 
 if [[ $CI_PULL_REQUEST == "false" ]] && [[ $CI_BRANCH == "master" ]]; then
   ALREADY_EXISTS=$(curl https://hub.docker.com/v2/repositories/$DOCKER_IMAGE_REPOSITORY/tags/?page_size=10000 | jq -r "[.results | .[] | .name == \"$NPM_VERSION\"] | any")
@@ -24,6 +21,12 @@ if [[ $ALREADY_EXISTS == "true" ]]; then
   echo "Skipping pushing image with the same NPM Version tag";
   exit 0;
 fi
+
+TAG=$(if [[ $CI_PULL_REQUEST == "false" ]] && [[ $CI_BRANCH == "master" ]]; then
+  echo "latest";
+  else
+  echo "snapshot-PR-$CI_PULL_REQUEST_BRANCH";
+fi)
 
 echo "Tagging the Docker image with $TAG tag...";
 docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
