@@ -1,24 +1,22 @@
-import { ObjectId } from 'mongodb';
 import { CollectionToImport, log } from '../common';
-import { fileSystem } from '.';
+import { fileSystem } from './FileSystem';
 
-export class DataPopulator {
-  supportedExtensions: string[];
+export class CollectionPopulator {
+  extensions: string[];
 
-  constructor(supportedExtensions: string[]) {
-    if (supportedExtensions.length === 0) {
+  constructor(extensions: string[]) {
+    if (extensions.length === 0) {
       throw new Error('Array of supported extensions must not be empty');
     }
-
-    this.supportedExtensions = supportedExtensions;
+    this.extensions = extensions;
   }
 
-  populate(inputDirectory: string): CollectionToImport[] {
-    const subdirectories = fileSystem.listValidDirectories(inputDirectory);
-    return this.readCollections(subdirectories, inputDirectory);
+  readCollectionsFromPath(path: string): CollectionToImport[] {
+    const subdirectories = fileSystem.listValidDirectories(path);
+    return this.readCollections(subdirectories, path);
   }
 
-  readCollections(directories: string[], inputDirectory: string) {
+  private readCollections(directories: string[], inputDirectory: string) {
     return directories.reduce(
       (collections: CollectionToImport[], directoryName: string) => {
         const relativePath = `${inputDirectory}/${directoryName}`;
@@ -32,7 +30,7 @@ export class DataPopulator {
     );
   }
 
-  readCollection(path: string, directoryName: string) {
+  private readCollection(path: string, directoryName: string) {
     const name = this.getCollectionName(directoryName);
     const documents = this.populateDocumentsContent(path);
     if (!documents) {
@@ -45,7 +43,7 @@ export class DataPopulator {
     };
   }
 
-  populateDocumentsContent(collectionPath: string) {
+  private populateDocumentsContent(collectionPath: string) {
     const fileNames = fileSystem.listFileNames(collectionPath);
     if (fileNames.length === 0) {
       log(`Directory '${collectionPath}' is empty. Skipping...`);
@@ -54,7 +52,7 @@ export class DataPopulator {
 
     const documentFileNames = fileSystem.filterSupportedDocumentFileNames(
       fileNames,
-      this.supportedExtensions,
+      this.extensions,
     );
     if (documentFileNames.length === 0) {
       log(
@@ -69,7 +67,7 @@ export class DataPopulator {
     return fileSystem.readFilesContent(documentPaths);
   }
 
-  getCollectionName(directoryName: string) {
+  private getCollectionName(directoryName: string) {
     const separators = /\s*[-_\.\s]\s*/;
     let collectionName;
     if (directoryName.match(separators)) {
