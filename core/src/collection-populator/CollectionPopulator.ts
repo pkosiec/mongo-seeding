@@ -11,7 +11,7 @@ export class CollectionPopulator {
     this.extensions = extensions;
   }
 
-  readCollectionsFromPath(path: string): CollectionToImport[] {
+  readFromPath(path: string): CollectionToImport[] {
     const subdirectories = fileSystem.listValidDirectories(path);
     return this.readCollections(subdirectories, path);
   }

@@ -1,6 +1,6 @@
 import * as extend from 'extend';
 import { resolve } from 'path';
-import { AppConfig, DeepPartial } from '.';
+import { AppConfig, DeepPartial, CollectionToImport } from '.';
 
 export const defaultConfig: AppConfig = {
   database: {
@@ -23,4 +23,21 @@ export const defaultConfig: AppConfig = {
 export const getConfig = (ownConfig: DeepPartial<AppConfig>): AppConfig => {
   const config = {};
   return extend(true, config, defaultConfig, ownConfig);
+};
+
+export interface CollectionReadingConfig {
+  extensions: string[];
+  transformers: Array<(collection: CollectionToImport) => CollectionToImport>;
+}
+
+const defaultCollectionReadingConfig: CollectionReadingConfig = {
+  extensions: ['json', 'js'], // files that should be imported
+  transformers: [],
+};
+
+export const getCollectionReadingConfig = (
+  ownConfig: DeepPartial<CollectionReadingConfig>,
+): CollectionReadingConfig => {
+  const config = {};
+  return extend(true, config, defaultCollectionReadingConfig, ownConfig);
 };
