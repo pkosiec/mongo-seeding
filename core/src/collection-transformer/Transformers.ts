@@ -1,13 +1,12 @@
 import { ObjectId } from 'mongodb';
-import { CollectionToImport } from '../common/types';
+import { Collection } from '../common/types';
 
-export type CollectionTransformerFn = (
-  c: CollectionToImport,
-) => CollectionToImport;
+export type CollectionTransformerFn = (c: Collection) => Collection;
 
+// Rewrites `id` property to `_id` for every document
 export const replaceDocumentIdWithUnderscoreId = (
-  collection: CollectionToImport,
-): CollectionToImport => {
+  collection: Collection,
+): Collection => {
   const documents = collection.documents.map(
     (document: { id?: string | ObjectId }) => {
       if (typeof document.id === 'undefined') {

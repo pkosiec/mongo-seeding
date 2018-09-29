@@ -1,5 +1,3 @@
-import { ObjectId } from 'mongodb';
-
 export type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };
 
 export interface DatabaseConfig {
@@ -12,17 +10,14 @@ export interface DatabaseConfig {
 }
 
 export interface AppConfig {
-  database: DatabaseConfig;
-  databaseConnectionUri?: string;
+  database: string | DatabaseConfig;
+  databaseReconnectTimeout: number;
   inputPath: string;
   dropDatabase: boolean;
   dropCollection: boolean;
-  replaceIdWithUnderscoreId: boolean;
-  supportedExtensions: string[];
-  reconnectTimeoutInSeconds: number;
 }
 
-export interface CollectionToImport {
+export interface Collection {
   name: string;
-  documents: any[];
+  documents: Object[];
 }

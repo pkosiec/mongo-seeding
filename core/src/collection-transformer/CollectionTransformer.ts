@@ -1,9 +1,9 @@
-import { CollectionToImport } from '../common';
+import { Collection } from '../common';
 import { CollectionTransformerFn } from './Transformers';
 
 export class CollectionTransformer {
   transform(
-    collections: CollectionToImport[],
+    collections: Collection[],
     transformers: Array<CollectionTransformerFn>,
   ) {
     let arr = collections;

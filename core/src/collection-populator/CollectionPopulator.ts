@@ -1,4 +1,4 @@
-import { CollectionToImport, log } from '../common';
+import { Collection, log } from '../common';
 import { fileSystem } from './FileSystem';
 
 export class CollectionPopulator {
@@ -11,14 +11,14 @@ export class CollectionPopulator {
     this.extensions = extensions;
   }
 
-  readFromPath(path: string): CollectionToImport[] {
+  readFromPath(path: string): Collection[] {
     const subdirectories = fileSystem.listValidDirectories(path);
     return this.readCollections(subdirectories, path);
   }
 
   private readCollections(directories: string[], inputDirectory: string) {
     return directories.reduce(
-      (collections: CollectionToImport[], directoryName: string) => {
+      (collections: Collection[], directoryName: string) => {
         const relativePath = `${inputDirectory}/${directoryName}`;
         const collection = this.readCollection(relativePath, directoryName);
         if (collection) {

@@ -1,16 +1,16 @@
 import { Database } from '../database';
-import { CollectionToImport, log } from '../common';
+import { Collection, log } from '../common';
 
 export class DataImporter {
   constructor(public db: Database) {}
 
-  async import(collections: CollectionToImport[]) {
+  async import(collections: Collection[]) {
     for (const collection of collections) {
       await this.importCollection(collection);
     }
   }
 
-  async importCollection(collection: CollectionToImport) {
+  async importCollection(collection: Collection) {
     log(
       `Inserting ${collection.documents.length} documents into collection ${
         collection.name
