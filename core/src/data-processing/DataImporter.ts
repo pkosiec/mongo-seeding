@@ -1,16 +1,16 @@
 import { Database } from '../database';
-import { Collection, log } from '../common';
+import { SeederCollection, log } from '../common';
 
-export class DataImporter {
+export class CollectionImporter {
   constructor(public db: Database) {}
 
-  async import(collections: Collection[]) {
+  async import(collections: SeederCollection[]) {
     for (const collection of collections) {
       await this.importCollection(collection);
     }
   }
 
-  async importCollection(collection: Collection) {
+  async importCollection(collection: SeederCollection) {
     log(
       `Inserting ${collection.documents.length} documents into collection ${
         collection.name

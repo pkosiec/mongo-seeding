@@ -1,38 +1,35 @@
-import { MongoClient, Db } from 'mongodb';
-import { DatabaseConfig, log } from '../common';
+import { MongoClient } from 'mongodb';
+import {
+  SeederDatabaseConfigObject,
+  log,
+  SeederDatabaseConfig,
+  isSeederDatabaseConfigObject,
+} from '../common';
 import { Database, sleep, checkTimeoutExpired } from '.';
 
-export interface DatabaseConnectorConfig {
-  databaseConnectionUri?: string;
-  databaseConfig?: DatabaseConfig;
-}
-
 export class DatabaseConnector {
-  static SLEEP_INTERVAL_MILLIS = 500;
   static DEFAULT_DB_NAME = 'admin';
-  static DEFAULT_RECONNECT_TIME_IN_SECONDS = 10;
+  static DEFAULT_RECONNECT_TIMEOUT_MILLIS = 10000;
+  static SLEEP_INTERVAL_MILLIS = 500;
 
   client?: MongoClient;
-  reconnectTimeoutInSeconds: number;
+  reconnectTimeoutMillis: number;
 
-  constructor(reconnectTimeoutInSeconds?: number) {
-    this.reconnectTimeoutInSeconds =
-      reconnectTimeoutInSeconds != null
-        ? reconnectTimeoutInSeconds
-        : DatabaseConnector.DEFAULT_RECONNECT_TIME_IN_SECONDS;
+  constructor(reconnectTimeoutMillis?: number) {
+    this.reconnectTimeoutMillis =
+      reconnectTimeoutMillis != null
+        ? reconnectTimeoutMillis
+        : DatabaseConnector.DEFAULT_RECONNECT_TIMEOUT_MILLIS;
   }
 
-  async connect({
-    databaseConnectionUri,
-    databaseConfig,
-  }: DatabaseConnectorConfig): Promise<Database> {
+  async connect(config: SeederDatabaseConfig): Promise<Database> {
     let uri, databaseName;
-    if (databaseConnectionUri) {
-      uri = databaseConnectionUri;
-      databaseName = this.getDbName(databaseConnectionUri);
-    } else if (databaseConfig) {
-      uri = this.getDbConnectionUri(databaseConfig);
-      databaseName = databaseConfig.name;
+    if (typeof config === 'string') {
+      uri = config;
+      databaseName = this.getDbName(uri);
+    } else if (isSeederDatabaseConfigObject(config)) {
+      uri = this.getDbConnectionUri(config);
+      databaseName = config.name;
     } else {
       throw new Error(
         'You have to pass connection URI or database config object',
@@ -48,19 +45,21 @@ export class DatabaseConnector {
   ): Promise<Database> {
     log(`Connecting to ${dbConnectionUri}...`);
     const startMillis = new Date().getTime();
-    const reconnectTimeoutMillis = this.reconnectTimeoutInSeconds * 1000;
     let client: MongoClient | undefined;
     do {
       try {
-        client = await MongoClient.connect(dbConnectionUri, {
-          ignoreUndefined: true,
-          useNewUrlParser: true,
-        });
+        client = await MongoClient.connect(
+          dbConnectionUri,
+          {
+            ignoreUndefined: true,
+            useNewUrlParser: true,
+          },
+        );
       } catch (err) {
-        if (checkTimeoutExpired(startMillis, reconnectTimeoutMillis)) {
+        if (checkTimeoutExpired(startMillis, this.reconnectTimeoutMillis)) {
           throw new Error(
             `Timeout ${
-              this.reconnectTimeoutInSeconds
+              this.reconnectTimeoutMillis
             }s expired while connecting to database due to: ${err.name}: ${
               err.message
             }`,
@@ -95,7 +94,7 @@ export class DatabaseConnector {
     name,
     username,
     password,
-  }: DatabaseConfig) {
+  }: SeederDatabaseConfigObject) {
     let credentials = '';
     if (username) {
       credentials = `${username}${password ? `:${password}` : ''}@`;

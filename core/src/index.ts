@@ -1,28 +1,32 @@
 import {
   log,
   DeepPartial,
-  AppConfig,
-  CollectionReadingConfig,
+  SeederConfig,
+  SeederCollectionReadingConfig,
   getCollectionReadingConfig,
-  mergeAppConfig,
+  mergeSeederConfig,
+  defaultSeederConfig,
+  SeederCollection,
 } from './common';
 import { DatabaseConnector } from './database';
-import { DataImporter } from './data-processing';
-import { defaultConfig, CollectionToImport } from '../dist/common';
+import { CollectionImporter } from './data-processing';
 import { CollectionPopulator } from 'collection-populator/CollectionPopulator';
 import { CollectionTransformer } from 'collection-transformer/CollectionTransformer';
+import { DefaultTransformers } from 'collection-transformer/Transformers';
 
 export class Seeder {
-  config: AppConfig = defaultConfig;
+  static Transformers = DefaultTransformers;
 
-  constructor(config: DeepPartial<AppConfig>) {
-    this.config = mergeAppConfig(config);
+  config: SeederConfig = defaultSeederConfig;
+
+  constructor(config: DeepPartial<SeederConfig>) {
+    this.config = mergeSeederConfig(config);
   }
 
   readCollectionsFromPath = (
     path: string,
-    partialConfig: DeepPartial<CollectionReadingConfig>,
-  ): CollectionToImport[] => {
+    partialConfig: DeepPartial<SeederCollectionReadingConfig>,
+  ): SeederCollection[] => {
     const config = getCollectionReadingConfig(partialConfig);
     let collections = new CollectionPopulator(config.extensions).readFromPath(
       path,
@@ -39,8 +43,8 @@ export class Seeder {
   };
 
   import = async (
-    collections: CollectionToImport[],
-    partialConfig: DeepPartial<AppConfig>,
+    collections: SeederCollection[],
+    partialConfig: DeepPartial<SeederConfig>,
   ) => {
     if (collections.length === 0) {
       log('No data to import. Finishing...');
@@ -49,16 +53,13 @@ export class Seeder {
 
     log('Starting...');
 
-    const config = mergeAppConfig(partialConfig, this.config);
+    const config = mergeSeederConfig(partialConfig, this.config);
     const databaseConnector = new DatabaseConnector(
-      config.reconnectTimeoutInSeconds,
+      config.databaseReconnectTimeout,
     );
 
     try {
-      const database = await databaseConnector.connect({
-        databaseConnectionUri: config.databaseConnectionUri,
-        databaseConfig: config.database,
-      });
+      const database = await databaseConnector.connect(config.database);
 
       if (!config.dropDatabase && config.dropCollection) {
         log('Dropping collections...');
@@ -72,7 +73,7 @@ export class Seeder {
         await database.drop();
       }
 
-      await new DataImporter(database).import(collections);
+      await new CollectionImporter(database).import(collections);
     } catch (err) {
       throw wrapError(err);
     } finally {

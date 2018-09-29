@@ -1,8 +1,7 @@
 import * as extend from 'extend';
-import { resolve } from 'path';
-import { AppConfig, DeepPartial, CollectionToImport } from '.';
+import { SeederConfig, DeepPartial, SeederCollection } from './';
 
-export const defaultConfig: AppConfig = {
+export const defaultSeederConfig: SeederConfig = {
   database: {
     protocol: 'mongodb',
     host: '127.0.0.1',
@@ -11,33 +10,33 @@ export const defaultConfig: AppConfig = {
     username: undefined,
     password: undefined,
   },
-  databaseConnectionUri: undefined,
-  inputPath: resolve(__dirname, '../../data'), // input directory with import data structure
-  dropDatabase: false, // drops entire database before import
-  dropCollection: false, // drops collection before importing it
-  replaceIdWithUnderscoreId: false, // rewrites `id` property to `_id` for every document
-  supportedExtensions: ['json', 'js'], // files that should be imported
-  reconnectTimeoutInSeconds: 10, // maximum time of waiting for successful MongoDB connection
+  databaseReconnectTimeout: 10000,
+  dropDatabase: false,
+  dropCollection: false,
 };
 
-export const getConfig = (ownConfig: DeepPartial<AppConfig>): AppConfig => {
+export const mergeSeederConfig = (
+  partial: DeepPartial<SeederConfig>,
+  previous?: SeederConfig,
+): SeederConfig => {
+  const source = previous ? previous : defaultSeederConfig;
   const config = {};
-  return extend(true, config, defaultConfig, ownConfig);
+  return extend(true, config, source, partial);
 };
 
-export interface CollectionReadingConfig {
+export interface SeederCollectionReadingConfig {
   extensions: string[];
-  transformers: Array<(collection: CollectionToImport) => CollectionToImport>;
+  transformers: Array<(collection: SeederCollection) => SeederCollection>;
 }
 
-const defaultCollectionReadingConfig: CollectionReadingConfig = {
+const defaultCollectionReadingConfig: SeederCollectionReadingConfig = {
   extensions: ['json', 'js'], // files that should be imported
-  transformers: [],
+  transformers: [], // optional transformer functions
 };
 
 export const getCollectionReadingConfig = (
-  ownConfig: DeepPartial<CollectionReadingConfig>,
-): CollectionReadingConfig => {
+  ownConfig: DeepPartial<SeederCollectionReadingConfig>,
+): SeederCollectionReadingConfig => {
   const config = {};
   return extend(true, config, defaultCollectionReadingConfig, ownConfig);
 };

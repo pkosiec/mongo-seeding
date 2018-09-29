@@ -1,12 +1,12 @@
 import { ObjectId } from 'mongodb';
-import { Collection } from '../common/types';
+import { SeederCollection } from '../common/types';
 
-export type CollectionTransformerFn = (c: Collection) => Collection;
+export type CollectionTransformerFn = (c: SeederCollection) => SeederCollection;
 
 // Rewrites `id` property to `_id` for every document
-export const replaceDocumentIdWithUnderscoreId = (
-  collection: Collection,
-): Collection => {
+const replaceDocumentIdWithUnderscoreId = (
+  collection: SeederCollection,
+): SeederCollection => {
   const documents = collection.documents.map(
     (document: { id?: string | ObjectId }) => {
       if (typeof document.id === 'undefined') {
@@ -27,4 +27,8 @@ export const replaceDocumentIdWithUnderscoreId = (
     ...collection,
     documents,
   };
+};
+
+export const DefaultTransformers = {
+  replaceDocumentIdWithUnderscoreId,
 };
