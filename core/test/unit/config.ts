@@ -1,25 +1,25 @@
+import { DeepPartial } from '../../src/common';
 import {
-  DeepPartial,
-  AppConfig,
-  getConfig,
-  defaultConfig,
-} from '../../src/common';
+  SeederConfig,
+  mergeSeederConfig,
+  defaultSeederConfig,
+  SeederCollectionReadingOptions,
+  mergeCollectionReadingOptions,
+  defaultCollectionReadingOptions,
+} from '../../src';
 
-describe('Config', () => {
+describe('SeederConfig', () => {
   it('should merge config with default one', () => {
-    const partialConfig: DeepPartial<AppConfig> = {
+    const partialConfig: DeepPartial<SeederConfig> = {
       database: {
         port: 3000,
         host: 'mongo',
         username: 'test',
         password: '123',
       },
-      inputPath: '/',
-      replaceIdWithUnderscoreId: true,
-      reconnectTimeoutInSeconds: 20,
-      supportedExtensions: ['md', 'txt'],
+      databaseReconnectTimeout: 20000,
     };
-    const expectedConfig: DeepPartial<AppConfig> = {
+    const expectedConfig: SeederConfig = {
       database: {
         protocol: 'mongodb',
         host: 'mongo',
@@ -28,32 +28,66 @@ describe('Config', () => {
         username: 'test',
         password: '123',
       },
-      inputPath: '/',
       dropDatabase: false,
-      dropCollection: false,
-      replaceIdWithUnderscoreId: true,
-      supportedExtensions: ['md', 'txt'],
-      reconnectTimeoutInSeconds: 20,
+      dropCollections: false,
+      databaseReconnectTimeout: 20000,
     };
 
-    const config = getConfig(partialConfig);
+    const config = mergeSeederConfig(partialConfig);
 
     expect(config).toEqual(expectedConfig);
   });
 
   it('should replace undefined values with default ones', () => {
-    const partialConfig: DeepPartial<AppConfig> = {
+    const partialConfig: DeepPartial<SeederConfig> = {
       database: {
         name: undefined,
         port: undefined,
         host: undefined,
       },
-      replaceIdWithUnderscoreId: undefined,
-      reconnectTimeoutInSeconds: undefined,
+      databaseReconnectTimeout: undefined,
     };
 
-    const config = getConfig(partialConfig);
+    const config = mergeSeederConfig(partialConfig);
 
-    expect(config).toEqual(defaultConfig);
+    expect(config).toEqual(defaultSeederConfig);
+  });
+
+  it('should override default database config object with connection URI', () => {
+    const partialConfig: DeepPartial<SeederConfig> = {
+      database: 'testURI',
+      databaseReconnectTimeout: undefined,
+    };
+
+    const config = mergeSeederConfig(partialConfig);
+
+    expect(config).toHaveProperty('database', 'testURI');
+  });
+});
+
+describe('SeederCollectionReadingOptions', () => {
+  it('should merge options with default ones', () => {
+    const partialOptions: DeepPartial<SeederCollectionReadingOptions> = {
+      extensions: [],
+    };
+    const expectedOptions: SeederCollectionReadingOptions = {
+      extensions: ['json', 'js'],
+      transformers: [],
+    };
+
+    const options = mergeCollectionReadingOptions(partialOptions);
+
+    expect(options).toEqual(expectedOptions);
+  });
+
+  it('should replace undefined values with default ones', () => {
+    const partialOptions: DeepPartial<SeederCollectionReadingOptions> = {
+      extensions: undefined,
+      transformers: undefined,
+    };
+
+    const options = mergeCollectionReadingOptions(partialOptions);
+
+    expect(options).toEqual(defaultCollectionReadingOptions);
   });
 });

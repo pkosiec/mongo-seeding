@@ -1,4 +1,4 @@
-import { fileSystem } from '../../src/data-processing';
+import { fileSystem } from '../../src/populator/filesystem';
 
 jest.mock('fs', () => ({
   lstatSync: jest.fn().mockReturnValue({

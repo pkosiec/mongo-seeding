@@ -1,10 +1,13 @@
-import { DataTransformer } from '../../src/data-processing';
-import { CollectionToImport } from '../../src/common';
+import {
+  CollectionTransformer,
+  DefaultTransformers,
+} from '../../src/transformer';
+import { SeederCollection } from '../../src/common';
 
-describe('DataTransformer', () => {
+describe('CollectionTransformer', () => {
   it('should transform collections with given functions', () => {
-    const dataTransformer = new DataTransformer();
-    const collections: CollectionToImport[] = [
+    const collectionTransformer = new CollectionTransformer();
+    const collections: SeederCollection[] = [
       {
         name: '1',
         documents: [],
@@ -20,14 +23,14 @@ describe('DataTransformer', () => {
     ];
     const stubFunction = jest.fn();
 
-    dataTransformer.transform(collections, stubFunction);
+    collectionTransformer.transform(collections, [stubFunction]);
     expect(stubFunction).toHaveBeenCalledTimes(3);
     expect(stubFunction).toBeCalledWith(collections[1]);
   });
 
   it('should replace document `id` property with `_id`', () => {
-    const dataTransformer = new DataTransformer();
-    const collections: CollectionToImport[] = [
+    const collectionTransformer = new CollectionTransformer();
+    const collections: SeederCollection[] = [
       {
         name: 'Test',
         documents: [
@@ -48,10 +51,9 @@ describe('DataTransformer', () => {
       },
     ];
 
-    const actualData = dataTransformer.transform(
-      collections,
-      DataTransformer.replaceDocumentIdWithUnderscoreId,
-    );
+    const actualData = collectionTransformer.transform(collections, [
+      DefaultTransformers.replaceDocumentIdWithUnderscoreId,
+    ]);
 
     expect(actualData).toEqual(expectedData);
   });

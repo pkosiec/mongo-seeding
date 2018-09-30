@@ -1,33 +1,33 @@
-import { DataPopulator } from '../../src/data-processing';
+import { CollectionPopulator } from '../../src/populator';
 
-describe('DataPopulator', () => {
+describe('CollectionPopulator', () => {
   it('should throw an error when passed no supported extensions', () => {
     expect(() => {
-      new DataPopulator([]);
+      new CollectionPopulator([]);
     }).toThrowError('Array of supported extensions must not be empty');
   });
 
   it('should get proper collection name from directory name', () => {
-    const dataPopulator = new DataPopulator(['js']);
+    const collectionPopulator = new CollectionPopulator(['js']);
     const collectionName = 'TestCollection';
     const collectionNumberName = '1';
 
-    const collectionWithoutNumber = dataPopulator.getCollectionName(
+    const collectionWithoutNumber = collectionPopulator.getCollectionName(
       collectionName,
     );
-    const collectionWithDash = dataPopulator.getCollectionName(
+    const collectionWithDash = collectionPopulator.getCollectionName(
       `1-${collectionName}`,
     );
-    const collectionWithUnderscore = dataPopulator.getCollectionName(
+    const collectionWithUnderscore = collectionPopulator.getCollectionName(
       `1_${collectionName}`,
     );
-    const collectionWithDot = dataPopulator.getCollectionName(
+    const collectionWithDot = collectionPopulator.getCollectionName(
       `1.${collectionName}`,
     );
-    const collectionWithSpace = dataPopulator.getCollectionName(
+    const collectionWithSpace = collectionPopulator.getCollectionName(
       `1 ${collectionName}`,
     );
-    const collectionWithNumberName = dataPopulator.getCollectionName(
+    const collectionWithNumberName = collectionPopulator.getCollectionName(
       collectionNumberName,
     );
 

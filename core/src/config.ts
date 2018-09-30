@@ -35,7 +35,7 @@ export interface SeederCollectionReadingOptions {
   transformers: Array<(collection: SeederCollection) => SeederCollection>; // optional transformer functions
 }
 
-const defaultCollectionReadingOptions: SeederCollectionReadingOptions = {
+export const defaultCollectionReadingOptions: SeederCollectionReadingOptions = {
   extensions: ['json', 'js'],
   transformers: [],
 };
