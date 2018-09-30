@@ -12,7 +12,9 @@ const helpSections = [
     header: 'Example usage',
     content: [
       '$ {bold seed}',
+      '$ {bold seed ./seed-data/}',
       '$ {bold seed -u `mongodb://127.0.0.1:27017/mydbname` --drop-database --replace-id}',
+      '$ {bold seed -u `mongodb://127.0.0.1:27017/mydbname` --replace-id /absolute/path/}',
     ],
   },
   {

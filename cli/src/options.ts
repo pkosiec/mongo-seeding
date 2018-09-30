@@ -1,8 +1,8 @@
-import { resolve } from 'path';
 import * as extend from 'extend';
-import { AppConfig, DeepPartial } from 'mongo-seeding/dist/common';
+import { DeepPartial } from 'mongo-seeding/dist/common';
 import { throwOnNegativeNumber } from './validators';
 import { CommandLineOption, CommandLineArguments } from './types';
+import { SeederConfig } from 'mongo-seeding';
 
 export const cliOptions: CommandLineOption[] = [
   {
@@ -89,7 +89,7 @@ export const validateOptions = (options: CommandLineArguments) => {
 
 export const createConfigFromOptions = (
   cmdArgs: CommandLineArguments,
-): DeepPartial<AppConfig> => {
+): DeepPartial<SeederConfig> => {
   const commandLineConfig = populateCommandLineOptions(cmdArgs);
   const envConfig = populateEnvOptions();
   const config = {};
@@ -98,44 +98,42 @@ export const createConfigFromOptions = (
 
 function populateCommandLineOptions(
   options: CommandLineArguments,
-): DeepPartial<AppConfig> {
+): DeepPartial<SeederConfig> {
   return {
-    database: {
-      protocol: options['db-protocol'],
-      host: options['db-host'],
-      port: options['db-port'],
-      name: options['db-name'],
-      username: options['db-username'],
-      password: options['db-password'],
-    },
-    databaseConnectionUri: options['db-uri'],
-    inputPath: options.data ? resolve(options.data) : resolve('./'),
+    database: options['db-uri']
+      ? options['db-uri']
+      : {
+          protocol: options['db-protocol'],
+          host: options['db-host'],
+          port: options['db-port'],
+          name: options['db-name'],
+          username: options['db-username'],
+          password: options['db-password'],
+        },
+    databaseReconnectTimeout: options['reconnect-timeout'],
     dropDatabase: options['drop-database'],
     dropCollection: options['drop-collection'],
-    replaceIdWithUnderscoreId: options['replace-id'],
-    reconnectTimeoutInSeconds: options['reconnect-timeout'],
   };
 }
 
-function populateEnvOptions(): DeepPartial<AppConfig> {
+function populateEnvOptions(): DeepPartial<SeederConfig> {
   const env = process.env;
-  const envOptions: DeepPartial<AppConfig> = {
-    database: {
-      protocol: env.DB_PROTOCOL ? String(env.DB_PROTOCOL) : undefined,
-      host: env.DB_HOST ? String(env.DB_HOST) : undefined,
-      port: env.DB_PORT ? Number(env.DB_PORT) : undefined,
-      name: env.DB_NAME ? String(env.DB_NAME) : undefined,
-      username: env.DB_USERNAME ? String(env.DB_USERNAME) : undefined,
-      password: env.DB_PASSWORD ? String(env.DB_PASSWORD) : undefined,
-    },
-    databaseConnectionUri: env.DB_URI ? String(env.DB_URI) : undefined,
-    dropDatabase: env.DROP_DATABASE === 'true',
-    dropCollection: env.DROP_COLLECTION === 'true',
-    replaceIdWithUnderscoreId: env.REPLACE_ID === 'true',
-    supportedExtensions: ['ts', 'js', 'json'],
-    reconnectTimeoutInSeconds: env.RECONNECT_TIMEOUT
+  const envOptions: DeepPartial<SeederConfig> = {
+    database: env.DB_URI
+      ? String(env.DB_URI)
+      : {
+          protocol: env.DB_PROTOCOL ? String(env.DB_PROTOCOL) : undefined,
+          host: env.DB_HOST ? String(env.DB_HOST) : undefined,
+          port: env.DB_PORT ? Number(env.DB_PORT) : undefined,
+          name: env.DB_NAME ? String(env.DB_NAME) : undefined,
+          username: env.DB_USERNAME ? String(env.DB_USERNAME) : undefined,
+          password: env.DB_PASSWORD ? String(env.DB_PASSWORD) : undefined,
+        },
+    databaseReconnectTimeout: env.RECONNECT_TIMEOUT
       ? Number(env.RECONNECT_TIMEOUT)
       : undefined,
+    dropDatabase: env.DROP_DATABASE === 'true',
+    dropCollection: env.DROP_COLLECTION === 'true',
   };
 
   return envOptions;

@@ -17,10 +17,15 @@ export const defaultSeederConfig: SeederConfig = {
 };
 
 export const mergeSeederConfig = (
-  partial: DeepPartial<SeederConfig>,
+  partial?: DeepPartial<SeederConfig>,
   previous?: SeederConfig,
 ): SeederConfig => {
   const source = previous ? previous : defaultSeederConfig;
+
+  if (!partial) {
+    return source;
+  }
+
   const config = {};
   return extend(true, config, source, partial);
 };
@@ -36,10 +41,15 @@ const defaultCollectionReadingConfig: SeederCollectionReadingConfig = {
 };
 
 export const mergeCollectionReadingConfig = (
-  ownConfig: DeepPartial<SeederCollectionReadingConfig>,
+  partial?: DeepPartial<SeederCollectionReadingConfig>,
   previous?: SeederCollectionReadingConfig,
 ): SeederCollectionReadingConfig => {
   const source = previous ? previous : defaultCollectionReadingConfig;
+
+  if (!partial) {
+    return source;
+  }
+
   const config = {};
-  return extend(true, config, source, ownConfig);
+  return extend(true, config, source, partial);
 };

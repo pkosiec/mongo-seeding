@@ -45,7 +45,7 @@ export class Seeder {
 
   import = async (
     collections: SeederCollection[],
-    partialConfig: DeepPartial<SeederConfig>,
+    partialConfig?: DeepPartial<SeederConfig>,
   ) => {
     if (collections.length === 0) {
       log('No data to import. Finishing...');
@@ -55,6 +55,7 @@ export class Seeder {
     log('Starting...');
 
     const config = mergeSeederConfig(partialConfig, this.config);
+
     const databaseConnector = new DatabaseConnector(
       config.databaseReconnectTimeout,
     );
