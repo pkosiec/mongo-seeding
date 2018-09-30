@@ -65,17 +65,19 @@ describe('FileSystem', () => {
 
   it('should ignore hidden files and files with no extension', () => {
     const ignoreFile = fileSystem.shouldIgnoreFile('test.extension'.split('.'));
+    expect(ignoreFile).toBeFalsy();
+
     const ignoreHiddenFile = fileSystem.shouldIgnoreFile('.test.js'.split('.'));
+    expect(ignoreHiddenFile).toBeTruthy();
+
     const ignoreFileWithNoExtension = fileSystem.shouldIgnoreFile(
       'test'.split('.'),
     );
+    expect(ignoreFileWithNoExtension).toBeTruthy();
+
     const ignoreHiddenFileWithNoExtension = fileSystem.shouldIgnoreFile(
       '.test'.split('.'),
     );
-
-    expect(ignoreFile).toBeFalsy();
-    expect(ignoreHiddenFile).toBeTruthy();
-    expect(ignoreFileWithNoExtension).toBeTruthy();
     expect(ignoreHiddenFileWithNoExtension).toBeTruthy();
   });
 

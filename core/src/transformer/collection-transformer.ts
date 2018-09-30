@@ -1,4 +1,4 @@
-import { SeederCollection } from 'common';
+import { SeederCollection } from '../common';
 import { CollectionTransformerFn } from '.';
 
 export class CollectionTransformer {

@@ -12,30 +12,37 @@ describe('CollectionPopulator', () => {
     const collectionName = 'TestCollection';
     const collectionNumberName = '1';
 
-    const collectionWithoutNumber = collectionPopulator.getCollectionName(
-      collectionName,
-    );
-    const collectionWithDash = collectionPopulator.getCollectionName(
-      `1-${collectionName}`,
-    );
-    const collectionWithUnderscore = collectionPopulator.getCollectionName(
-      `1_${collectionName}`,
-    );
-    const collectionWithDot = collectionPopulator.getCollectionName(
-      `1.${collectionName}`,
-    );
-    const collectionWithSpace = collectionPopulator.getCollectionName(
-      `1 ${collectionName}`,
-    );
-    const collectionWithNumberName = collectionPopulator.getCollectionName(
-      collectionNumberName,
-    );
+    const testCases: Array<{ name: string; expected: string }> = [
+      {
+        name: collectionName,
+        expected: collectionName,
+      },
+      {
+        name: `1-${collectionName}`,
+        expected: collectionName,
+      },
+      {
+        name: `1_${collectionName}`,
+        expected: collectionName,
+      },
+      {
+        name: `1.${collectionName}`,
+        expected: collectionName,
+      },
+      {
+        name: `1 ${collectionName}`,
+        expected: collectionName,
+      },
+      {
+        name: collectionNumberName,
+        expected: collectionNumberName,
+      },
+    ];
 
-    expect(collectionWithoutNumber).toBe(collectionName);
-    expect(collectionWithDash).toBe(collectionName);
-    expect(collectionWithUnderscore).toBe(collectionName);
-    expect(collectionWithDot).toBe(collectionName);
-    expect(collectionWithSpace).toBe(collectionName);
-    expect(collectionWithNumberName).toBe(collectionNumberName);
+    for (const testCase of testCases) {
+      // @ts-ignore
+      const result = collectionPopulator.getCollectionName(testCase.name);
+      expect(result).toBe(testCase.expected);
+    }
   });
 });

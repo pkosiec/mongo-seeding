@@ -29,9 +29,16 @@ export class Seeder {
     // TODO: Dynamically load the module
     // const CollectionPopulator = require('collection-populator/CollectionPopulator');
     const config = mergeCollectionReadingOptions(partialConfig);
-    let collections = new CollectionPopulator(config.extensions).readFromPath(
-      path,
-    );
+
+    let collections;
+
+    try {
+      collections = new CollectionPopulator(config.extensions).readFromPath(
+        path,
+      );
+    } catch (err) {
+      throw wrapError(err);
+    }
 
     if (config.transformers.length > 0) {
       collections = new CollectionTransformer().transform(

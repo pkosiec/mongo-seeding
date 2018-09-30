@@ -1,5 +1,8 @@
-import { DatabaseConnector, Database } from '../../src/database';
-import { defaultConfig } from '../../src/common';
+import {
+  DatabaseConnector,
+  Database,
+  defaultDatabaseConfigObject,
+} from '../../src/database';
 import {
   removeUnderscoreIdProperty,
   createCollection,
@@ -11,10 +14,8 @@ let database: Database;
 
 beforeAll(async () => {
   database = await databaseConnector.connect({
-    databaseConfig: {
-      ...defaultConfig.database,
-      name: 'coredb',
-    },
+    ...defaultDatabaseConfigObject,
+    name: 'coredb',
   });
   await database.db.dropDatabase();
 });
@@ -71,17 +72,17 @@ describe('Database', () => {
   });
 
   it('should drop collection', async () => {
-    await createCollection(database.db, 'first');
-    await createCollection(database.db, 'second');
+    await createCollection(database.db, 'firstCol');
+    await createCollection(database.db, 'secondCol');
 
     const collections = await listExistingCollections(database.db);
     await expect(collections).toHaveLength(2);
-    await expect(collections).toContainEqual('first');
-    await expect(collections).toContainEqual('second');
+    await expect(collections).toContainEqual('firstCol');
+    await expect(collections).toContainEqual('secondCol');
 
-    await database.dropCollectionIfExists('first');
+    await database.dropCollectionIfExists('firstCol');
     await expect(listExistingCollections(database.db)).resolves.toEqual([
-      'second',
+      'secondCol',
     ]);
   });
 });

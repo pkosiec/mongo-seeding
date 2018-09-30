@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { SeederCollection } from 'common/types';
+import { SeederCollection } from '../common';
 
 export type CollectionTransformerFn = (c: SeederCollection) => SeederCollection;
 
