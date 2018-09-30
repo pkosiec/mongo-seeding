@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "npm test",
-    "test": "jest"
+    "test": "jest -i"
   },
   "dependencies": {
     "mongodb": "^3.1.3",

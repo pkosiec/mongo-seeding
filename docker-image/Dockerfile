@@ -27,7 +27,7 @@ RUN rm -rf /app/src/
 # Stage 2: CLI
 #
 
-FROM node:10-alpine AS cliBuilder
+FROM node:10-alpine
 LABEL Maintainer="Pawel Kosiec <pawel@kosiec.net>"
 
 ENV CLI_DIR=./cli
@@ -37,7 +37,7 @@ WORKDIR /app
 COPY $CLI_DIR/package.json $CLI_DIR/package-lock.json /app/
 RUN npm i --no-optional
 
-# Copy core
+# Copy built core 
 COPY --from=coreBuilder /app/ /app/node_modules/mongo-seeding/
 
 # Copy app sources
@@ -48,20 +48,10 @@ COPY $CLI_DIR/bin/ /app/bin/
 # Build app
 RUN npm run build
 
-# Remove sources
+# Remove unnecessary sources
 RUN rm -rf /app/src/
 
-#
-# Stage 2 
-#
-
-FROM node:10-alpine
-WORKDIR /app
-
-# Copy built app
-COPY --from=cliBuilder /app/ /app/
-
-# Create a symlink for "seed" command
-RUN npm link
+# Create a symlink
+RUN npm link mongo-seeding-cli
 
 CMD seed

@@ -93,6 +93,8 @@ npm install mongo-seeding --save
         });
       ```
 
+See an [**import data example**](../examples/import-data) for a sample Node.js application utilizing the library. 
+
 ## API description
 
 The `Seeder` class contains the following methods.
@@ -105,7 +107,7 @@ Creates a new `Seeder` object and loads configuration for data import.
 
 You can override any default configuration property by passing partial config object to the `Seeder` constructor. The object is merged with the default configuration object. To use all default settings, simply omit the constructor argument (`new Seeder()`).
 
-The following snippets represents the type definition of `Seeder` config with all available properties:
+The following snippet represents the type definition of `Seeder` config with all available properties:
 
 ```javascript
 export interface SeederConfig {
@@ -143,7 +145,7 @@ const defaultConfig = {
   },
   databaseReconnectTimeout: 10000,
   dropDatabase: false,
-  dropCollection: false,
+  dropCollections: false,
 };
 ```
 
@@ -164,7 +166,7 @@ const collectionReadingOptions = {
 }
 
 const collections = seeder.readCollectionsFromPath(
-  path.resolve("./your/path",
+  path.resolve('./your/path'),
   collectionReadingOptions
 );
 ```

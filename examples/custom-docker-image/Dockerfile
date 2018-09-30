@@ -13,7 +13,7 @@ RUN npm install
 ENV DB_NAME dockerexample
 ENV DB_PORT 30000
 ENV DROP_DATABASE true
-ENV REPLACE_ID_TO_UNDERSCORE_ID true
+ENV REPLACE_ID true
 
 # Set default workdir to simplify running the image
 WORKDIR /data-import//data

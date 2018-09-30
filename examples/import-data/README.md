@@ -6,6 +6,7 @@ Data import files are prepared to show multiple possibilities of data definition
 ## Prerequisites
 
 In order to run this example, it's recommended to install the following tools:
+
 - [Docker](https://docker.com) (optional) - to run MongoDB and Mongo Seeding Docker Image
 - [NodeJS with NPM](https://nodejs.org) (optional) - to run JavaScript example
 
@@ -31,43 +32,49 @@ In order to import the sample data, use one of Mongo Seeding tools. The followin
 
 ### JavaScript library
 
-1. Initialize a new Node.js project in this directory (folder, which contains this Readme file) with the command:
+1.  Initialize a new Node.js project in this directory (folder, which contains this Readme file) with the command:
 
     ```
     npm init -y
     ```
 
-1. Create a new `index.js` file in the same directory with the following content:
-    
+1.  Create a new `index.js` file in the same directory with the following content:
+
     ```javascript
     const path = require('path');
-    const { seedDatabase } = require('mongo-seeding');
+    const { Seeder } = require('mongo-seeding');
 
     const config = {
-    database: {
+      database: {
         name: 'testing',
-    },
-    replaceIdWithUnderscoreId: true,
-    dropDatabase: true,
-    inputPath: path.resolve('./example/data'),
+      },
+      dropDatabase: true,
     };
+    const seeder = new Seeder(config);
+    const collections = seeder.readCollectionsFromPath(
+      path.resolve('./example/data'),
+      {
+        transformers: [Seeder.Transformers.replaceDocumentIdWithUnderscoreId],
+      },
+    );
 
-    seedDatabase(config)
-    .then(() => {
+    seeder
+      .import(collections)
+      .then(() => {
         console.log('Success');
-    })
-    .catch(err => {
+      })
+      .catch(err => {
         console.log('Error', err);
-    });
+      });
     ```
 
-1. To install all dependencies used in your `index.js` application, run the command:
-    
+1.  To install all dependencies used in your `index.js` application, run the command:
+
     ```bash
     npm install mongo-seeding --save
     ```
 
-1. Turn on the debug output from `mongo-seeding` library and run the newly created app to import data:
+1.  Turn on the debug output from `mongo-seeding` library and run the newly created app to import data:
 
     ```bash
     DEBUG=mongo-seeding node index.js
