@@ -1,17 +1,17 @@
-import {
-  log,
-  DeepPartial,
-  SeederConfig,
-  SeederCollectionReadingConfig,
-  mergeCollectionReadingConfig,
-  mergeSeederConfig,
-  defaultSeederConfig,
-  SeederCollection,
-} from './common';
+import { log, DeepPartial, SeederCollection } from './common';
 import { DatabaseConnector } from './database';
 import { DefaultTransformers, CollectionTransformer } from './transformer';
 import { CollectionPopulator } from './populator';
 import { CollectionImporter } from './importer';
+import {
+  SeederCollectionReadingConfig,
+  defaultSeederConfig,
+  SeederConfig,
+  mergeSeederConfig,
+  mergeCollectionReadingConfig,
+} from './config';
+
+export * from './config';
 
 export class Seeder {
   static Transformers = DefaultTransformers;

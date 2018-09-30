@@ -1,11 +1,13 @@
 import { MongoClient } from 'mongodb';
+import { log } from '../common';
 import {
-  SeederDatabaseConfigObject,
-  log,
+  Database,
+  sleep,
+  checkTimeoutExpired,
   SeederDatabaseConfig,
   isSeederDatabaseConfigObject,
-} from 'common';
-import { Database, sleep, checkTimeoutExpired } from '.';
+  SeederDatabaseConfigObject,
+} from '.';
 
 export class DatabaseConnector {
   static DEFAULT_DB_NAME = 'admin';

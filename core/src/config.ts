@@ -1,15 +1,16 @@
 import * as extend from 'extend';
-import { SeederConfig, DeepPartial, SeederCollection } from './';
+import { SeederCollection, DeepPartial } from './common';
+import { SeederDatabaseConfig, defaultDatabaseConfigObject } from './database';
+
+export interface SeederConfig {
+  database: SeederDatabaseConfig; // database connection URI or configuration object
+  databaseReconnectTimeout: number; // maximum time of waiting for successful MongoDB connection in milliseconds
+  dropDatabase: boolean; // drops entire database before import
+  dropCollection: boolean; // drops collection before importing it
+}
 
 export const defaultSeederConfig: SeederConfig = {
-  database: {
-    protocol: 'mongodb',
-    host: '127.0.0.1',
-    port: 27017,
-    name: 'database',
-    username: undefined,
-    password: undefined,
-  },
+  database: defaultDatabaseConfigObject,
   databaseReconnectTimeout: 10000,
   dropDatabase: false,
   dropCollection: false,
@@ -24,16 +25,14 @@ export const mergeSeederConfig = (
   return extend(true, config, source, partial);
 };
 
-// TODO: Move somewhere
-
 export interface SeederCollectionReadingConfig {
-  extensions: string[];
-  transformers: Array<(collection: SeederCollection) => SeederCollection>;
+  extensions: string[]; // files that should be imported
+  transformers: Array<(collection: SeederCollection) => SeederCollection>; // optional transformer functions
 }
 
 const defaultCollectionReadingConfig: SeederCollectionReadingConfig = {
-  extensions: ['json', 'js'], // files that should be imported
-  transformers: [], // optional transformer functions
+  extensions: ['json', 'js'],
+  transformers: [],
 };
 
 export const mergeCollectionReadingConfig = (
