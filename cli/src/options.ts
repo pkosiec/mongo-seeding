@@ -3,6 +3,7 @@ import { DeepPartial } from 'mongo-seeding/dist/common';
 import { throwOnNegativeNumber } from './validators';
 import { CommandLineOption, CommandLineArguments } from './types';
 import { SeederConfig } from 'mongo-seeding';
+import { SeederDatabaseConfig } from 'mongo-seeding/dist/database';
 
 export const cliOptions: CommandLineOption[] = [
   {
@@ -102,14 +103,14 @@ function populateCommandLineOptions(
   return {
     database: options['db-uri']
       ? options['db-uri']
-      : {
+      : convertEmptyObjectToUndefined({
           protocol: options['db-protocol'],
           host: options['db-host'],
           port: options['db-port'],
           name: options['db-name'],
           username: options['db-username'],
           password: options['db-password'],
-        },
+        }),
     databaseReconnectTimeout: options['reconnect-timeout'],
     dropDatabase: options['drop-database'],
     dropCollection: options['drop-collection'],
@@ -121,14 +122,14 @@ function populateEnvOptions(): DeepPartial<SeederConfig> {
   const envOptions: DeepPartial<SeederConfig> = {
     database: env.DB_URI
       ? String(env.DB_URI)
-      : {
+      : convertEmptyObjectToUndefined({
           protocol: env.DB_PROTOCOL ? String(env.DB_PROTOCOL) : undefined,
           host: env.DB_HOST ? String(env.DB_HOST) : undefined,
           port: env.DB_PORT ? Number(env.DB_PORT) : undefined,
           name: env.DB_NAME ? String(env.DB_NAME) : undefined,
           username: env.DB_USERNAME ? String(env.DB_USERNAME) : undefined,
           password: env.DB_PASSWORD ? String(env.DB_PASSWORD) : undefined,
-        },
+        }),
     databaseReconnectTimeout: env.RECONNECT_TIMEOUT
       ? Number(env.RECONNECT_TIMEOUT)
       : undefined,
@@ -137,4 +138,14 @@ function populateEnvOptions(): DeepPartial<SeederConfig> {
   };
 
   return envOptions;
+}
+
+export function convertEmptyObjectToUndefined(obj: any): object | undefined {
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key) && typeof obj[key] !== 'undefined') {
+      return obj;
+    }
+  }
+
+  return undefined;
 }

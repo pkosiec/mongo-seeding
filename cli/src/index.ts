@@ -40,12 +40,18 @@ class CliSeeder {
 
     const collectionsPath = options.data ? options.data : './';
     const collectionReadingConfig = this.getCollectionReadingConfig(options);
-    const collections = seeder.readCollectionsFromPath(
-      resolve(collectionsPath),
-      collectionReadingConfig,
-    );
 
-    await seeder.import(collections);
+    try {
+      const collections = seeder.readCollectionsFromPath(
+        resolve(collectionsPath),
+        collectionReadingConfig,
+      );
+
+      await seeder.import(collections);
+    } catch (err) {
+      this.printError(err);
+    }
+
     process.exit(0);
   };
 

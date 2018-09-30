@@ -1,4 +1,4 @@
-import { run } from '../../src/index';
+import { cliSeeder } from '../../src/index';
 import { MongoClient } from 'mongodb';
 
 console.error = jest.fn();
@@ -36,7 +36,7 @@ describe('CLI', () => {
       dbConnectionUri,
     ];
 
-    await run();
+    await cliSeeder.run();
 
     expect(console.error).not.toBeCalled();
     expect(exit).toBeCalledWith(0);
@@ -95,7 +95,7 @@ describe('CLI', () => {
       .mockImplementation(number => number);
 
     process.argv = ['', '', '--help'];
-    await run();
+    await cliSeeder.run();
 
     expect(console.log).toBeCalledWith(
       expect.stringContaining('Mongo Seeding CLI'),
@@ -109,7 +109,7 @@ describe('CLI', () => {
       .mockImplementation(number => number);
 
     process.argv = ['', '', './no-path'];
-    await run();
+    await cliSeeder.run();
     expect(exit).toBeCalledWith(0);
   });
 
@@ -129,7 +129,7 @@ describe('CLI', () => {
 
     for (const testCase of testCases) {
       process.argv = testCase.argv;
-      await run();
+      await cliSeeder.run();
 
       expect(console.error).toBeCalledWith(
         expect.stringContaining('InvalidParameterError'),
