@@ -4,7 +4,7 @@
 # Stage 1 
 #
 
-FROM node:10.10.0-alpine AS builder
+FROM node:10-alpine AS builder
 LABEL Maintainer="Pawel Kosiec <pawel@kosiec.net>"
 
 ENV CLI_DIR=./cli
@@ -28,7 +28,7 @@ RUN rm -rf /app/src/
 # Stage 2 
 #
 
-FROM node:10.10.0-alpine
+FROM node:10-alpine
 WORKDIR /app
 
 # Copy built app
