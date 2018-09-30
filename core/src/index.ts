@@ -4,11 +4,11 @@ import { DefaultTransformers, CollectionTransformer } from './transformer';
 import { CollectionPopulator } from './populator';
 import { CollectionImporter } from './importer';
 import {
-  SeederCollectionReadingConfig,
+  SeederCollectionReadingOptions,
   defaultSeederConfig,
   SeederConfig,
   mergeSeederConfig,
-  mergeCollectionReadingConfig,
+  mergeCollectionReadingOptions,
 } from './config';
 
 export * from './config';
@@ -18,17 +18,17 @@ export class Seeder {
 
   config: SeederConfig = defaultSeederConfig;
 
-  constructor(config: DeepPartial<SeederConfig>) {
+  constructor(config?: DeepPartial<SeederConfig>) {
     this.config = mergeSeederConfig(config);
   }
 
   readCollectionsFromPath = (
     path: string,
-    partialConfig: DeepPartial<SeederCollectionReadingConfig>,
+    partialConfig?: DeepPartial<SeederCollectionReadingOptions>,
   ): SeederCollection[] => {
     // TODO: Dynamically load the module
     // const CollectionPopulator = require('collection-populator/CollectionPopulator');
-    const config = mergeCollectionReadingConfig(partialConfig);
+    const config = mergeCollectionReadingOptions(partialConfig);
     let collections = new CollectionPopulator(config.extensions).readFromPath(
       path,
     );
@@ -62,7 +62,7 @@ export class Seeder {
     try {
       const database = await databaseConnector.connect(config.database);
 
-      if (!config.dropDatabase && config.dropCollection) {
+      if (!config.dropDatabase && config.dropCollections) {
         log('Dropping collections...');
         for (const collection of collections) {
           await database.dropCollectionIfExists(collection.name);

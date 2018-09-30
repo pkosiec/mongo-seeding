@@ -30,7 +30,7 @@ describe('CLI', () => {
       '',
       '',
       '--replace-id',
-      '--drop-collection',
+      '--drop-collections',
       './test/integration/_importdata',
       '--db-uri',
       dbConnectionUri,

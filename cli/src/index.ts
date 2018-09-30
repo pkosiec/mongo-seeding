@@ -3,7 +3,7 @@ process.env.DEBUG = 'mongo-seeding';
 
 import * as commandLineArgs from 'command-line-args';
 import { resolve } from 'path';
-import { Seeder, SeederCollectionReadingConfig } from 'mongo-seeding';
+import { Seeder, SeederCollectionReadingOptions } from 'mongo-seeding';
 import {
   cliOptions,
   validateOptions,
@@ -57,7 +57,7 @@ class CliSeeder {
 
   private getCollectionReadingConfig = (
     options: CommandLineArguments,
-  ): SeederCollectionReadingConfig => {
+  ): SeederCollectionReadingOptions => {
     const transformers = [];
     const replaceIdWithUnderscoreId =
       options['replace-id'] || process.env.REPLACE_ID === 'true';

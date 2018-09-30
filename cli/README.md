@@ -59,9 +59,9 @@ You can use the following parameters while using `seed` tool:
 | `--db-name {DB_NAME}` | `database` | Name of the database |
 | `--db-username {DB_USERNAME}` | *`undefined`*  | Username for connecting with database that requires authentication |
 | `--db-password {DB_PASSWORD}` | *`undefined`*  | Password for connecting with database that requires authentication |
-| `--drop-database` | `false` | Dropping entire database before data import |
-| `--drop-collection` | `false` | Dropping every collection that is being imported |
-| `--replace-id` | `false` | Replacing `id` property with `_id` for every document during data import |
+| `--drop-database` | `false` | Drops entire database before data import |
+| `--drop-collections` | `false` | Drops every collection which is being imported |
+| `--replace-id` | `false` | Replaces `id` property with `_id` for every document during data import |
 | `--reconnect-timeout` | `10000` | Maximum time in milliseconds of waiting for successful MongoDB connection |
 | `--help` or `-h` | n/a | Help
 
@@ -77,7 +77,7 @@ You can use the following environmental variables while using `seed` tool:
 | DB_NAME | `database` | Name of the database |
 | DB_USERNAME | *`undefined`* | Username for connecting with database that requires authentication |
 | DB_PASSWORD | *`undefined`* | Password for connecting with database that requires authentication |
-| DROP_DATABASE | `false` | Dropping entire database before data import |
-| DROP_COLLECTION | `false` | Dropping every collection that is being imported |
-| REPLACE_ID | `false` | Replacing `id` property with `_id` for every document during import; useful for ORMs | 
+| DROP_DATABASE | `false` | Drops entire database before data import |
+| DROP_COLLECTIONS | `false` | Drops every collection which is being imported |
+| REPLACE_ID | `false` | Replaces `id` property with `_id` for every document during import; useful for ORMs | 
 | RECONNECT_TIMEOUT | `10000` | Maximum time in milliseconds of waiting for successful MongoDB connection |

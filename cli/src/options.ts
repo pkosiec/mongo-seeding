@@ -3,7 +3,6 @@ import { DeepPartial } from 'mongo-seeding/dist/common';
 import { throwOnNegativeNumber } from './validators';
 import { CommandLineOption, CommandLineArguments } from './types';
 import { SeederConfig } from 'mongo-seeding';
-import { SeederDatabaseConfig } from 'mongo-seeding/dist/database';
 
 export const cliOptions: CommandLineOption[] = [
   {
@@ -51,7 +50,7 @@ export const cliOptions: CommandLineOption[] = [
     name: 'db-uri',
     alias: 'u',
     description:
-      'If defined, the URI will be used for establishing connection to database, ignoring values defined via other `db-*` parameters, i.e. `db-name`, `db-host`, etc.; Default: {bold undefined}',
+      'If defined, the URI will be used for establishing connection to database, ignoring values defined via other `db-*` parameters, e.g. `db-name`, `db-host`, etc.; Default: {bold undefined}',
     type: String,
   },
   {
@@ -66,13 +65,14 @@ export const cliOptions: CommandLineOption[] = [
     type: Boolean,
   },
   {
-    name: 'drop-collection',
-    description: 'Drops collection before importing it',
+    name: 'drop-collections',
+    description: 'Drops every collection that is being imported',
     type: Boolean,
   },
   {
     name: 'replace-id',
-    description: 'Replaces `id` property with `_id` for every object to import',
+    description:
+      'Replaces `id` property with `_id` for every document before import',
     type: Boolean,
   },
   {
@@ -113,7 +113,7 @@ function populateCommandLineOptions(
         }),
     databaseReconnectTimeout: options['reconnect-timeout'],
     dropDatabase: options['drop-database'],
-    dropCollection: options['drop-collection'],
+    dropCollections: options['drop-collections'],
   };
 }
 
@@ -134,7 +134,7 @@ function populateEnvOptions(): DeepPartial<SeederConfig> {
       ? Number(env.RECONNECT_TIMEOUT)
       : undefined,
     dropDatabase: env.DROP_DATABASE === 'true',
-    dropCollection: env.DROP_COLLECTION === 'true',
+    dropCollections: env.DROP_COLLECTIONS === 'true',
   };
 
   return envOptions;
