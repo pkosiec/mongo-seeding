@@ -12,53 +12,64 @@ import {
 import { showHelp, shouldShowHelp } from './help';
 import { CommandLineArguments } from './types';
 
-export const run = async () => {
-  let options: CommandLineArguments;
+class CliSeeder {
+  run = async () => {
+    let options: CommandLineArguments;
 
-  try {
-    options = commandLineArgs(cliOptions) as CommandLineArguments;
-  } catch (err) {
-    printError(err);
+    try {
+      options = commandLineArgs(cliOptions) as CommandLineArguments;
+    } catch (err) {
+      this.printError(err);
+      return;
+    }
+
+    if (shouldShowHelp(options)) {
+      showHelp();
+      return;
+    }
+
+    try {
+      validateOptions(options);
+    } catch (err) {
+      this.printError(err);
+      return;
+    }
+
+    const config = createConfigFromOptions(options);
+    const seeder = new Seeder(config);
+
+    const collectionsPath = options.data ? options.data : './';
+    const collectionReadingConfig = this.getCollectionReadingConfig(options);
+    const collections = seeder.readCollectionsFromPath(
+      resolve(collectionsPath),
+      collectionReadingConfig,
+    );
+
+    await seeder.import(collections);
     process.exit(0);
-    return;
-  }
-
-  if (shouldShowHelp(options)) {
-    showHelp();
-    return;
-  }
-
-  try {
-    validateOptions(options);
-  } catch (err) {
-    printError(err);
-  }
-
-  const config = createConfigFromOptions(options);
-  const collectionsPath = options.data ? resolve(options.data) : resolve('./');
-
-  const seeder = new Seeder(config);
-
-  const replaceIdWithUnderscoreId =
-    options['replace-id'] || process.env.REPLACE_ID === 'true';
-  const transformers = replaceIdWithUnderscoreId
-    ? [Seeder.Transformers.replaceDocumentIdWithUnderscoreId]
-    : [];
-  const collectionReadingConfig: SeederCollectionReadingConfig = {
-    extensions: ['ts', 'js', 'json'],
-    transformers,
   };
 
-  const collections = seeder.readCollectionsFromPath(
-    collectionsPath,
-    collectionReadingConfig,
-  );
+  private getCollectionReadingConfig = (
+    options: CommandLineArguments,
+  ): SeederCollectionReadingConfig => {
+    const transformers = [];
+    const replaceIdWithUnderscoreId =
+      options['replace-id'] || process.env.REPLACE_ID === 'true';
 
-  await seeder.import(collections);
+    if (replaceIdWithUnderscoreId) {
+      transformers.push(Seeder.Transformers.replaceDocumentIdWithUnderscoreId);
+    }
 
-  process.exit(0);
-};
+    return {
+      extensions: ['ts', 'js', 'json'],
+      transformers,
+    };
+  };
 
-const printError = (err: Error) => {
-  console.error(`Error ${err.name}: ${err.message}`);
-};
+  private printError = (err: Error) => {
+    console.error(`Error ${err.name}: ${err.message}`);
+    process.exit(0);
+  };
+}
+
+export const cliSeeder = new CliSeeder();

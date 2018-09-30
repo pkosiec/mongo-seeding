@@ -2,4 +2,6 @@
 'use strict';
 
 require('ts-node').register();
-require('../dist/index').run();
+
+const { cliSeeder } = require('../dist/index');
+cliSeeder.run();

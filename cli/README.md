@@ -62,7 +62,7 @@ You can use the following parameters while using `seed` tool:
 | `--drop-database` | `false` | Dropping entire database before data import |
 | `--drop-collection` | `false` | Dropping every collection that is being imported |
 | `--replace-id` | `false` | Replacing `id` property with `_id` for every document during data import |
-| `--reconnect-timeout` | `10` (seconds) | Maximum time of waiting for successful MongoDB connection|
+| `--reconnect-timeout` | `10000` | Maximum time in milliseconds of waiting for successful MongoDB connection |
 | `--help` or `-h` | n/a | Help
 
 ## Environmental variables
@@ -80,4 +80,4 @@ You can use the following environmental variables while using `seed` tool:
 | DROP_DATABASE | `false` | Dropping entire database before data import |
 | DROP_COLLECTION | `false` | Dropping every collection that is being imported |
 | REPLACE_ID | `false` | Replacing `id` property with `_id` for every document during import; useful for ORMs | 
-| RECONNECT_TIMEOUT | `10` | Maximum time, in which app should keep trying connecting to database |
+| RECONNECT_TIMEOUT | `10000` | Maximum time in milliseconds of waiting for successful MongoDB connection |

@@ -53,7 +53,6 @@ export class Seeder {
     }
 
     log('Starting...');
-
     const config = mergeSeederConfig(partialConfig, this.config);
 
     const databaseConnector = new DatabaseConnector(
