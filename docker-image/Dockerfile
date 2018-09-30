@@ -1,22 +1,49 @@
 # Run with context of the upper level directory
 
 #
-# Stage 1 
+# Stage 1: Core
 #
 
-FROM node:10-alpine AS builder
+FROM node:10-alpine AS coreBuilder
+LABEL Maintainer="Pawel Kosiec <pawel@kosiec.net>"
+
+ENV CORE_DIR=./core
+WORKDIR /app
+
+# Copy sources
+COPY $CORE_DIR/package.json $CORE_DIR/package-lock.json $CORE_DIR/tsconfig.json /app/
+COPY $CORE_DIR/src /app/src/
+
+# Install dependencies
+RUN npm install --no-optional
+
+# Build app
+RUN npm run build
+
+# Remove sources
+RUN rm -rf /app/src/
+
+#
+# Stage 2: CLI
+#
+
+FROM node:10-alpine AS cliBuilder
 LABEL Maintainer="Pawel Kosiec <pawel@kosiec.net>"
 
 ENV CLI_DIR=./cli
 WORKDIR /app
 
-# Copy sources
-COPY $CLI_DIR/package.json $CLI_DIR/package-lock.json $CLI_DIR/tsconfig.json /app/
-COPY $CLI_DIR/bin /app/bin/
-COPY $CLI_DIR/src /app/src/
-
 # Install dependencies
-RUN npm install --no-optional
+COPY $CLI_DIR/package.json $CLI_DIR/package-lock.json /app/
+RUN npm i --no-optional
+
+# Copy core
+COPY --from=coreBuilder /app/ /app/node_modules/mongo-seeding/
+
+# Copy app sources
+COPY $CLI_DIR/tsconfig.json /app/
+COPY $CLI_DIR/src/ /app/src/
+COPY $CLI_DIR/bin/ /app/bin/
 
 # Build app
 RUN npm run build
@@ -32,7 +59,7 @@ FROM node:10-alpine
 WORKDIR /app
 
 # Copy built app
-COPY --from=builder /app/ /app/
+COPY --from=cliBuilder /app/ /app/
 
 # Create a symlink for "seed" command
 RUN npm link
