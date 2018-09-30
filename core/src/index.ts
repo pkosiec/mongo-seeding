@@ -3,16 +3,15 @@ import {
   DeepPartial,
   SeederConfig,
   SeederCollectionReadingConfig,
-  getCollectionReadingConfig,
+  mergeCollectionReadingConfig,
   mergeSeederConfig,
   defaultSeederConfig,
   SeederCollection,
 } from './common';
 import { DatabaseConnector } from './database';
-import { CollectionImporter } from './data-processing';
-import { CollectionPopulator } from 'collection-populator/CollectionPopulator';
-import { CollectionTransformer } from 'collection-transformer/CollectionTransformer';
-import { DefaultTransformers } from 'collection-transformer/Transformers';
+import { DefaultTransformers, CollectionTransformer } from './transformer';
+import { CollectionPopulator } from './populator';
+import { CollectionImporter } from './importer';
 
 export class Seeder {
   static Transformers = DefaultTransformers;
@@ -27,7 +26,9 @@ export class Seeder {
     path: string,
     partialConfig: DeepPartial<SeederCollectionReadingConfig>,
   ): SeederCollection[] => {
-    const config = getCollectionReadingConfig(partialConfig);
+    // TODO: Dynamically load the module
+    // const CollectionPopulator = require('collection-populator/CollectionPopulator');
+    const config = mergeCollectionReadingConfig(partialConfig);
     let collections = new CollectionPopulator(config.extensions).readFromPath(
       path,
     );

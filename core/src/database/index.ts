@@ -1,3 +1,3 @@
-export * from './Database';
-export * from './DatabaseConnector';
-export * from './timeUtils';
+export * from './database-obj';
+export * from './database-connector';
+export * from './time-utils';

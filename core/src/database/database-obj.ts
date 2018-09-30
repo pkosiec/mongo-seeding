@@ -15,16 +15,18 @@ export class Database {
     return this.db.dropDatabase();
   }
 
-  async ifCollectionExist(collectionName:string):Promise<boolean> {
+  async ifCollectionExist(collectionName: string): Promise<boolean> {
     const collections = await this.db.collections();
-    return collections.map(collection => collection.collectionName).includes(collectionName);
+    return collections
+      .map(collection => collection.collectionName)
+      .includes(collectionName);
   }
 
-  async dropCollectionIfExists(collectionName:string) {
-    if (!await this.ifCollectionExist(collectionName)) {
+  async dropCollectionIfExists(collectionName: string) {
+    if (!(await this.ifCollectionExist(collectionName))) {
       return;
     }
-    
-    return this.db.collection(collectionName).drop()
+
+    return this.db.collection(collectionName).drop();
   }
 }

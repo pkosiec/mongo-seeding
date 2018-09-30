@@ -1,5 +1,5 @@
-import { SeederCollection } from '../common';
-import { CollectionTransformerFn } from './Transformers';
+import { SeederCollection } from 'common';
+import { CollectionTransformerFn } from '.';
 
 export class CollectionTransformer {
   transform(

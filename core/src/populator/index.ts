@@ -1,5 +1,5 @@
 import { SeederCollection, log } from '../common';
-import { fileSystem } from './FileSystem';
+import { fileSystem } from './filesystem';
 
 export class CollectionPopulator {
   extensions: string[];

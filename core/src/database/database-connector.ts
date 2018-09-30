@@ -4,7 +4,7 @@ import {
   log,
   SeederDatabaseConfig,
   isSeederDatabaseConfigObject,
-} from '../common';
+} from 'common';
 import { Database, sleep, checkTimeoutExpired } from '.';
 
 export class DatabaseConnector {

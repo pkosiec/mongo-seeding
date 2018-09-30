@@ -10,7 +10,7 @@ export class CollectionImporter {
     }
   }
 
-  async importCollection(collection: SeederCollection) {
+  private async importCollection(collection: SeederCollection) {
     log(
       `Inserting ${collection.documents.length} documents into collection ${
         collection.name

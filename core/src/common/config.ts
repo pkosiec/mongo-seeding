@@ -24,6 +24,8 @@ export const mergeSeederConfig = (
   return extend(true, config, source, partial);
 };
 
+// TODO: Move somewhere
+
 export interface SeederCollectionReadingConfig {
   extensions: string[];
   transformers: Array<(collection: SeederCollection) => SeederCollection>;
@@ -34,9 +36,11 @@ const defaultCollectionReadingConfig: SeederCollectionReadingConfig = {
   transformers: [], // optional transformer functions
 };
 
-export const getCollectionReadingConfig = (
+export const mergeCollectionReadingConfig = (
   ownConfig: DeepPartial<SeederCollectionReadingConfig>,
+  previous?: SeederCollectionReadingConfig,
 ): SeederCollectionReadingConfig => {
+  const source = previous ? previous : defaultCollectionReadingConfig;
   const config = {};
-  return extend(true, config, defaultCollectionReadingConfig, ownConfig);
+  return extend(true, config, source, ownConfig);
 };
