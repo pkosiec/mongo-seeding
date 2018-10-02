@@ -1,60 +1,96 @@
-import { log, getConfig, DeepPartial, AppConfig } from './common';
+import { log, DeepPartial, SeederCollection } from './common';
 import { DatabaseConnector } from './database';
+import { DefaultTransformers, CollectionTransformer } from './transformer';
+import { CollectionPopulator } from './populator';
+import { CollectionImporter } from './importer';
 import {
-  DataPopulator,
-  DataTransformer,
-  DataImporter,
-} from './data-processing';
+  SeederCollectionReadingOptions,
+  defaultSeederConfig,
+  SeederConfig,
+  mergeSeederConfig,
+  mergeCollectionReadingOptions,
+} from './config';
 
-export const seedDatabase = async (partialConfig: DeepPartial<AppConfig>) => {
-  log('Starting...');
+export * from './config';
 
-  const config = getConfig(partialConfig);
-  const databaseConnector = new DatabaseConnector(config.reconnectTimeoutInSeconds);
+export class Seeder {
+  static Transformers = DefaultTransformers;
 
-  try {
-    let collections = new DataPopulator(config.supportedExtensions).populate(
-      config.inputPath,
-    );
+  config: SeederConfig = defaultSeederConfig;
 
-    if (config.replaceIdWithUnderscoreId) {
-      collections = new DataTransformer().transform(
+  constructor(config?: DeepPartial<SeederConfig>) {
+    this.config = mergeSeederConfig(config);
+  }
+
+  readCollectionsFromPath = (
+    path: string,
+    partialConfig?: DeepPartial<SeederCollectionReadingOptions>,
+  ): SeederCollection[] => {
+    // TODO: Dynamically load the module
+    // const CollectionPopulator = require('collection-populator/CollectionPopulator');
+    const config = mergeCollectionReadingOptions(partialConfig);
+
+    let collections;
+
+    try {
+      collections = new CollectionPopulator(config.extensions).readFromPath(
+        path,
+      );
+    } catch (err) {
+      throw wrapError(err);
+    }
+
+    if (config.transformers.length > 0) {
+      collections = new CollectionTransformer().transform(
         collections,
-        DataTransformer.replaceDocumentIdWithUnderscoreId,
+        config.transformers,
       );
     }
 
+    return collections;
+  };
+
+  import = async (
+    collections: SeederCollection[],
+    partialConfig?: DeepPartial<SeederConfig>,
+  ) => {
     if (collections.length === 0) {
       log('No data to import. Finishing...');
       return;
     }
 
-    const database = await databaseConnector.connect({
-      databaseConnectionUri: config.databaseConnectionUri,
-      databaseConfig: config.database,
-    });
-    
-    if (!config.dropDatabase && config.dropCollection) {
-      log('Dropping collections...');
-      for (const collection of collections) {
+    log('Starting...');
+    const config = mergeSeederConfig(partialConfig, this.config);
+
+    const databaseConnector = new DatabaseConnector(
+      config.databaseReconnectTimeout,
+    );
+
+    try {
+      const database = await databaseConnector.connect(config.database);
+
+      if (!config.dropDatabase && config.dropCollections) {
+        log('Dropping collections...');
+        for (const collection of collections) {
           await database.dropCollectionIfExists(collection.name);
+        }
       }
+
+      if (config.dropDatabase) {
+        log('Dropping database...');
+        await database.drop();
+      }
+
+      await new CollectionImporter(database).import(collections);
+    } catch (err) {
+      throw wrapError(err);
+    } finally {
+      await databaseConnector.close();
     }
 
-    if (config.dropDatabase) {
-      log('Dropping database...');
-      await database.drop();
-    }
-    
-    await new DataImporter(database).import(collections);
-  } catch (err) {
-    throw wrapError(err);
-  } finally {
-    await databaseConnector.close();
-  }
-
-  log('Finishing...');
-};
+    log('Finishing...');
+  };
+}
 
 const wrapError = (err: Error) => {
   const error = new Error(`${err.name}: ${err.message}`);

@@ -1,17 +1,6 @@
 const { ObjectId } = require('mongodb');
 const { createHash } = require('crypto');
 
-const mapToEntities = names => {
-  return names.map(name => {
-    const id = getObjectId(name);
-
-    return {
-      id,
-      name,
-    };
-  });
-};
-
 const getObjectId = name => {
   const hash = createHash('sha1')
     .update(name, 'utf8')
@@ -22,6 +11,17 @@ const getObjectId = name => {
 
 const getObjectIds = names => {
   return names.map(name => getObjectId(name));
+};
+
+const mapToEntities = names => {
+  return names.map(name => {
+    const id = getObjectId(name);
+
+    return {
+      id,
+      name,
+    };
+  });
 };
 
 module.exports = {

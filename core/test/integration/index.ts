@@ -1,8 +1,12 @@
 import { mkdirSync, removeSync, existsSync, writeFileSync } from 'fs-extra';
 
-import { DatabaseConnector, Database } from '../../src/database';
-import { defaultConfig, DeepPartial, AppConfig } from '../../src/common';
-import { seedDatabase } from '../../src';
+import {
+  DatabaseConnector,
+  Database,
+  defaultDatabaseConfigObject,
+} from '../../src/database';
+import { DeepPartial } from '../../src/common';
+import { Seeder, SeederConfig } from '../../src';
 import { listExistingCollections, createCollection } from '../_helpers';
 
 const DATABASE_NAME = 'coredb';
@@ -13,10 +17,8 @@ let database: Database;
 
 beforeAll(async () => {
   database = await databaseConnector.connect({
-    databaseConfig: {
-      ...defaultConfig.database,
-      name: DATABASE_NAME,
-    },
+    ...defaultDatabaseConfigObject,
+    name: DATABASE_NAME,
   });
   await database.drop();
 });
@@ -74,15 +76,18 @@ describe('Mongo Seeding', () => {
     const expectedCollectionNames = ['CollectionOne', 'CollectionTwo'];
     createSampleFiles(expectedCollectionNames, TEMP_DIRECTORY_PATH);
 
-    const config: DeepPartial<AppConfig> = {
-      inputPath: TEMP_DIRECTORY_PATH,
+    const config: DeepPartial<SeederConfig> = {
       database: {
         name: DATABASE_NAME,
       },
-      replaceIdWithUnderscoreId: true,
     };
+    const path = TEMP_DIRECTORY_PATH;
+    const seeder = new Seeder(config);
+    const collections = seeder.readCollectionsFromPath(path, {
+      transformers: [Seeder.Transformers.replaceDocumentIdWithUnderscoreId],
+    });
 
-    await expect(seedDatabase(config)).resolves.toBeUndefined();
+    await expect(seeder.import(collections)).resolves.toBeUndefined();
     await expect(database.db.listCollections().toArray()).resolves.toHaveLength(
       2,
     );
@@ -125,8 +130,7 @@ describe('Mongo Seeding', () => {
     const expectedCollectionNames = ['CollectionOne', 'CollectionTwo'];
     createSampleFiles(expectedCollectionNames, TEMP_DIRECTORY_PATH);
 
-    const config: DeepPartial<AppConfig> = {
-      inputPath: TEMP_DIRECTORY_PATH,
+    const config: DeepPartial<SeederConfig> = {
       database: {
         name: DATABASE_NAME,
       },
@@ -135,11 +139,15 @@ describe('Mongo Seeding', () => {
 
     await createCollection(database.db, 'ShouldBeRemoved');
 
-    await expect(seedDatabase(config)).resolves.toBeUndefined();
-    const collections = await listExistingCollections(database.db);
-    expect(collections).toHaveLength(2);
-    expect(collections).toContainEqual('CollectionOne');
-    expect(collections).toContainEqual('CollectionTwo');
+    const path = TEMP_DIRECTORY_PATH;
+    const seeder = new Seeder();
+    const collections = seeder.readCollectionsFromPath(path);
+
+    await expect(seeder.import(collections, config)).resolves.toBeUndefined();
+    const dbCollections = await listExistingCollections(database.db);
+    expect(dbCollections).toHaveLength(2);
+    expect(dbCollections).toContainEqual('CollectionOne');
+    expect(dbCollections).toContainEqual('CollectionTwo');
   });
 
   it('should drop collections before importing data', async () => {
@@ -149,38 +157,45 @@ describe('Mongo Seeding', () => {
     await createCollection(database.db, 'CollectionOne');
     await createCollection(database.db, 'ShouldNotBeRemoved');
 
-    const config: DeepPartial<AppConfig> = {
-      inputPath: TEMP_DIRECTORY_PATH,
+    const config: DeepPartial<SeederConfig> = {
       database: {
         name: DATABASE_NAME,
       },
-      dropCollection: true,
+      dropCollections: true,
     };
 
-    await expect(seedDatabase(config)).resolves.toBeUndefined();
+    const path = TEMP_DIRECTORY_PATH;
+    const seeder = new Seeder(config);
+    const collections = seeder.readCollectionsFromPath(path);
 
-    const collections = await listExistingCollections(database.db);
-    expect(collections).toHaveLength(3);
-    expect(collections).toContainEqual('CollectionOne');
-    expect(collections).toContainEqual('CollectionTwo');
-    expect(collections).toContainEqual('ShouldNotBeRemoved');
+    await expect(seeder.import(collections)).resolves.toBeUndefined();
+
+    const dbCollections = await listExistingCollections(database.db);
+    expect(dbCollections).toHaveLength(3);
+    expect(dbCollections).toContainEqual('CollectionOne');
+    expect(dbCollections).toContainEqual('CollectionTwo');
+    expect(dbCollections).toContainEqual('ShouldNotBeRemoved');
   });
 
   it('should throw error when wrong path given', async () => {
-    const config: DeepPartial<AppConfig> = {
-      inputPath: '/this/path/surely/doesnt/exist',
-    };
-    await expect(seedDatabase(config)).rejects.toThrowError('Error: ENOENT');
+    const seeder = new Seeder();
+    await expect(() =>
+      seeder.readCollectionsFromPath('/this/path/surely/doesnt/exist'),
+    ).toThrowError('Error: ENOENT');
   });
 
   it('should throw error when cannot connect to database', async () => {
     const expectedCollectionNames = ['Collection1', 'Collection2'];
     createSampleFiles(expectedCollectionNames, TEMP_DIRECTORY_PATH);
-    const config: DeepPartial<AppConfig> = {
-      databaseConnectionUri: 'mongodb://unresolved.host:27017/name',
-      reconnectTimeoutInSeconds: 0,
-      inputPath: TEMP_DIRECTORY_PATH,
+    const config: DeepPartial<SeederConfig> = {
+      database: 'mongodb://unresolved.host:27017/name',
+      databaseReconnectTimeout: 0,
     };
-    await expect(seedDatabase(config)).rejects.toThrowError('Timeout');
+
+    const path = TEMP_DIRECTORY_PATH;
+    const seeder = new Seeder(config);
+    const collections = seeder.readCollectionsFromPath(path);
+
+    await expect(seeder.import(collections)).rejects.toThrowError('Timeout');
   });
 });

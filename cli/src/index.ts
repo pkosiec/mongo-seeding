@@ -2,7 +2,8 @@
 process.env.DEBUG = 'mongo-seeding';
 
 import * as commandLineArgs from 'command-line-args';
-import { seedDatabase } from 'mongo-seeding';
+import { resolve } from 'path';
+import { Seeder, SeederCollectionReadingOptions } from 'mongo-seeding';
 import {
   cliOptions,
   validateOptions,
@@ -11,34 +12,70 @@ import {
 import { showHelp, shouldShowHelp } from './help';
 import { CommandLineArguments } from './types';
 
-export const run = async () => {
-  let options: CommandLineArguments;
+class CliSeeder {
+  run = async () => {
+    let options: CommandLineArguments;
 
-  try {
-    options = commandLineArgs(cliOptions) as CommandLineArguments;
-  } catch (err) {
-    printError(err);
+    try {
+      options = commandLineArgs(cliOptions) as CommandLineArguments;
+    } catch (err) {
+      this.printError(err);
+      return;
+    }
+
+    if (shouldShowHelp(options)) {
+      showHelp();
+      return;
+    }
+
+    try {
+      validateOptions(options);
+    } catch (err) {
+      this.printError(err);
+      return;
+    }
+
+    const config = createConfigFromOptions(options);
+    const seeder = new Seeder(config);
+
+    const collectionsPath = options.data ? options.data : './';
+    const collectionReadingConfig = this.getCollectionReadingConfig(options);
+
+    try {
+      const collections = seeder.readCollectionsFromPath(
+        resolve(collectionsPath),
+        collectionReadingConfig,
+      );
+
+      await seeder.import(collections);
+    } catch (err) {
+      this.printError(err);
+    }
+
     process.exit(0);
-    return;
-  }
+  };
 
-  if (shouldShowHelp(options)) {
-    showHelp();
-    return;
-  }
+  private getCollectionReadingConfig = (
+    options: CommandLineArguments,
+  ): SeederCollectionReadingOptions => {
+    const transformers = [];
+    const replaceIdWithUnderscoreId =
+      options['replace-id'] || process.env.REPLACE_ID === 'true';
 
-  const config = createConfigFromOptions(options);
+    if (replaceIdWithUnderscoreId) {
+      transformers.push(Seeder.Transformers.replaceDocumentIdWithUnderscoreId);
+    }
 
-  try {
-    validateOptions(options);
-    await seedDatabase(config);
-  } catch (err) {
-    printError(err);
-  }
+    return {
+      extensions: ['ts', 'js', 'json'],
+      transformers,
+    };
+  };
 
-  process.exit(0);
-};
+  private printError = (err: Error) => {
+    console.error(`Error ${err.name}: ${err.message}`);
+    process.exit(0);
+  };
+}
 
-const printError = (err: Error) => {
-  console.error(`Error ${err.name}: ${err.message}`);
-};
+export const cliSeeder = new CliSeeder();

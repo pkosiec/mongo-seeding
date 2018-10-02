@@ -1,6 +1,6 @@
 # Run with context of the upper level directory
 
-FROM node:10.10.0-alpine
+FROM node:10-alpine
 
 ENV DIR ./core
 WORKDIR /app
@@ -27,5 +27,5 @@ RUN npm run cleanup
 ENV CI true
 
 # Run tests on container start
-CMD npm test -- --ci --coverage && \
+CMD npm test -- -i --ci --coverage && \
     cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage --language typescript 

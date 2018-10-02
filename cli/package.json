@@ -54,7 +54,7 @@
     "build": "npm run cleanup; tsc",
     "cleanup": "rm -rf ./dist",
     "preversion": "npm run build",
-    "test": "jest",
+    "test": "jest -i",
     "test:unit": "jest unit",
     "test:integration": "jest integration",
     "test:watch": "jest --watch --coverage"

@@ -1,17 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { createHash } from 'crypto';
 
-export const mapToEntities = (names: string[]) => {
-  return names.map(name => {
-    const id = getObjectId(name);
-
-    return {
-      id,
-      name,
-    };
-  });
-};
-
 export const getObjectId = (name: string): ObjectId => {
   const hash = createHash('sha1')
     .update(name, 'utf8')
@@ -22,4 +11,15 @@ export const getObjectId = (name: string): ObjectId => {
 
 export const getObjectIds = (names: string[]): ObjectId[] => {
   return names.map(name => getObjectId(name));
+};
+
+export const mapToEntities = (names: string[]) => {
+  return names.map(name => {
+    const id = getObjectId(name);
+
+    return {
+      id,
+      name,
+    };
+  });
 };

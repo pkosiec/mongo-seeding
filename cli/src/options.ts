@@ -1,8 +1,8 @@
-import { resolve } from 'path';
 import * as extend from 'extend';
-import { AppConfig, DeepPartial } from 'mongo-seeding/dist/common';
+import { DeepPartial } from 'mongo-seeding/dist/common';
 import { throwOnNegativeNumber } from './validators';
 import { CommandLineOption, CommandLineArguments } from './types';
+import { SeederConfig } from 'mongo-seeding';
 
 export const cliOptions: CommandLineOption[] = [
   {
@@ -50,7 +50,7 @@ export const cliOptions: CommandLineOption[] = [
     name: 'db-uri',
     alias: 'u',
     description:
-      'If defined, the URI will be used for establishing connection to database, ignoring values defined via other `db-*` parameters, i.e. `db-name`, `db-host`, etc.; Default: {bold undefined}',
+      'If defined, the URI will be used for establishing connection to database, ignoring values defined via other `db-*` parameters, e.g. `db-name`, `db-host`, etc.; Default: {bold undefined}',
     type: String,
   },
   {
@@ -65,13 +65,14 @@ export const cliOptions: CommandLineOption[] = [
     type: Boolean,
   },
   {
-    name: 'drop-collection',
-    description: 'Drops collection before importing it',
+    name: 'drop-collections',
+    description: 'Drops every collection that is being imported',
     type: Boolean,
   },
   {
     name: 'replace-id',
-    description: 'Replaces `id` property with `_id` for every object to import',
+    description:
+      'Replaces `id` property with `_id` for every document before import',
     type: Boolean,
   },
   {
@@ -89,7 +90,7 @@ export const validateOptions = (options: CommandLineArguments) => {
 
 export const createConfigFromOptions = (
   cmdArgs: CommandLineArguments,
-): DeepPartial<AppConfig> => {
+): DeepPartial<SeederConfig> => {
   const commandLineConfig = populateCommandLineOptions(cmdArgs);
   const envConfig = populateEnvOptions();
   const config = {};
@@ -98,45 +99,53 @@ export const createConfigFromOptions = (
 
 function populateCommandLineOptions(
   options: CommandLineArguments,
-): DeepPartial<AppConfig> {
+): DeepPartial<SeederConfig> {
   return {
-    database: {
-      protocol: options['db-protocol'],
-      host: options['db-host'],
-      port: options['db-port'],
-      name: options['db-name'],
-      username: options['db-username'],
-      password: options['db-password'],
-    },
-    databaseConnectionUri: options['db-uri'],
-    inputPath: options.data ? resolve(options.data) : resolve('./'),
+    database: options['db-uri']
+      ? options['db-uri']
+      : convertEmptyObjectToUndefined({
+          protocol: options['db-protocol'],
+          host: options['db-host'],
+          port: options['db-port'],
+          name: options['db-name'],
+          username: options['db-username'],
+          password: options['db-password'],
+        }),
+    databaseReconnectTimeout: options['reconnect-timeout'],
     dropDatabase: options['drop-database'],
-    dropCollection: options['drop-collection'],
-    replaceIdWithUnderscoreId: options['replace-id'],
-    reconnectTimeoutInSeconds: options['reconnect-timeout'],
+    dropCollections: options['drop-collections'],
   };
 }
 
-function populateEnvOptions(): DeepPartial<AppConfig> {
+function populateEnvOptions(): DeepPartial<SeederConfig> {
   const env = process.env;
-  const envOptions: DeepPartial<AppConfig> = {
-    database: {
-      protocol: env.DB_PROTOCOL ? String(env.DB_PROTOCOL) : undefined,
-      host: env.DB_HOST ? String(env.DB_HOST) : undefined,
-      port: env.DB_PORT ? Number(env.DB_PORT) : undefined,
-      name: env.DB_NAME ? String(env.DB_NAME) : undefined,
-      username: env.DB_USERNAME ? String(env.DB_USERNAME) : undefined,
-      password: env.DB_PASSWORD ? String(env.DB_PASSWORD) : undefined,
-    },
-    databaseConnectionUri: env.DB_URI ? String(env.DB_URI) : undefined,
-    dropDatabase: env.DROP_DATABASE === 'true',
-    dropCollection: env.DROP_COLLECTION === 'true',
-    replaceIdWithUnderscoreId: env.REPLACE_ID === 'true',
-    supportedExtensions: ['ts', 'js', 'json'],
-    reconnectTimeoutInSeconds: env.RECONNECT_TIMEOUT
+  const envOptions: DeepPartial<SeederConfig> = {
+    database: env.DB_URI
+      ? String(env.DB_URI)
+      : convertEmptyObjectToUndefined({
+          protocol: env.DB_PROTOCOL ? String(env.DB_PROTOCOL) : undefined,
+          host: env.DB_HOST ? String(env.DB_HOST) : undefined,
+          port: env.DB_PORT ? Number(env.DB_PORT) : undefined,
+          name: env.DB_NAME ? String(env.DB_NAME) : undefined,
+          username: env.DB_USERNAME ? String(env.DB_USERNAME) : undefined,
+          password: env.DB_PASSWORD ? String(env.DB_PASSWORD) : undefined,
+        }),
+    databaseReconnectTimeout: env.RECONNECT_TIMEOUT
       ? Number(env.RECONNECT_TIMEOUT)
       : undefined,
+    dropDatabase: env.DROP_DATABASE === 'true',
+    dropCollections: env.DROP_COLLECTIONS === 'true',
   };
 
   return envOptions;
+}
+
+export function convertEmptyObjectToUndefined(obj: any): object | undefined {
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key) && typeof obj[key] !== 'undefined') {
+      return obj;
+    }
+  }
+
+  return undefined;
 }

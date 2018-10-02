@@ -1,10 +1,10 @@
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { removeSync } from 'fs-extra';
 
-import { defaultConfig } from '../../src/common';
-import { DataPopulator } from '../../src/data-processing';
+import { CollectionPopulator } from '../../src/populator';
+import { defaultCollectionReadingOptions } from '../../src';
 
-const TEMP_DIRECTORY_PATH = __dirname + '/.temp-DataPopulator';
+const TEMP_DIRECTORY_PATH = __dirname + '/.temp-collectionPopulator';
 
 beforeEach(async () => {
   if (!existsSync(TEMP_DIRECTORY_PATH)) {
@@ -16,18 +16,22 @@ afterEach(async () => {
   removeSync(TEMP_DIRECTORY_PATH);
 });
 
-describe('DataPopulator', () => {
+describe('CollectionPopulator', () => {
   it('should fail when directory is not found', () => {
     const path = '/surely/not/existing/path';
-    const dataPopulator = new DataPopulator(defaultConfig.supportedExtensions);
+    const collectionPopulator = new CollectionPopulator(
+      defaultCollectionReadingOptions.extensions,
+    );
 
     expect(() => {
-      dataPopulator.populate(path);
+      collectionPopulator.readFromPath(path);
     }).toThrowError('ENOENT');
   });
 
   it('should treat object as document', () => {
-    const dataPopulator = new DataPopulator(defaultConfig.supportedExtensions);
+    const collectionPopulator = new CollectionPopulator(
+      defaultCollectionReadingOptions.extensions,
+    );
     const path = `${TEMP_DIRECTORY_PATH}/CollectionOne`;
     mkdirSync(path);
     writeFileSync(
@@ -38,7 +42,8 @@ describe('DataPopulator', () => {
       }),
     );
 
-    const documents = dataPopulator.populateDocumentsContent(path);
+    // @ts-ignore
+    const documents = collectionPopulator.populateDocumentsContent(path);
 
     expect(documents).toContainEqual(
       expect.objectContaining({
@@ -49,7 +54,9 @@ describe('DataPopulator', () => {
   });
 
   it('should treat exported array of objects as separate documents', () => {
-    const dataPopulator = new DataPopulator(defaultConfig.supportedExtensions);
+    const collectionPopulator = new CollectionPopulator(
+      defaultCollectionReadingOptions.extensions,
+    );
     const path = `${TEMP_DIRECTORY_PATH}/CollectionTwo`;
     mkdirSync(path);
     writeFileSync(
@@ -67,7 +74,8 @@ describe('DataPopulator', () => {
           ]`,
     );
 
-    const documents = dataPopulator.populateDocumentsContent(path);
+    // @ts-ignore
+    const documents = collectionPopulator.populateDocumentsContent(path);
 
     expect(documents).toContainEqual(
       expect.objectContaining({
@@ -84,7 +92,9 @@ describe('DataPopulator', () => {
   });
 
   it('should skip empty directories', () => {
-    const dataPopulator = new DataPopulator(defaultConfig.supportedExtensions);
+    const collectionPopulator = new CollectionPopulator(
+      defaultCollectionReadingOptions.extensions,
+    );
     const baseDir = 'skipEmptyDirBase';
     const baseDirPath = `${TEMP_DIRECTORY_PATH}/${baseDir}`;
     const directory1 = 'SkipEmptyDir1';
@@ -93,7 +103,7 @@ describe('DataPopulator', () => {
     mkdirSync(`${baseDirPath}/${directory1}`);
     mkdirSync(`${baseDirPath}/${directory2}`);
 
-    const collections = dataPopulator.populate(TEMP_DIRECTORY_PATH);
+    const collections = collectionPopulator.readFromPath(TEMP_DIRECTORY_PATH);
     expect(collections).toHaveLength(0);
   });
 });

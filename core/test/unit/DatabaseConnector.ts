@@ -1,10 +1,14 @@
 import { MongoClient } from 'mongodb';
 
-import { DatabaseConnector, sleep, Database } from '../../src/database';
-import { DatabaseConfig } from '../../src/common';
+import {
+  DatabaseConnector,
+  sleep,
+  Database,
+  SeederDatabaseConfig,
+} from '../../src/database';
 
 // Import mocks
-jest.mock('../../src/database/timeUtils', () => ({
+jest.mock('../../src/database/time-utils', () => ({
   sleep: jest.fn().mockReturnValue(
     new Promise((resolve, _) => {
       resolve();
@@ -18,7 +22,7 @@ jest.mock('../../src/database/timeUtils', () => ({
 }));
 
 const databaseConnector = new DatabaseConnector();
-const dbConfig: DatabaseConfig = {
+const dbConfig: SeederDatabaseConfig = {
   protocol: 'mongodb',
   host: '127.0.0.1',
   port: 27017,
@@ -37,7 +41,7 @@ describe('DatabaseConnector', () => {
   });
 
   it('should return valid DB connection URI with username only', () => {
-    const authConfig: DatabaseConfig = {
+    const authConfig: SeederDatabaseConfig = {
       protocol: 'mongodb',
       username: 'user',
       host: '10.10.10.1',
@@ -50,7 +54,7 @@ describe('DatabaseConnector', () => {
   });
 
   it('should return valid DB connection URI with username and login', () => {
-    const authConfig: DatabaseConfig = {
+    const authConfig: SeederDatabaseConfig = {
       protocol: 'mongodb',
       username: 'user',
       password: 'pass',
@@ -72,31 +76,32 @@ describe('DatabaseConnector', () => {
     const tests: Test[] = [
       {
         url: 'mongodb://user@10.10.10.1:27017/dbName',
-        expectedDbName: "dbName"
+        expectedDbName: 'dbName',
       },
       {
         url: 'mongodb://user@10.10.10.1:27017/dbName?retryWrites=true',
-        expectedDbName: "dbName"
+        expectedDbName: 'dbName',
       },
       {
-        url: 'mongodb://user@10.10.10.1:27017/dbName?retryWrites=true&something=false',
-        expectedDbName: "dbName"
+        url:
+          'mongodb://user@10.10.10.1:27017/dbName?retryWrites=true&something=false',
+        expectedDbName: 'dbName',
       },
       {
         url: 'mongodb://user@10.10.10.1:27017/?retryWrites=true',
-        expectedDbName: "admin"
+        expectedDbName: 'admin',
       },
       {
         url: 'mongodb://user@10.10.10.1:27017',
-        expectedDbName: "admin"
+        expectedDbName: 'admin',
       },
       {
         url: 'mongodb://10.10.10.1',
-        expectedDbName: "admin"
-      }
+        expectedDbName: 'admin',
+      },
     ];
 
-    for (const {url, expectedDbName} of tests) {
+    for (const { url, expectedDbName } of tests) {
       const dbName = databaseConnector.getDbName(url);
       expect(dbName).toEqual(expectedDbName);
     }
@@ -120,7 +125,7 @@ describe('DatabaseConnector', () => {
       .mockReturnValueOnce(getConnectionRefusedError())
       .mockReturnValue(new Promise((resolve, _) => resolve(result)));
 
-    await databaseConnector.connect({ databaseConfig: dbConfig });
+    await databaseConnector.connect(dbConfig);
     expect(sleep).toHaveBeenCalledTimes(2);
     expect(result.db).toHaveBeenCalledTimes(1);
     expect(result).toBeInstanceOf(Database);
@@ -133,9 +138,9 @@ describe('DatabaseConnector', () => {
       }),
     );
 
-    await expect(
-      databaseConnector.connect({ databaseConfig: dbConfig }),
-    ).rejects.toThrowError('Timeout');
+    await expect(databaseConnector.connect(dbConfig)).rejects.toThrowError(
+      'Timeout',
+    );
     expect(sleep).toHaveBeenCalledTimes(2);
   });
 });

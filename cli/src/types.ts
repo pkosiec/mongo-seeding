@@ -10,7 +10,7 @@ export interface CommandLineArguments {
   data?: string;
   [key: string]: string | number | boolean | undefined;
   'drop-database'?: boolean;
-  'drop-collection'?: boolean;
+  'drop-collections'?: boolean;
   'replace-id'?: boolean;
   'db-protocol'?: string;
   'db-host'?: string;
