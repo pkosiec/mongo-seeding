@@ -60,21 +60,21 @@
     "test:watch": "jest --watch --coverage"
   },
   "dependencies": {
-    "@types/node": "^10.9.0",
+    "@types/node": "^10.11.4",
     "command-line-args": "^5.0.0",
     "command-line-usage": "^5.0.0",
     "extend": "^3.0.2",
     "mongo-seeding": "^3.0.0-0",
     "ts-node": "^7.0.1",
-    "typescript": "^3.0.0"
+    "typescript": "^3.1.1"
   },
   "devDependencies": {
     "@types/command-line-args": "^5.0.0",
     "@types/extend": "^3.0.0",
-    "@types/jest": "^23.3.2",
+    "@types/jest": "^23.3.3",
     "jest": "^23.6.0",
     "mongodb": "^3.1.6",
-    "ts-jest": "^23.1.0"
+    "ts-jest": "^23.10.3"
   },
   "jest": {
     "verbose": false,
