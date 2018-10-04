@@ -31,6 +31,7 @@ const dbConfig: SeederDatabaseConfig = {
 
 describe('DatabaseConnector', () => {
   it('should throw error when trying connecting without config', async () => {
+    // @ts-ignore
     await expect(databaseConnector.connect({})).rejects.toThrow();
   });
 
