@@ -2,7 +2,7 @@
 
 # Mongo Seeding Docker Image
 
-[![Build Status](https://travis-ci.org/pkosiec/mongo-seeding.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg?path=docker-image)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg?path=docker-image)]()
+[![Build Status](https://travis-ci.org/pkosiec/mongo-seeding.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding)
 
 The ultimate Docker image for populating your MongoDB database :rocket: 
 

@@ -43,6 +43,7 @@ To import data from TypeScript files, the application, that utilizes Mongo Seedi
 1.  Create a new `index.js` file in the same directory with the following content:
 
     ```javascript
+    require('ts-node').register();
     const path = require('path');
     const { Seeder } = require('mongo-seeding');
 

@@ -64,7 +64,7 @@ npm install mongo-seeding --save
 
     ```javascript
     const path = require('path');
-    const collections = seeder.readCollectionsFromPath(path.resolve("./your/path");
+    const collections = seeder.readCollectionsFromPath(path.resolve("./your/path"));
     ```
 
 1.  Seed your database:
