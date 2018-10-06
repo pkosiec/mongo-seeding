@@ -4,8 +4,8 @@ notifications:
   email: false
 
 services:
-  - docker
-  - mongodb
+- docker
+- mongodb
 
 script:
 - . ./.ci/run_in_all_projects.sh script
