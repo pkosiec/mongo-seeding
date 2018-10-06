@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 TASK_TYPE=$1
 CI_DIR_NAME=".ci"
 
