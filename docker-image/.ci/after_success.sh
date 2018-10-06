@@ -15,7 +15,7 @@ if [ $IS_MASTER -eq 1 ] && [ $COMMIT_TAG == "" ]; then
 fi
 
 echo "Tagging Docker image..."
-TAG=$(if [ $IS_MASTER -eq 0 ]; then
+TAG=$(if [ $IS_MASTER -eq 1 ]; then
   echo "latest";
   else
   echo "snapshot-PR-$CI_PULL_REQUEST_BRANCH";
