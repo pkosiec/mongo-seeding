@@ -38,7 +38,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "test": "jest -i",
+    "test": "jest -i --ci",
     "test:unit": "jest unit",
     "test:integration": "jest integration",
     "test:watch": "jest --watch --coverage",
