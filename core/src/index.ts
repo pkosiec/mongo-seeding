@@ -29,14 +29,16 @@ export class Seeder {
     let collections;
     try {
       const { CollectionPopulator } = require('./populator');
-      collections = new CollectionPopulator(config.extensions).readFromPath(
-        path,
-      );
+      const populator = new CollectionPopulator(config.extensions);
+
+      log(`Reading collections from ${path}...`);
+      collections = populator.readFromPath(path);
     } catch (err) {
       throw wrapError(err);
     }
 
     if (config.transformers.length > 0) {
+      log('Transforming collections...');
       collections = new CollectionTransformer().transform(
         collections,
         config.transformers,
@@ -55,9 +57,8 @@ export class Seeder {
       return;
     }
 
-    log('Starting...');
+    log('Starting collection import...');
     const config = mergeSeederConfig(partialConfig, this.config);
-
     const databaseConnector = new DatabaseConnector(
       config.databaseReconnectTimeout,
     );
