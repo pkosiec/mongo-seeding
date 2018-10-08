@@ -8,6 +8,11 @@ if [ $IS_MASTER -eq 0 ] && [ $IS_PR -eq 0 ]; then
   exit 0;
 fi
 
+if [ "${CI_SECURE_ENV_VARS}" == "false"]; then
+  echo "Secret environmental variables are not available. Skipping pushing image...";
+  exit 0;
+fi
+
 COMMIT_TAG=$(git tag -l --points-at HEAD | xargs)
 if [ $IS_MASTER -eq 1 ] && [ $COMMIT_TAG == "" ]; then
   echo "Skipping pushing untagged image on master";

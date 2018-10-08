@@ -38,7 +38,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "test": "jest -i",
+    "test": "jest -i --ci",
     "test:unit": "jest unit",
     "test:integration": "jest integration",
     "test:watch": "jest --watch --coverage",
@@ -47,7 +47,6 @@
     "preversion": "npm run test; npm run build"
   },
   "dependencies": {
-    "@types/mongodb": "^3.1.10",
     "debug": "^4.0.1",
     "extend": "^3.0.0",
     "mongodb": "^3.1.6"
@@ -56,11 +55,12 @@
     "@types/extend": "^3.0.0",
     "@types/fs-extra": "^5.0.0",
     "@types/jest": "^23.3.3",
+    "@types/mongodb": "^3.1.10",
     "babel-core": "^6.26.0",
     "codacy-coverage": "^3.1.0",
     "fs-extra": "^7.0.0",
     "jest": "^23.6.0",
-    "ts-jest": "^23.10.3",
+    "ts-jest": "^23.10.4",
     "typescript": "^3.1.1"
   },
   "jest": {
