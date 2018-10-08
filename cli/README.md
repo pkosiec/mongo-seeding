@@ -2,7 +2,7 @@
 
 # Mongo Seeding CLI
 
-[![npm version](https://badge.fury.io/js/mongo-seeding-cli.svg)](https://npmjs.org/package/mongo-seeding-cli) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg?path=cli)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg?path=cli)]() [![install size](https://packagephobia.now.sh/badge?p=mongo-seeding)](https://packagephobia.now.sh/result?p=mongo-seeding)
+[![npm version](https://badge.fury.io/js/mongo-seeding-cli.svg)](https://npmjs.org/package/mongo-seeding-cli) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg?path=cli)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg?path=cli)]() [![install size](https://packagephobia.now.sh/badge?p=mongo-seeding-cli)](https://packagephobia.now.sh/result?p=mongo-seeding-cli)
 
 The ultimate CLI tool for populating your MongoDB database :rocket: 
 
