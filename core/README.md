@@ -60,7 +60,7 @@ npm install mongo-seeding --save
     const seeder = new Seeder(config);
     ```
 
-1.  **(OPTIONAL)** To read MongoDB collections from disk, firstly follow the [tutorial](../docs/import-data-definition.md) in order to define documents and collections to import. Next, read them using `readCollectionsFromPath` method:
+1.  **(OPTIONAL)** To read MongoDB collections from disk, firstly follow the [tutorial](https://github.com/pkosiec/mongo-seeding/blob/master/docs/import-data-definition.md) in order to define documents and collections to import. Next, read them using `readCollectionsFromPath` method:
 
     ```javascript
     const path = require('path');
@@ -93,7 +93,7 @@ npm install mongo-seeding --save
         });
       ```
 
-See an [**import data example**](../examples/import-data) for a sample Node.js application utilizing the library. 
+See an [**import data example**](https://github.com/pkosiec/mongo-seeding/blob/master/examples/import-data) for a sample Node.js application utilizing the library. 
 
 ## API description
 
@@ -151,7 +151,7 @@ const defaultConfig = {
 
 ### `readCollectionsFromPath(path, partialOptions?)`
 
-This method populates collections and their documents from given path. The path has to contain import data structure described [here](../docs/import-data-definition.md).
+This method populates collections and their documents from given path. The path has to contain import data structure described [here](https://github.com/pkosiec/mongo-seeding/blob/master/docs/import-data-definition.md).
 
 **Options**
 

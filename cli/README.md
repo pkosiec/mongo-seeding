@@ -18,7 +18,7 @@ npm install -g mongo-seeding-cli
 
 ## Usage
 
-1. Follow the [tutorial](../docs/import-data-definition.md) to define documents and collections to import.
+1. Follow the [tutorial](https://github.com/pkosiec/mongo-seeding/blob/master/docs/import-data-definition.md) to define documents and collections to import.
 1. In order to seed your database with data from current directory using default configuration, run the following command:
 
     ```bash
