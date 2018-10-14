@@ -1,9 +1,6 @@
 {
-  "version": "3.0.0-2",
-  "packages": [
-    "cli",
-    "core"
-  ],
+  "version": "3.0.0",
+  "packages": ["cli", "core"],
   "command": {
     "publish": {
       "message": "Bump version to %s"
