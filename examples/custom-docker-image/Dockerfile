@@ -16,4 +16,4 @@ ENV DROP_DATABASE true
 ENV REPLACE_ID true
 
 # Set default workdir to simplify running the image
-WORKDIR /data-import//data
+WORKDIR /data-import/data
