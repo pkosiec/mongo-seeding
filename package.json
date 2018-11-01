@@ -12,16 +12,20 @@
   "bugs": {
     "url": "https://github.com/pkosiec/mongo-seeding/issues"
   },
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "clean": "lerna clean"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
   },
   "devDependencies": {
-    "husky": "^1.1.1",
-    "lerna": "^3.4.1",
-    "lerna-changelog": "^0.8.0",
-    "lint-staged": "^7.3.0",
+    "husky": "^1.1.2",
+    "lerna": "^3.4.3",
+    "lerna-changelog": "^0.8.2",
+    "lint-staged": "^8.0.4",
     "prettier": "^1.14.3",
     "tslint": "^5.11.0"
   },

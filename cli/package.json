@@ -65,16 +65,16 @@
     "extend": "^3.0.2",
     "mongo-seeding": "^3.0.0",
     "ts-node": "^7.0.1",
-    "typescript": "^3.1.1"
+    "typescript": "^3.1.6"
   },
   "devDependencies": {
     "@types/command-line-args": "^5.0.0",
     "@types/extend": "^3.0.0",
-    "@types/jest": "^23.3.3",
-    "@types/mongodb": "^3.1.10",
-    "@types/node": "^10.11.4",
+    "@types/jest": "^23.3.9",
+    "@types/mongodb": "^3.1.14",
+    "@types/node": "^10.12.2",
     "jest": "^23.6.0",
-    "mongodb": "^3.1.6",
+    "mongodb": "^3.1.8",
     "ts-jest": "^23.10.4"
   },
   "jest": {
