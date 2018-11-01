@@ -80,17 +80,17 @@ In order to import the sample data, use one of Mongo Seeding tools. The followin
     DEBUG=mongo-seeding node index.js
     ```
 
-To see the full description of the JS library usage, read the **[Readme](../core/README.md)** file of the Mongo Seeding.
+To see the full description of the JS library usage, read the **[Readme](../../core/README.md)** file of the Mongo Seeding.
 
 ### CLI
 
-Make sure that you have the [Mongo Seeding CLI](../cli) installed. Then, run the following command from this directory (folder, which contains this Readme file):
+Make sure that you have the [Mongo Seeding CLI](../../cli) installed. Then, run the following command from this directory (folder, which contains this Readme file):
 
 ```bash
 seed --drop-database --replace-id --db-name testing ./example/data
 ```
 
-To see the full description of the CLI usage, read the **[Readme](../cli/README.md)** file of the Mongo Seeding CLI.
+To see the full description of the CLI usage, read the **[Readme](../../cli/README.md)** file of the Mongo Seeding CLI.
 
 ### Docker image
 
@@ -102,4 +102,4 @@ docker run --rm --network="host" -e DB_NAME=testing -e REPLACE_ID=true -e DROP_D
 
 Replace `/absolute/path/to/` with your absolute path to this cloned repository.
 
-To read more how to run the Docker image with all configuration parameters, read the **[Readme](../docker-image/README.md)** file of the Mongo Seeding Docker image.
+To read more how to run the Docker image with all configuration parameters, read the **[Readme](../../docker-image/README.md)** file of the Mongo Seeding Docker image.
