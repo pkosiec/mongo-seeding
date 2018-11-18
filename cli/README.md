@@ -63,6 +63,7 @@ You can use the following parameters while using `seed` tool:
 | `--drop-collections` | `false` | Drops every collection which is being imported |
 | `--replace-id` | `false` | Replaces `id` property with `_id` for every document during data import |
 | `--reconnect-timeout` | `10000` | Maximum time in milliseconds of waiting for successful MongoDB connection |
+| `--transpile-only` | `false` | Disables type checking on TypeScript files import. This option vastly improves performance of TypeScript data import |
 | `--help` or `-h` | n/a | Help
 
 ## Environmental variables
@@ -81,3 +82,4 @@ You can use the following environmental variables while using `seed` tool:
 | DROP_COLLECTIONS | `false` | Drops every collection which is being imported |
 | REPLACE_ID | `false` | Replaces `id` property with `_id` for every document during import; useful for ORMs | 
 | RECONNECT_TIMEOUT | `10000` | Maximum time in milliseconds of waiting for successful MongoDB connection |
+| TRANSPILE_ONLY | `false` | Disables type checking on TypeScript files import. This option vastly improves performance of TypeScript data import |

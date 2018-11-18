@@ -2,15 +2,21 @@
 process.env.DEBUG = 'mongo-seeding';
 
 import * as commandLineArgs from 'command-line-args';
+import { register } from 'ts-node';
 import { resolve } from 'path';
-import { Seeder, SeederCollectionReadingOptions } from 'mongo-seeding';
+import {
+  Seeder,
+  SeederCollectionReadingOptions,
+  SeederConfig,
+} from 'mongo-seeding';
 import {
   cliOptions,
   validateOptions,
   createConfigFromOptions,
 } from './options';
 import { showHelp, shouldShowHelp } from './help';
-import { CommandLineArguments } from './types';
+import { CommandLineArguments, CliSpecificOptions } from './types';
+import { DeepPartial } from 'mongo-seeding/dist/common';
 
 class CliSeeder {
   run = async () => {
@@ -36,7 +42,8 @@ class CliSeeder {
     }
 
     const config = createConfigFromOptions(options);
-    const seeder = new Seeder(config);
+    this.useCliSpecificOptions(config as DeepPartial<CliSpecificOptions>);
+    const seeder = new Seeder(config as DeepPartial<SeederConfig>);
 
     const collectionsPath = options.data ? options.data : './';
     const collectionReadingConfig = this.getCollectionReadingConfig(options);
@@ -76,6 +83,10 @@ class CliSeeder {
     console.error(`Error ${err.name}: ${err.message}`);
     process.exit(0);
   };
+
+  private useCliSpecificOptions(options: DeepPartial<CliSpecificOptions>) {
+    register({ transpileOnly: options.transpileOnly });
+  }
 }
 
 export const cliSeeder = new CliSeeder();
