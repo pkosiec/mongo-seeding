@@ -71,4 +71,5 @@ RUN npm i --production --no-optional && \
 # Copy built core 
 COPY --from=coreBuilder /app/ /app/node_modules/mongo-seeding/
 
+WORKDIR /data
 CMD seed

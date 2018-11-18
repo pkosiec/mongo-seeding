@@ -1,5 +1,6 @@
 import { cliSeeder } from '../../src/index';
 import { MongoClient } from 'mongodb';
+import * as tsNode from 'ts-node';
 
 console.error = jest.fn();
 console.log = jest.fn();
@@ -22,9 +23,7 @@ describe('CLI', () => {
       : 'mongodb://127.0.0.1:27017/clidb';
     const databaseName = process.env.DB_NAME ? process.env.DB_NAME : 'clidb';
 
-    const exit = jest
-      .spyOn(process, 'exit')
-      .mockImplementation(number => number);
+    const exit = jest.spyOn(process, 'exit').mockImplementation(code => code);
 
     process.argv = [
       '',
@@ -90,9 +89,7 @@ describe('CLI', () => {
   });
 
   it('should show help', async () => {
-    const exit = jest
-      .spyOn(process, 'exit')
-      .mockImplementation(number => number);
+    const exit = jest.spyOn(process, 'exit').mockImplementation(code => code);
 
     process.argv = ['', '', '--help'];
     await cliSeeder.run();
@@ -104,19 +101,26 @@ describe('CLI', () => {
   });
 
   it('should exit without error when no data to import', async () => {
-    const exit = jest
-      .spyOn(process, 'exit')
-      .mockImplementation(number => number);
+    const exit = jest.spyOn(process, 'exit').mockImplementation(code => code);
 
     process.argv = ['', '', './no-path'];
     await cliSeeder.run();
     expect(exit).toBeCalledWith(0);
   });
 
+  it('should allow transpile only mode for TS files', async () => {
+    const registerTsNode = jest.spyOn(tsNode, 'register');
+    jest.spyOn(process, 'exit').mockImplementation(code => code);
+
+    process.argv = ['', '', '--transpile-only', './no-path'];
+    await cliSeeder.run();
+    expect(registerTsNode).toBeCalledWith({
+      transpileOnly: true,
+    });
+  });
+
   it('should exit with error on incorrect values', async () => {
-    const exit = jest
-      .spyOn(process, 'exit')
-      .mockImplementation(number => number);
+    const exit = jest.spyOn(process, 'exit').mockImplementation(code => code);
 
     const testCases = [
       {

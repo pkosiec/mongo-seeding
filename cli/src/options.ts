@@ -1,15 +1,17 @@
 import * as extend from 'extend';
-import { DeepPartial } from 'mongo-seeding/dist/common';
 import { throwOnNegativeNumber } from './validators';
-import { CommandLineOption, CommandLineArguments } from './types';
-import { SeederConfig } from 'mongo-seeding';
+import {
+  CommandLineOption,
+  CommandLineArguments,
+  PartialCliOptions,
+} from './types';
 
 export const cliOptions: CommandLineOption[] = [
   {
     name: 'data',
     alias: 'd',
     description:
-      'Path to directory containing import data; default: {bold Current directory}',
+      'Path to directory containing import data; default: {bold current directory}',
     type: String,
     defaultOption: true,
   },
@@ -50,7 +52,7 @@ export const cliOptions: CommandLineOption[] = [
     name: 'db-uri',
     alias: 'u',
     description:
-      'If defined, the URI will be used for establishing connection to database, ignoring values defined via other `db-*` parameters, e.g. `db-name`, `db-host`, etc.; Default: {bold undefined}',
+      'If defined, the URI will be used for establishing connection to database, ignoring values defined via other `db-*` parameters, e.g. `db-name`, `db-host`, etc.; default: {bold undefined}',
     type: String,
   },
   {
@@ -76,6 +78,13 @@ export const cliOptions: CommandLineOption[] = [
     type: Boolean,
   },
   {
+    name: 'transpile-only',
+    alias: 't',
+    description:
+      'Disables type checking on TypeScript files import. This option vastly improves performance of TypeScript data import; default: {bold false}',
+    type: Boolean,
+  },
+  {
     name: 'help',
     alias: 'h',
     description: 'Shows this help info',
@@ -90,7 +99,7 @@ export const validateOptions = (options: CommandLineArguments) => {
 
 export const createConfigFromOptions = (
   cmdArgs: CommandLineArguments,
-): DeepPartial<SeederConfig> => {
+): PartialCliOptions => {
   const commandLineConfig = populateCommandLineOptions(cmdArgs);
   const envConfig = populateEnvOptions();
   const config = {};
@@ -99,7 +108,7 @@ export const createConfigFromOptions = (
 
 function populateCommandLineOptions(
   options: CommandLineArguments,
-): DeepPartial<SeederConfig> {
+): PartialCliOptions {
   return {
     database: options['db-uri']
       ? options['db-uri']
@@ -114,12 +123,13 @@ function populateCommandLineOptions(
     databaseReconnectTimeout: options['reconnect-timeout'],
     dropDatabase: options['drop-database'],
     dropCollections: options['drop-collections'],
+    transpileOnly: options['transpile-only'],
   };
 }
 
-function populateEnvOptions(): DeepPartial<SeederConfig> {
+function populateEnvOptions(): PartialCliOptions {
   const env = process.env;
-  const envOptions: DeepPartial<SeederConfig> = {
+  return {
     database: env.DB_URI
       ? String(env.DB_URI)
       : convertEmptyObjectToUndefined({
@@ -135,9 +145,8 @@ function populateEnvOptions(): DeepPartial<SeederConfig> {
       : undefined,
     dropDatabase: env.DROP_DATABASE === 'true',
     dropCollections: env.DROP_COLLECTIONS === 'true',
+    transpileOnly: env.TRANSPILE_ONLY === 'true',
   };
-
-  return envOptions;
 }
 
 export function convertEmptyObjectToUndefined(obj: any): object | undefined {
