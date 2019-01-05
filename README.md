@@ -1,7 +1,7 @@
 ![Mongo Seeding](https://raw.githubusercontent.com/pkosiec/mongo-seeding/master/docs/assets/logo.png)
 
 # Mongo Seeding
-![GitHub release](https://img.shields.io/github/release/pkosiec/mongo-seeding.svg) [![Build Status](https://travis-ci.org/pkosiec/mongo-seeding.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding) [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+[![GitHub release](https://img.shields.io/github/release/pkosiec/mongo-seeding.svg)](https://github.com/pkosiec/mongo-seeding/releases) [![Build Status](https://travis-ci.org/pkosiec/mongo-seeding.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding) [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 
 The ultimate solution for populating your MongoDB database :rocket: 
 
@@ -47,7 +47,7 @@ Imagine that you want to import 10 very similar documents into `authors` collect
 }
 ```
 
-With every tool I've ever found, you would need to create 10 separate JSON files, or one file with array of objects. Of course, the latter option is better, but anyway you end up with a file looking like this:
+With every tool I've ever found, you would need to create 5 separate JSON files, or one file with array of objects. Of course, the latter option is better, but anyway you end up with a file looking like this:
 
 ```json
 [
@@ -75,43 +75,18 @@ With every tool I've ever found, you would need to create 10 separate JSON files
         "name": "Chris",
         "email": "example@example.com",
         "avatar": "https://placekitten.com/300/300"
-    },
-    {
-        "name": "Mike",
-        "email": "example@example.com",
-        "avatar": "https://placekitten.com/300/300"
-    },
-    {
-        "name": "Anna",
-        "email": "example@example.com",
-        "avatar": "https://placekitten.com/300/300"
-    },
-    {
-        "name": "Jack",
-        "email": "example@example.com",
-        "avatar": "https://placekitten.com/300/300"
-    },
-    {
-        "name": "Peter",
-        "email": "example@example.com",
-        "avatar": "https://placekitten.com/300/300"
-    },
-    {
-        "name": "Paul",
-        "email": "example@example.com",
-        "avatar": "https://placekitten.com/300/300"
     }
 ]
 ```
 
-That doesn't look good - you did probably hear about [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) principle.
+It doesn't look good - you did probably hear about [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) principle.
 
 Imagine that now you have to change authors' email. You would probably use search and replace. But what if you would need change the data shape completely? This time you can also use IDE features like multiple cursors etc., but hey - it's a waste of time. What if you had a much more complicated data shape?
 
 If you could use JavaScript to define the authors documents, it would be much easier and faster to write something like this:
 
 ```javascript
-const names = ["John", "Joanne", "Bob", "Will", "Chris", "Mike", "Anna", "Jack", "Peter", "Paul"];
+const names = ["John", "Joanne", "Bob", "Will", "Chris"];
 
 module.exports = names.map(name => ({
     name,
@@ -125,7 +100,7 @@ Obviously, in JavaScript files you can also import other files - external librar
 ```javascript
 const { getObjectId } = require("../../helpers/index");
 
-const names = ["John", "Joanne", "Bob", "Will", "Chris", "Mike", "Anna", "Jack", "Peter", "Paul"];
+const names = ["John", "Joanne", "Bob", "Will", "Chris"];
 
 const min = 18;
 const max = 100;
@@ -159,7 +134,7 @@ In multiple JSON files which contains MongoDB documents definition, it's easy to
 ```
 
 Because of a typo, Bob has `email` field empty. Also, there is a non-number value for `age` key.
-The same problem would exist in JavaScript data definition. But, if you was able to use TypeScript...
+The same problem would exist in JavaScript data definition. But, if you was able to use TypeScript, the situation slightly changes:
 
 ```javascript
 export interface Person {
@@ -191,8 +166,14 @@ export = people;
 
 If you used types, you would instantly see that you made mistakes - not only during import, but much earlier, in your IDE.
 
+At this point some can say: “We had this for years — this is the purpose of mongoose!”. The problem is that importing a bigger amount of data with mongoose is painfully slow — because of the model validation. You can decide to use a faster approach, `Model.collection.insert()` 
+method, but in this case you disable model validation completely!
+
+Also, starting from version 3.6, MongoDB supports JSON Schema validation. Even if you are OK with writing validation rules in JSON, you still have to try inserting a document into collection to see if the object is valid. It is too slow and cumbersome, isn’t it? How to solve this problem?
+
+It’s simple. Use TypeScript. Compile time model validation will be much faster. And IDE plugins (or built-in support like in Visual Studio Code) will ensure that you won’t make any mistake during sample data file modification. Oh, and the last thing: If you have an existing TypeScript application which uses MongoDB, then you can just reuse all models for data import.
+
 The Mongo Seeding CLI and Mongo Seeding Docker Image have TypeScript runtime built-in. It means that you can take advantage of static type checking in TypeScript data definition files (`.ts` extension).
-You can use Mongo Seeding library in your projects with TypeScript runtime and enable importing TS files as well.
 
 ### Problem #3: No ultimate solution
 
