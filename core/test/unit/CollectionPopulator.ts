@@ -9,33 +9,48 @@ describe('CollectionPopulator', () => {
 
   it('should get proper collection name from directory name', () => {
     const collectionPopulator = new CollectionPopulator(['js']);
-    const collectionName = 'TestCollection';
-    const collectionNumberName = '1';
-
+    const camelCaseName = 'TestCollection';
+    const dashCaseName = 'collection-name';
     const testCases: Array<{ name: string; expected: string }> = [
       {
-        name: collectionName,
-        expected: collectionName,
+        name: camelCaseName,
+        expected: camelCaseName,
       },
       {
-        name: `1-${collectionName}`,
-        expected: collectionName,
+        name: `1-${camelCaseName}`,
+        expected: camelCaseName,
       },
       {
-        name: `1_${collectionName}`,
-        expected: collectionName,
+        name: `4_${camelCaseName}`,
+        expected: camelCaseName,
       },
       {
-        name: `1.${collectionName}`,
-        expected: collectionName,
+        name: `2.${camelCaseName}`,
+        expected: camelCaseName,
       },
       {
-        name: `1 ${collectionName}`,
-        expected: collectionName,
+        name: `5 ${camelCaseName}`,
+        expected: camelCaseName,
       },
       {
-        name: collectionNumberName,
-        expected: collectionNumberName,
+        name: `test-${dashCaseName}`,
+        expected: `test-${dashCaseName}`,
+      },
+      {
+        name: `32-${dashCaseName}`,
+        expected: dashCaseName,
+      },
+      {
+        name: `23 ${dashCaseName}`,
+        expected: dashCaseName,
+      },
+      {
+        name: `1_${dashCaseName}`,
+        expected: dashCaseName,
+      },
+      {
+        name: '23232',
+        expected: '23232',
       },
     ];
 
