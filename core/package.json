@@ -48,21 +48,21 @@
     "preversion": "npm run test; npm run build"
   },
   "dependencies": {
-    "debug": "^4.1.0",
+    "debug": "^4.1.1",
     "extend": "^3.0.0",
-    "mongodb": "^3.1.8"
+    "mongodb": "^3.1.10"
   },
   "devDependencies": {
     "@types/extend": "^3.0.0",
     "@types/fs-extra": "^5.0.0",
-    "@types/jest": "^23.3.9",
-    "@types/mongodb": "^3.1.14",
+    "@types/jest": "^23.3.11",
+    "@types/mongodb": "^3.1.18",
     "babel-core": "^6.26.0",
-    "codacy-coverage": "^3.2.0",
-    "fs-extra": "^7.0.0",
+    "codacy-coverage": "^3.4.0",
+    "fs-extra": "^7.0.1",
     "jest": "^23.6.0",
-    "ts-jest": "^23.10.4",
-    "typescript": "^3.1.6"
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.2.2"
   },
   "jest": {
     "verbose": false,
