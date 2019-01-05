@@ -1,22 +1,64 @@
-import { existsSync, mkdirSync, writeFileSync } from 'fs';
-import { removeSync } from 'fs-extra';
+import { existsSync, mkdirSync } from 'fs';
 
 import { CollectionPopulator } from '../../src/populator';
 import { defaultCollectionReadingOptions } from '../../src';
 
-const TEMP_DIRECTORY_PATH = __dirname + '/.temp-collectionPopulator';
+const IMPORT_DATA_DIR = __dirname + '/_importdata';
 
-beforeEach(async () => {
-  if (!existsSync(TEMP_DIRECTORY_PATH)) {
-    mkdirSync(TEMP_DIRECTORY_PATH);
-  }
-});
-
-afterEach(async () => {
-  removeSync(TEMP_DIRECTORY_PATH);
-});
+interface ExpectedDocuments {
+  [key: string]: object[];
+}
 
 describe('CollectionPopulator', () => {
+  it('should populate documents correctly', () => {
+    const expectedDocuments: ExpectedDocuments = {
+      array: [
+        {
+          number: 1,
+          name: 'one',
+        },
+        {
+          number: 2,
+          name: 'two',
+        },
+        {
+          number: 3,
+          name: 'three',
+        },
+        {
+          number: 4,
+          name: 'four',
+        },
+      ],
+      object: [
+        {
+          number: 5,
+          name: 'five',
+        },
+        {
+          number: 6,
+          name: 'six',
+        },
+      ],
+    };
+
+    for (const key of Object.keys(expectedDocuments)) {
+      const collectionPopulator = new CollectionPopulator(
+        defaultCollectionReadingOptions.extensions,
+      );
+      const path = `${IMPORT_DATA_DIR}/populator-docs/${key}`;
+
+      // @ts-ignore
+      const documents = collectionPopulator.populateDocumentsContent(path);
+
+      expectedDocuments[key].forEach(expectedDocument => {
+        expect(documents).toContainEqual(
+          expect.objectContaining(expectedDocument),
+        );
+      });
+    }
+  });
+
   it('should fail when directory is not found', () => {
     const path = '/surely/not/existing/path';
     const collectionPopulator = new CollectionPopulator(
@@ -28,82 +70,23 @@ describe('CollectionPopulator', () => {
     }).toThrowError('ENOENT');
   });
 
-  it('should treat object as document', () => {
-    const collectionPopulator = new CollectionPopulator(
-      defaultCollectionReadingOptions.extensions,
-    );
-    const path = `${TEMP_DIRECTORY_PATH}/CollectionOne`;
-    mkdirSync(path);
-    writeFileSync(
-      `${path}/test1.json`,
-      JSON.stringify({
-        number: 1,
-        name: 'one',
-      }),
-    );
-
-    // @ts-ignore
-    const documents = collectionPopulator.populateDocumentsContent(path);
-
-    expect(documents).toContainEqual(
-      expect.objectContaining({
-        number: 1,
-        name: 'one',
-      }),
-    );
-  });
-
-  it('should treat exported array of objects as separate documents', () => {
-    const collectionPopulator = new CollectionPopulator(
-      defaultCollectionReadingOptions.extensions,
-    );
-    const path = `${TEMP_DIRECTORY_PATH}/CollectionTwo`;
-    mkdirSync(path);
-    writeFileSync(
-      `${path}/test1.js`,
-      `
-          module.exports = [
-            {
-                number: 1,
-                name: 'one',
-            },
-              {
-                  number: 2,
-                  name: 'two',
-              }
-          ]`,
-    );
-
-    // @ts-ignore
-    const documents = collectionPopulator.populateDocumentsContent(path);
-
-    expect(documents).toContainEqual(
-      expect.objectContaining({
-        number: 2,
-        name: 'two',
-      }),
-    );
-    expect(documents).toContainEqual(
-      expect.objectContaining({
-        number: 1,
-        name: 'one',
-      }),
-    );
-  });
-
   it('should skip empty directories', () => {
     const collectionPopulator = new CollectionPopulator(
       defaultCollectionReadingOptions.extensions,
     );
-    const baseDir = 'skipEmptyDirBase';
-    const baseDirPath = `${TEMP_DIRECTORY_PATH}/${baseDir}`;
-    const directory1 = 'SkipEmptyDir1';
-    const directory2 = 'SkipEmptyDir2';
-    mkdirSync(baseDirPath);
-    mkdirSync(`${baseDirPath}/${directory1}`);
-    mkdirSync(`${baseDirPath}/${directory2}`);
+    const path = `${IMPORT_DATA_DIR}/populator-skip-empty`;
 
-    const collections = collectionPopulator.readFromPath(TEMP_DIRECTORY_PATH);
+    const dirsToCreate = ['empty-dir-1', 'empty-dir-2'];
+    dirsToCreate.forEach(dir => {
+      const dirPath = `${path}/${dir}`;
+      if (existsSync(dirPath)) {
+        return;
+      }
+
+      mkdirSync(dirPath);
+    });
+
+    const collections = collectionPopulator.readFromPath(path);
     expect(collections).toHaveLength(0);
   });
 });
