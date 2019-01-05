@@ -27,5 +27,5 @@ RUN npm run cleanup
 ENV CI true
 
 # Run tests on container start
-CMD npm test -- --coverage && \
+CMD npm run test:coverage && \
     cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage --language typescript 

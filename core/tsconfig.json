@@ -19,9 +19,5 @@
     "emitDecoratorMetadata": true,
     "declaration": true
   },
-  "exclude": [
-    "node_modules",
-    "test",
-    "coverage"
-  ]
+  "exclude": ["node_modules", "test", "coverage"]
 }
