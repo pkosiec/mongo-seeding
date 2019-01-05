@@ -1,5 +1,6 @@
 import { SeederCollection, log } from '../common';
 import { fileSystem } from './filesystem';
+import { isNumber } from 'util';
 
 export class CollectionPopulator {
   extensions: string[];
@@ -69,12 +70,24 @@ export class CollectionPopulator {
 
   private getCollectionName(directoryName: string) {
     const separators = /\s*[-_\.\s]\s*/;
-    let collectionName;
-    if (directoryName.match(separators)) {
-      collectionName = directoryName.split(separators)[1];
-    } else {
-      collectionName = directoryName;
+
+    const isMatch = directoryName.match(separators);
+    if (!isMatch) {
+      return directoryName;
     }
-    return collectionName;
+
+    const firstSeparator = isMatch[0];
+    const splitArr = directoryName.split(firstSeparator);
+    if (!this.isNumber(splitArr[0])) {
+      return directoryName;
+    }
+
+    splitArr.shift();
+
+    return splitArr.join(firstSeparator);
+  }
+
+  private isNumber(str: string): boolean {
+    return /^\d+$/.test(str);
   }
 }
