@@ -45,7 +45,7 @@ describe('Database', () => {
         },
       },
     ];
-    const collection = 'testingCollection';
+    const collection = 'db-insert-docs';
 
     await database.insertDocumentsIntoCollection(documents, collection);
     const result = await database.db
@@ -59,30 +59,34 @@ describe('Database', () => {
   });
 
   it('should drop database', async () => {
-    await createCollection(database.db, 'first');
-    await createCollection(database.db, 'second');
+    const expectedCollections = ['db-drop-first', 'db-drop-second'];
+
+    for (const collection of expectedCollections) {
+      await createCollection(database.db, collection);
+    }
 
     const collections = await listExistingCollections(database.db);
-    await expect(collections).toHaveLength(2);
-    await expect(collections).toContainEqual('first');
-    await expect(collections).toContainEqual('second');
+
+    await expect(collections).toHaveLength(expectedCollections.length);
+    for (const collection of expectedCollections) {
+      await expect(collections).toContainEqual(collection);
+    }
 
     await database.drop();
+
     await expect(listExistingCollections(database.db)).resolves.toEqual([]);
   });
 
   it('should drop collection', async () => {
-    await createCollection(database.db, 'firstCol');
-    await createCollection(database.db, 'secondCol');
+    const expectedCollections = ['db-drop-col-first', 'db-drop-col-second'];
 
-    const collections = await listExistingCollections(database.db);
-    await expect(collections).toHaveLength(2);
-    await expect(collections).toContainEqual('firstCol');
-    await expect(collections).toContainEqual('secondCol');
+    for (const collection of expectedCollections) {
+      await createCollection(database.db, collection);
+    }
 
-    await database.dropCollectionIfExists('firstCol');
+    await database.dropCollectionIfExists(expectedCollections[0]);
     await expect(listExistingCollections(database.db)).resolves.toEqual([
-      'secondCol',
+      expectedCollections[1],
     ]);
   });
 });
