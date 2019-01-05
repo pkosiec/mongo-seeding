@@ -2,7 +2,7 @@ import {
   createConfigFromOptions,
   convertEmptyObjectToUndefined,
 } from '../../src/options';
-import { CommandLineArguments } from '../../src/types';
+import { CommandLineArguments, PartialCliOptions } from '../../src/types';
 
 describe('Options', () => {
   const previousEnvs = process.env;
@@ -18,34 +18,116 @@ describe('Options', () => {
   });
 
   it('should create config from command line arguments', () => {
-    const cmdArgs: CommandLineArguments = {
-      'db-uri': 'cmdUri',
-      'reconnect-timeout': 7000,
-    };
+    const testCases: Array<{
+      input: CommandLineArguments;
+      expected: PartialCliOptions;
+    }> = [
+      {
+        input: {
+          'db-uri': 'cmdUri',
+          'reconnect-timeout': 7000,
+          'drop-database': true,
+          'drop-collections': true,
+          'transpile-only': true,
+        },
+        expected: {
+          database: 'cmdUri',
+          databaseReconnectTimeout: 7000,
+          dropDatabase: true,
+          dropCollections: true,
+          transpileOnly: true,
+        },
+      },
+      {
+        input: {
+          'db-protocol': 'testing://',
+          'db-host': 'testHost',
+          'db-port': 3232,
+          'db-name': 'testName',
+          'db-username': 'testUserName',
+          'db-password': 'testPasswd',
+        },
+        expected: {
+          database: {
+            protocol: 'testing://',
+            host: 'testHost',
+            port: 3232,
+            name: 'testName',
+            username: 'testUserName',
+            password: 'testPasswd',
+          },
+          dropDatabase: false,
+          dropCollections: false,
+          transpileOnly: false,
+        },
+      },
+    ];
 
-    const result = createConfigFromOptions(cmdArgs);
-
-    expect(result).toHaveProperty('database', 'cmdUri');
-    expect(result).toHaveProperty('databaseReconnectTimeout', 7000);
-
-    expect(result).toMatchObject({
-      database: 'cmdUri',
-      databaseReconnectTimeout: 7000,
-    });
+    for (const testCase of testCases) {
+      const result = createConfigFromOptions(testCase.input);
+      expect(result).toMatchObject(testCase.expected);
+    }
   });
 
   it('should read options from environmental variables', () => {
-    process.env.DB_URI = 'envUri';
-    process.env.RECONNECT_TIMEOUT = '5000';
-    process.env.DROP_DATABASE = 'true';
+    interface Envs {
+      [key: string]: string;
+    }
+    const testCases: Array<{
+      envs: Envs;
+      expected: PartialCliOptions;
+    }> = [
+      {
+        envs: {
+          DB_URI: 'cmdUri',
+          RECONNECT_TIMEOUT: '7000',
+          DROP_DATABASE: 'true',
+          DROP_COLLECTIONS: 'true',
+          TRANSPILE_ONLY: 'true',
+        },
+        expected: {
+          database: 'cmdUri',
+          databaseReconnectTimeout: 7000,
+          dropDatabase: true,
+          dropCollections: true,
+          transpileOnly: true,
+        },
+      },
+      {
+        envs: {
+          DB_PROTOCOL: 'testing://',
+          DB_HOST: 'testHost',
+          DB_PORT: '3232',
+          DB_NAME: 'testName',
+          DB_USERNAME: 'testUserName',
+          DB_PASSWORD: 'testPasswd',
+        },
+        expected: {
+          database: {
+            protocol: 'testing://',
+            host: 'testHost',
+            port: 3232,
+            name: 'testName',
+            username: 'testUserName',
+            password: 'testPasswd',
+          },
+          dropDatabase: false,
+          dropCollections: false,
+          transpileOnly: false,
+        },
+      },
+    ];
 
-    const result = createConfigFromOptions({});
+    for (const testCase of testCases) {
+      Object.keys(testCase.envs).forEach(key => {
+        process.env[key] = testCase.envs[key];
+      });
 
-    expect(result).toMatchObject({
-      database: 'envUri',
-      databaseReconnectTimeout: 5000,
-      dropDatabase: true,
-    });
+      const result = createConfigFromOptions({});
+      expect(result).toMatchObject(testCase.expected);
+
+      process.env = previousEnvs;
+    }
   });
 
   it('should overwrite environmental variables with command line arguments', () => {

@@ -141,4 +141,16 @@ describe('CLI', () => {
       expect(exit).toBeCalledWith(0);
     }
   });
+
+  it('should exit with error on command line arguments error', async () => {
+    const exit = jest.spyOn(process, 'exit').mockImplementation(code => code);
+
+    process.argv = ['', '', '--what-is-this-parameter', 'dunno'];
+    await cliSeeder.run();
+
+    expect(console.error).toBeCalledWith(
+      expect.stringContaining('InvalidParameterError'),
+    );
+    expect(exit).toBeCalledWith(0);
+  });
 });

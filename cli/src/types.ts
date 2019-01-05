@@ -1,4 +1,4 @@
-import { SeederConfig } from 'mongo-seeding';
+import { SeederConfig, SeederCollectionReadingOptions } from 'mongo-seeding';
 import { DeepPartial } from 'mongo-seeding/dist/common';
 
 export interface CommandLineOption {
@@ -26,7 +26,9 @@ export interface CommandLineArguments {
   'transpile-only'?: boolean;
 }
 
-export type PartialCliOptions = DeepPartial<SeederConfig | CliSpecificOptions>;
+export type PartialCliOptions = DeepPartial<
+  SeederConfig | SeederCollectionReadingOptions | CliSpecificOptions
+>;
 export interface CliSpecificOptions {
   transpileOnly: boolean;
 }
