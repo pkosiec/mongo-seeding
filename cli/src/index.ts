@@ -19,6 +19,8 @@ import { CommandLineArguments, CliSpecificOptions } from './types';
 import { DeepPartial } from 'mongo-seeding/dist/common';
 
 class CliSeeder {
+  readonly DEFAULT_INPUT_PATH = './';
+
   run = async () => {
     let options: CommandLineArguments;
 
@@ -45,7 +47,7 @@ class CliSeeder {
     this.useCliSpecificOptions(config as DeepPartial<CliSpecificOptions>);
     const seeder = new Seeder(config as DeepPartial<SeederConfig>);
 
-    const collectionsPath = options.data ? options.data : './';
+    const collectionsPath = this.getCollectionsPath(options);
     const collectionReadingConfig = this.getCollectionReadingConfig(options);
 
     try {
@@ -61,6 +63,14 @@ class CliSeeder {
 
     process.exit(0);
   };
+
+  private getCollectionsPath(options: CommandLineArguments): string {
+    if (options.data) {
+      return options.data;
+    }
+
+    return this.DEFAULT_INPUT_PATH;
+  }
 
   private getCollectionReadingConfig = (
     options: CommandLineArguments,
