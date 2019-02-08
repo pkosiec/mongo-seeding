@@ -1,6 +1,6 @@
 {
   "version": "3.1.0",
-  "packages": ["cli", "core"],
+  "packages": ["cli", "core", "docker-image/test/tester"],
   "command": {
     "publish": {
       "message": "Bump version to %s"
