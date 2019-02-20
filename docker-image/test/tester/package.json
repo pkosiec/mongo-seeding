@@ -18,7 +18,7 @@
     "test": "jest -i"
   },
   "dependencies": {
-    "jest": "^23.6.0",
+    "jest": "^24.1.0",
     "mongodb": "^3.1.13"
   },
   "devDependencies": {},

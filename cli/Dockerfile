@@ -4,7 +4,7 @@
 # Stage 1 
 #
 
-FROM node:10-alpine AS builder
+FROM node:11-alpine AS builder
 LABEL Maintainer="Pawel Kosiec <pawel@kosiec.net>"
 
 ENV CORE_DIR=./core
@@ -27,7 +27,7 @@ RUN rm -rf /app/src/
 # Stage 2 
 #
 
-FROM node:10-alpine
+FROM node:11-alpine
 
 WORKDIR /app
 
