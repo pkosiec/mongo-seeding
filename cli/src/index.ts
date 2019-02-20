@@ -95,7 +95,10 @@ class CliSeeder {
   };
 
   private useCliSpecificOptions(options: DeepPartial<CliSpecificOptions>) {
-    register({ transpileOnly: options.transpileOnly });
+    register({
+      transpileOnly: options.transpileOnly,
+      compiler: require.resolve('typescript', { paths: [__dirname] }),
+    });
   }
 }
 

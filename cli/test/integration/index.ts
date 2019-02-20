@@ -114,9 +114,11 @@ describe('CLI', () => {
 
     process.argv = ['', '', '--transpile-only', './no-path'];
     await cliSeeder.run();
-    expect(registerTsNode).toBeCalledWith({
-      transpileOnly: true,
-    });
+    expect(registerTsNode).toBeCalledWith(
+      expect.objectContaining({
+        transpileOnly: true,
+      }),
+    );
   });
 
   it('should exit with error on incorrect values', async () => {
