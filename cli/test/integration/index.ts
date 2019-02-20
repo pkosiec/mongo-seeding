@@ -23,7 +23,7 @@ describe('CLI', () => {
       : 'mongodb://127.0.0.1:27017/clidb';
     const databaseName = process.env.DB_NAME ? process.env.DB_NAME : 'clidb';
 
-    const exit = jest.spyOn(process, 'exit').mockImplementation(code => code);
+    const exit = jest.spyOn(process, 'exit').mockImplementation();
 
     process.argv = [
       '',
@@ -40,10 +40,10 @@ describe('CLI', () => {
     expect(console.error).not.toBeCalled();
     expect(exit).toBeCalledWith(0);
 
-    const client = await MongoClient.connect(
-      dbConnectionUri,
-      { ignoreUndefined: true, useNewUrlParser: true },
-    );
+    const client = await MongoClient.connect(dbConnectionUri, {
+      ignoreUndefined: true,
+      useNewUrlParser: true,
+    });
     const db = client.db(databaseName);
 
     const testCases = [
@@ -89,7 +89,7 @@ describe('CLI', () => {
   });
 
   it('should show help', async () => {
-    const exit = jest.spyOn(process, 'exit').mockImplementation(code => code);
+    const exit = jest.spyOn(process, 'exit').mockImplementation();
 
     process.argv = ['', '', '--help'];
     await cliSeeder.run();
@@ -101,7 +101,7 @@ describe('CLI', () => {
   });
 
   it('should exit without error when no data to import', async () => {
-    const exit = jest.spyOn(process, 'exit').mockImplementation(code => code);
+    const exit = jest.spyOn(process, 'exit').mockImplementation();
 
     process.argv = ['', '', './no-path'];
     await cliSeeder.run();
@@ -110,17 +110,19 @@ describe('CLI', () => {
 
   it('should allow transpile only mode for TS files', async () => {
     const registerTsNode = jest.spyOn(tsNode, 'register');
-    jest.spyOn(process, 'exit').mockImplementation(code => code);
+    jest.spyOn(process, 'exit').mockImplementation();
 
     process.argv = ['', '', '--transpile-only', './no-path'];
     await cliSeeder.run();
-    expect(registerTsNode).toBeCalledWith({
-      transpileOnly: true,
-    });
+    expect(registerTsNode).toBeCalledWith(
+      expect.objectContaining({
+        transpileOnly: true,
+      }),
+    );
   });
 
   it('should exit with error on incorrect values', async () => {
-    const exit = jest.spyOn(process, 'exit').mockImplementation(code => code);
+    const exit = jest.spyOn(process, 'exit').mockImplementation();
 
     const testCases = [
       {
@@ -143,7 +145,7 @@ describe('CLI', () => {
   });
 
   it('should exit with error on command line arguments error', async () => {
-    const exit = jest.spyOn(process, 'exit').mockImplementation(code => code);
+    const exit = jest.spyOn(process, 'exit').mockImplementation();
 
     process.argv = ['', '', '--what-is-this-parameter', 'dunno'];
     await cliSeeder.run();

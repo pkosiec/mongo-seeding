@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:11-alpine
 LABEL Maintainer="Pawel Kosiec <pawel@kosiec.net>"
 
 ARG cliVersion=""

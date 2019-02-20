@@ -1,6 +1,6 @@
 # Run with context of the upper level directory
 
-FROM node:10-alpine
+FROM node:11-alpine
 
 ENV DIR ./core
 WORKDIR /app
