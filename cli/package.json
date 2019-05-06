@@ -61,22 +61,22 @@
     "test:watch": "jest --watch --coverage"
   },
   "dependencies": {
-    "command-line-args": "^5.0.0",
+    "command-line-args": "^5.1.1",
     "command-line-usage": "^5.0.0",
     "extend": "^3.0.2",
     "mongo-seeding": "^3.1.0",
-    "ts-node": "^8.0.2",
-    "typescript": "^3.3.3"
+    "ts-node": "^8.1.0",
+    "typescript": "^3.4.5"
   },
   "devDependencies": {
     "@types/command-line-args": "^5.0.0",
     "@types/extend": "^3.0.1",
-    "@types/jest": "^24.0.6",
-    "@types/mongodb": "^3.1.19",
-    "@types/node": "^11.9.4",
-    "jest": "^24.1.0",
-    "ts-jest": "^24.0.0",
-    "mongodb": "^3.1.13"
+    "@types/jest": "^24.0.12",
+    "@types/mongodb": "^3.1.26",
+    "@types/node": "^11.13.10",
+    "jest": "^24.8.0",
+    "mongodb": "^3.2.3",
+    "ts-jest": "^24.0.2"
   },
   "jest": {
     "verbose": false,
