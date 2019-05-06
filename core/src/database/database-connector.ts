@@ -101,6 +101,10 @@ export class DatabaseConnector {
     if (username) {
       credentials = `${username}${password ? `:${password}` : ''}@`;
     }
+
+    if (protocol === 'mongodb+srv') {
+        return `${protocol}://${credentials}${host}/${name}`;    
+    }
     return `${protocol}://${credentials}${host}:${port}/${name}`;
   }
 
