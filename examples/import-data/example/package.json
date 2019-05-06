@@ -14,8 +14,8 @@
     "url": "https://github.com/pkosiec/mongo-seeding"
   },
   "dependencies": {
-    "@types/node": "^10.12.18",
-    "mongodb": "^3.1.10"
+    "@types/node": "^10.14.6",
+    "mongodb": "^3.2.3"
   },
   "devDependencies": {}
 }
