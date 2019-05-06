@@ -41,6 +41,18 @@ describe('DatabaseConnector', () => {
     expect(uri).toBe(expectedUri);
   });
 
+  it('should return valid DB connection URI with Mongo 3.6 protocol', () => {
+    const dbConfig: SeederDatabaseConfig = {
+      protocol: 'mongodb+srv',
+      host: '127.0.0.1',
+      port: 27017,
+      name: 'database',
+    };
+    const expectedUri = 'mongodb+srv://127.0.0.1/database';
+    const uri = databaseConnector.getDbConnectionUri(dbConfig);
+    expect(uri).toBe(expectedUri);
+  });
+
   it('should return valid DB connection URI with username only', () => {
     const authConfig: SeederDatabaseConfig = {
       protocol: 'mongodb',
