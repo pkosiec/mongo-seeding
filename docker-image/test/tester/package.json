@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "jest": "^24.8.0",
-    "mongodb": "^3.2.3"
+    "mongodb": "^3.2.6"
   },
   "jest": {
     "verbose": false,
