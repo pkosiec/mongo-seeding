@@ -49,6 +49,7 @@
     "preversion": "npm run test; npm run build"
   },
   "dependencies": {
+    "bson": "^4.0.2",
     "debug": "^4.1.1",
     "extend": "^3.0.0",
     "mongodb": "^3.2.6"
