@@ -13,4 +13,4 @@ if [ "${CI_SECURE_ENV_VARS}" == "false" ]; then
     RUN_COMMAND="npm test"
 fi
 
-docker run --rm --network="host" -e CODACY_PROJECT_TOKEN=$CODACY_PROJECT_TOKEN $IMAGE_NAME:$CI_BUILD_NUMBER $RUN_COMMAND
+docker run --rm --network="host" -e CODECOV_TOKEN=$CODECOV_TOKEN $IMAGE_NAME:$CI_BUILD_NUMBER $RUN_COMMAND

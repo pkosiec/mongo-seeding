@@ -29,22 +29,27 @@ RUN rm -rf /app/src/
 
 FROM node:11-alpine
 
-WORKDIR /app
+ENV DIR cli
+WORKDIR /cli
 
-ENV CLI_DIR=./cli
+# Install git
+RUN apk add --update git && \
+    rm -rf /tmp/* /var/cache/apk/*
 
 # Install dependencies
-COPY $CLI_DIR/package.json $CLI_DIR/package-lock.json /app/
+COPY $DIR/package.json $DIR/package-lock.json /$DIR/
 RUN npm i --no-optional
 
 # Copy core
 COPY --from=builder /app/ /app/node_modules/mongo-seeding/
 
 # Copy app sources
-COPY $CLI_DIR/tsconfig.json /app/
-COPY $CLI_DIR/src/ /app/src/
-COPY $CLI_DIR/bin/ /app/bin/
-COPY $CLI_DIR/test/ /app/test/
+COPY ./codecov.yml /
+COPY ./.git/ /
+COPY ./$DIR/tsconfig.json /$DIR/
+COPY ./$DIR/src/ /$DIR/src/
+COPY ./$DIR/bin/ /$DIR/bin/
+COPY ./$DIR/test/ /$DIR/test/
 
 # Build app
 RUN npm run build
@@ -55,4 +60,5 @@ RUN npm run cleanup
 ENV CI true
 
 # Run tests on container start
-CMD npm test
+CMD npm run test:coverage && \
+    npm run test:upload-coverage 

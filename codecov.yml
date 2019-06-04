@@ -1,0 +1,18 @@
+coverage:
+  status:
+    project:
+      default: off
+      core:
+        target: 90%
+        flags: core
+      cli:
+        target: 90%
+        flags: cli
+
+flags:
+  core:
+    paths:
+      - core/
+  cli:
+    paths:
+      - cli/

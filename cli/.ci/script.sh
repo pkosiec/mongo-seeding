@@ -6,4 +6,4 @@ echo "Building test image..."
 docker build -t $IMAGE_NAME:$CI_BUILD_NUMBER -f ./cli/Dockerfile .
 
 echo "Running tests with coverage reporting..."
-docker run --rm --network="host" $IMAGE_NAME:$CI_BUILD_NUMBER
+docker run --rm --network="host" -e CODECOV_TOKEN=$CODECOV_TOKEN $IMAGE_NAME:$CI_BUILD_NUMBER
