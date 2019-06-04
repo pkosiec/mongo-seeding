@@ -5,7 +5,7 @@
 
 The ultimate solution for populating your MongoDB database :rocket: 
 
-Define MongoDB documents in JSON, JavaScript or even TypeScript file(s). Use JS library, install CLI or run Docker image to import them! 
+Define MongoDB documents in JSON, JavaScript or even TypeScript files. Use JS library, install CLI or run Docker image to import them!
 
 ## Introduction
 

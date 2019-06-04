@@ -1,0 +1,7 @@
+{
+  "id": 4,
+  "_id": { "$oid": "57e193d7a9cc81b4027498b5" },
+  "date": { "$date": "2012-09-27" },
+  "minKey": { "$minKey": 1 },
+  "maxKey": { "$maxKey": 1 }
+}

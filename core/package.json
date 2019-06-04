@@ -8,7 +8,8 @@
     "db-seed",
     "database",
     "seeding",
-    "db"
+    "db",
+    "ejson"
   ],
   "tags": [
     "mongo",
@@ -17,7 +18,8 @@
     "db-seed",
     "database",
     "seeding",
-    "db"
+    "db",
+    "ejson"
   ],
   "author": {
     "name": "Paweł Kosiec",
