@@ -1,4 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
+const { ObjectId, MaxKey, MinKey } = require('bson');
 
 let client, db;
 beforeAll(async () => {
@@ -43,10 +44,9 @@ describe('Mongo Seeding Docker Image', () => {
       name: 'three',
     });
     expect(collection).toContainEqual({
+      number: 4,
       _id: new ObjectId('57e193d7a9cc81b4027498b5'),
       date: new Date('2012-09-27'),
-      minKey: new MinKey(),
-      maxKey: new MaxKey(),
     });
   });
 
