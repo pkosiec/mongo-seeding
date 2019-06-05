@@ -43,11 +43,16 @@ describe('Mongo Seeding Docker Image', () => {
       number: 3,
       name: 'three',
     });
-    expect(collection).toContainEqual({
-      number: 4,
-      _id: new ObjectId('57e193d7a9cc81b4027498b5'),
-      date: new Date('2012-09-27'),
-    });
+    expect(collection).toContainEqual(
+      expect.objectContaining({
+        number: 4,
+        date: new Date('2012-09-27'),
+      }),
+    );
+
+    const ejsonElement = collection.find(obj => obj.number === 4);
+    const expectedObjectId = new ObjectId('57e193d7a9cc81b4027498b5');
+    expect(expectedObjectId.equals(ejsonElement._id));
   });
 
   it('should import arrays', async () => {
