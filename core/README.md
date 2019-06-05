@@ -4,7 +4,7 @@
 
 [![npm version](https://badge.fury.io/js/mongo-seeding.svg)](https://npmjs.org/package/mongo-seeding) [![Build Status](https://travis-ci.org/pkosiec/mongo-seeding.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding) [![codecov](https://codecov.io/gh/pkosiec/mongo-seeding/branch/master/graph/badge.svg?flag=core)](https://codecov.io/gh/pkosiec/mongo-seeding) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg?path=core)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg?path=core)]() [![install size](https://packagephobia.now.sh/badge?p=mongo-seeding)](https://packagephobia.now.sh/result?p=mongo-seeding)
 
-The ultimate solution for populating your MongoDB database. Define the data in JSON or JavaScript. Import collections and documents!
+The ultimate solution for populating your MongoDB database. Define the data in JavaScript or JSON files. Import collections and documents!
 
 ## Table of contents
 

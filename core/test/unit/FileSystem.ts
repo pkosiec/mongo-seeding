@@ -1,4 +1,5 @@
 import { fileSystem } from '../../src/populator/filesystem';
+import { ObjectId, MaxKey, MinKey } from 'bson';
 
 jest.mock('fs', () => ({
   lstatSync: jest.fn().mockReturnValue({
@@ -17,9 +18,33 @@ jest.mock('fs', () => ({
       '.hiddenDirectory',
       '.test2',
     ]),
+  readFileSync: jest.fn((filePath: string) => {
+    let content;
+    switch (filePath) {
+      case 'mockFiles/test1.json':
+        content = { number: 1 };
+        break;
+      case 'mockFiles/test3.json':
+        content = { string: 'three' };
+        break;
+      case 'mockFiles/ejson.json':
+        content = {
+          _id: {
+            $oid: '57e193d7a9cc81b4027498b5',
+          },
+          date: { $date: '2012-09-27' },
+          minKey: { $minKey: 1 },
+          maxKey: { $maxKey: 1 },
+        };
+        break;
+      default:
+        content = {};
+    }
+
+    return JSON.stringify(content);
+  }),
 }));
 
-jest.mock('mockFiles/test1.json', () => ({ number: 1 }), { virtual: true });
 jest.mock(
   'mockFiles/test2.js',
   () => ({
@@ -29,9 +54,6 @@ jest.mock(
   }),
   { virtual: true },
 );
-jest.mock('mockFiles/test3.json', () => ({ string: 'three' }), {
-  virtual: true,
-});
 
 describe('FileSystem', () => {
   it('should list all directories that are not empty or hidden', () => {
@@ -104,5 +126,17 @@ describe('FileSystem', () => {
     const actualContentArray = fileSystem.readFilesContent(documentFilePaths);
 
     expect(actualContentArray).toEqual(expectedContentArray);
+  });
+
+  it('should parse EJSON files', () => {
+    const filePath = 'mockFiles/ejson.json';
+    const result = fileSystem.readFile(filePath);
+
+    expect(result).toEqual({
+      _id: new ObjectId('57e193d7a9cc81b4027498b5'),
+      date: new Date('2012-09-27'),
+      minKey: new MinKey(),
+      maxKey: new MaxKey(),
+    });
   });
 });

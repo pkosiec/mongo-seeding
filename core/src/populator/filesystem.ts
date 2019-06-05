@@ -1,4 +1,6 @@
-import { readdirSync, lstatSync } from 'fs';
+import { readdirSync, lstatSync, readFileSync } from 'fs';
+import { EJSON } from 'bson';
+import { extname } from 'path';
 
 export class FileSystem {
   static FILE_NAME_SPLIT_CHARACTER = '.';
@@ -62,9 +64,21 @@ export class FileSystem {
 
   readFilesContent(filePaths: string[]) {
     return filePaths.reduce<any[]>((arr: any[], filePath) => {
-      const fileContent: any = require(filePath);
+      const fileContent: any = this.readFile(filePath);
       return arr.concat(fileContent);
     }, []);
+  }
+
+  readFile(filePath: string): any {
+    const fileExtension = extname(filePath);
+    if (fileExtension === '.json') {
+      const content = readFileSync(filePath, 'utf-8');
+      return EJSON.parse(content, {
+        relaxed: true,
+      });
+    }
+
+    return require(filePath);
   }
 }
 
