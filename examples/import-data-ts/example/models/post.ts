@@ -4,7 +4,7 @@ import {
   ObjectIdColumn,
 } from 'typeorm';
 import { ObjectId } from 'mongodb';
-import { Author, Comment } from '../models/index';
+import { Author, Comment, Category } from '../models/index';
 
 @Collection('posts')
 export class Post {
@@ -21,4 +21,6 @@ export class Post {
   @Property() comments: Comment[];
 
   @Property() creationDate: Date;
+
+  @Property() categoriesIds: ObjectId[];
 }
