@@ -13,6 +13,7 @@ export class DatabaseConnector {
   static DEFAULT_DB_NAME = 'admin';
   static DEFAULT_RECONNECT_TIMEOUT_MILLIS = 10000;
   static SLEEP_INTERVAL_MILLIS = 500;
+  static MASKED_URI_CREDENTIALS = '[secure]';
 
   client?: MongoClient;
   reconnectTimeoutMillis: number;
@@ -45,26 +46,19 @@ export class DatabaseConnector {
     dbConnectionUri: string,
     dbName: string,
   ): Promise<Database> {
-    log(`Connecting to ${dbConnectionUri}...`);
+    log(`Connecting to ${this.maskUriCredentials(dbConnectionUri)}...`);
     const startMillis = new Date().getTime();
     let client: MongoClient | undefined;
     do {
       try {
-        client = await MongoClient.connect(
-          dbConnectionUri,
-          {
-            ignoreUndefined: true,
-            useNewUrlParser: true,
-          },
-        );
+        client = await MongoClient.connect(dbConnectionUri, {
+          ignoreUndefined: true,
+          useNewUrlParser: true,
+        });
       } catch (err) {
         if (checkTimeoutExpired(startMillis, this.reconnectTimeoutMillis)) {
           throw new Error(
-            `Timeout ${
-              this.reconnectTimeoutMillis
-            }s expired while connecting to database due to: ${err.name}: ${
-              err.message
-            }`,
+            `Timeout ${this.reconnectTimeoutMillis}s expired while connecting to database due to: ${err.name}: ${err.message}`,
           );
         }
 
@@ -103,9 +97,18 @@ export class DatabaseConnector {
     }
 
     if (protocol === 'mongodb+srv') {
-        return `${protocol}://${credentials}${host}/${name}`;    
+      return `${protocol}://${credentials}${host}/${name}`;
     }
     return `${protocol}://${credentials}${host}:${port}/${name}`;
+  }
+
+  maskUriCredentials(uri: string): string {
+    if (!uri.includes('@')) {
+      return uri;
+    }
+
+    const creds = uri.substring(uri.indexOf('://') + 3, uri.indexOf('@'));
+    return uri.replace(creds, DatabaseConnector.MASKED_URI_CREDENTIALS);
   }
 
   getDbName(dbConnectionUri: string) {
