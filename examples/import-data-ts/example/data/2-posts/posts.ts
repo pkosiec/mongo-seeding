@@ -1,9 +1,10 @@
-import { getObjectId } from '../../helpers';
+import { getObjectId, getObjectIds } from '../../helpers';
 import { Post } from '../../models';
 
 const posts: Post[] = [
   {
     id: getObjectId('post1'),
+    categoriesIds: getObjectIds(['Cats', 'Dogs']),
     title: 'Lorem ipsum',
     description: 'Sample Post 1 description',
     tags: ['sample', 'tags'],
@@ -16,6 +17,7 @@ const posts: Post[] = [
   },
   {
     id: getObjectId('post2'),
+    categoriesIds: getObjectIds(['Uncategorized']),
     title: 'Dolor sit amet',
     description: 'Sample Post 2 description',
     tags: ['example', 'sample', 'tag'],

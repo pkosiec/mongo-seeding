@@ -1,6 +1,7 @@
 const { ObjectId } = require('mongodb');
 const { createHash } = require('crypto');
 
+// Returns a predictable ObjectId based on input name
 const getObjectId = name => {
   const hash = createHash('sha1')
     .update(name, 'utf8')
