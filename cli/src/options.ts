@@ -5,6 +5,7 @@ import {
   CommandLineArguments,
   PartialCliOptions,
 } from './types';
+import { SeederDatabaseConfigObjectOptions } from 'mongo-seeding/dist/database';
 
 export const cliOptions: CommandLineOption[] = [
   {
@@ -46,6 +47,12 @@ export const cliOptions: CommandLineOption[] = [
     name: 'db-password',
     description:
       'Password for connecting with database that requires authentication',
+    type: String,
+  },
+  {
+    name: 'db-options',
+    description:
+      'MongoDB connection options (https://docs.mongodb.com/manual/reference/connection-string/) in a form of multiple `{key}={value}` values, separated by semicolon. For example: `ssl=true;maxPoolSize=50`.',
     type: String,
   },
   {
@@ -119,12 +126,37 @@ function populateCommandLineOptions(
           name: options['db-name'],
           username: options['db-username'],
           password: options['db-password'],
+          options: readDbOptions(options['db-options']),
         }),
     databaseReconnectTimeout: options['reconnect-timeout'],
     dropDatabase: options['drop-database'],
     dropCollections: options['drop-collections'],
     transpileOnly: options['transpile-only'],
   };
+}
+
+export const DB_OPTIONS_SEPARATOR = ';';
+export const DB_OPTIONS_KEY_VALUE_SEPARATOR = '=';
+
+function readDbOptions(
+  optsStr: string | undefined,
+): SeederDatabaseConfigObjectOptions | undefined {
+  if (!optsStr) {
+    return undefined;
+  }
+
+  return optsStr.split(DB_OPTIONS_SEPARATOR).reduce((prev, current = '') => {
+    const [key, value] = current.split(DB_OPTIONS_KEY_VALUE_SEPARATOR);
+
+    if (typeof value === 'undefined') {
+      return prev;
+    }
+
+    return {
+      ...prev,
+      [key]: value,
+    };
+  }, {});
 }
 
 function populateEnvOptions(): PartialCliOptions {
@@ -139,6 +171,9 @@ function populateEnvOptions(): PartialCliOptions {
           name: env.DB_NAME ? String(env.DB_NAME) : undefined,
           username: env.DB_USERNAME ? String(env.DB_USERNAME) : undefined,
           password: env.DB_PASSWORD ? String(env.DB_PASSWORD) : undefined,
+          options: env.DB_OPTIONS
+            ? readDbOptions(String(env.DB_OPTIONS))
+            : undefined,
         }),
     databaseReconnectTimeout: env.RECONNECT_TIMEOUT
       ? Number(env.RECONNECT_TIMEOUT)

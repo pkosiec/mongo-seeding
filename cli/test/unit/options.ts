@@ -61,6 +61,58 @@ describe('Options', () => {
           transpileOnly: false,
         },
       },
+      {
+        input: {
+          'db-host': 'testHost',
+          'db-port': 3232,
+          'db-name': 'testName',
+          'db-options': 'foo=bar;test=testValue',
+        },
+        expected: {
+          database: {
+            host: 'testHost',
+            port: 3232,
+            options: {
+              foo: 'bar',
+              test: 'testValue',
+            },
+          },
+        },
+      },
+      {
+        input: {
+          'db-host': 'testHost',
+          'db-port': 3232,
+          'db-name': 'testName',
+          'db-options': 'foo=bar;',
+        },
+        expected: {
+          database: {
+            host: 'testHost',
+            port: 3232,
+            options: {
+              foo: 'bar',
+            },
+          },
+        },
+      },
+      {
+        input: {
+          'db-host': 'testHost',
+          'db-port': 3232,
+          'db-name': 'testName',
+          'db-options': 'foo=bar',
+        },
+        expected: {
+          database: {
+            host: 'testHost',
+            port: 3232,
+            options: {
+              foo: 'bar',
+            },
+          },
+        },
+      },
     ];
 
     for (const testCase of testCases) {
@@ -74,11 +126,11 @@ describe('Options', () => {
       [key: string]: string;
     }
     const testCases: Array<{
-      envs: Envs;
+      input: Envs;
       expected: PartialCliOptions;
     }> = [
       {
-        envs: {
+        input: {
           DB_URI: 'cmdUri',
           RECONNECT_TIMEOUT: '7000',
           DROP_DATABASE: 'true',
@@ -94,7 +146,7 @@ describe('Options', () => {
         },
       },
       {
-        envs: {
+        input: {
           DB_PROTOCOL: 'testing://',
           DB_HOST: 'testHost',
           DB_PORT: '3232',
@@ -116,11 +168,63 @@ describe('Options', () => {
           transpileOnly: false,
         },
       },
+      {
+        input: {
+          DB_HOST: 'testHost',
+          DB_PORT: '3232',
+          DB_NAME: 'testName',
+          DB_OPTIONS: 'foo=bar;test=testValue',
+        },
+        expected: {
+          database: {
+            host: 'testHost',
+            port: 3232,
+            options: {
+              foo: 'bar',
+              test: 'testValue',
+            },
+          },
+        },
+      },
+      {
+        input: {
+          DB_HOST: 'testHost',
+          DB_PORT: '3232',
+          DB_NAME: 'testName',
+          DB_OPTIONS: 'foo=bar;',
+        },
+        expected: {
+          database: {
+            host: 'testHost',
+            port: 3232,
+            options: {
+              foo: 'bar',
+            },
+          },
+        },
+      },
+      {
+        input: {
+          DB_HOST: 'testHost',
+          DB_PORT: '3232',
+          DB_NAME: 'testName',
+          DB_OPTIONS: 'foo=bar',
+        },
+        expected: {
+          database: {
+            host: 'testHost',
+            port: 3232,
+            options: {
+              foo: 'bar',
+            },
+          },
+        },
+      },
     ];
 
     for (const testCase of testCases) {
-      Object.keys(testCase.envs).forEach(key => {
-        process.env[key] = testCase.envs[key];
+      Object.keys(testCase.input).forEach(key => {
+        process.env[key] = testCase.input[key];
       });
 
       const result = createConfigFromOptions({});
