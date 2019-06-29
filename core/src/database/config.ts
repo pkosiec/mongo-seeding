@@ -1,5 +1,9 @@
 export type SeederDatabaseConfig = string | SeederDatabaseConfigObject;
 
+export type SeederDatabaseConfigObjectOptions = {
+  [key: string]: string;
+};
+
 export interface SeederDatabaseConfigObject {
   protocol: string;
   host: string;
@@ -7,6 +11,11 @@ export interface SeederDatabaseConfigObject {
   name: string;
   username?: string;
   password?: string;
+
+  /**
+   *  See all options for Database Connection URI: https://docs.mongodb.com/manual/reference/connection-string
+   */
+  options?: SeederDatabaseConfigObjectOptions;
 }
 
 export function isSeederDatabaseConfigObject(
@@ -27,4 +36,5 @@ export const defaultDatabaseConfigObject: SeederDatabaseConfigObject = {
   name: 'database',
   username: undefined,
   password: undefined,
+  options: undefined,
 };

@@ -52,7 +52,8 @@ export const cliOptions: CommandLineOption[] = [
   {
     name: 'db-options',
     description:
-      'MongoDB connection options (https://docs.mongodb.com/manual/reference/connection-string/) in a form of multiple `{key}={value}` values, separated by semicolon. For example: `ssl=true;maxPoolSize=50`.',
+      'MongoDB connection options (https://docs.mongodb.com/manual/reference/connection-string/) in a form of multiple `KEY=VALUE` entries, separated by semicolon, e.g.: `ssl=true;maxPoolSize=50`; default: {bold undefined}',
+
     type: String,
   },
   {

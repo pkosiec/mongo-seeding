@@ -5,6 +5,7 @@ import {
   sleep,
   Database,
   SeederDatabaseConfig,
+  SeederDatabaseConfigObjectOptions,
 } from '../../src/database';
 
 // Import mocks
@@ -60,8 +61,11 @@ describe('DatabaseConnector', () => {
       host: '10.10.10.1',
       port: 27017,
       name: 'authDb',
+      options: {
+        ssl: 'false',
+      },
     };
-    const expectedUri = 'mongodb://user@10.10.10.1:27017/authDb';
+    const expectedUri = 'mongodb://user@10.10.10.1:27017/authDb?ssl=false';
     const uri = databaseConnector.getDbConnectionUri(authConfig);
     expect(uri).toBe(expectedUri);
   });
@@ -153,6 +157,46 @@ describe('DatabaseConnector', () => {
     for (const { uri, expectedMaskedUri } of tests) {
       const maskedUri = databaseConnector.maskUriCredentials(uri);
       expect(maskedUri).toEqual(expectedMaskedUri);
+    }
+  });
+
+  it('should convert Database Config Object URI to valid options URI part', () => {
+    interface Test {
+      options: SeederDatabaseConfigObjectOptions;
+      expectedUriPart: string;
+    }
+
+    const tests: Test[] = [
+      {
+        options: {
+          foo: 'bar',
+        },
+        expectedUriPart: '?foo=bar',
+      },
+      {
+        options: {
+          foo: 'bar',
+          ssl: 'true',
+        },
+        expectedUriPart: '?foo=bar&ssl=true',
+      },
+      {
+        options: {
+          foo: 'bar',
+          ssl: 'false',
+          baz: 'bar',
+        },
+        expectedUriPart: '?foo=bar&ssl=false&baz=bar',
+      },
+      {
+        options: {},
+        expectedUriPart: '',
+      },
+    ];
+
+    for (const { options, expectedUriPart } of tests) {
+      const uriPart = databaseConnector.getOptionsUriPart(options);
+      expect(uriPart).toEqual(expectedUriPart);
     }
   });
 

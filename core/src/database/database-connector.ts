@@ -8,6 +8,7 @@ import {
   isSeederDatabaseConfigObject,
   SeederDatabaseConfigObject,
 } from '.';
+import { SeederDatabaseConfigObjectOptions } from './config';
 
 export class DatabaseConnector {
   static DEFAULT_DB_NAME = 'admin';
@@ -90,16 +91,28 @@ export class DatabaseConnector {
     name,
     username,
     password,
+    options,
   }: SeederDatabaseConfigObject) {
-    let credentials = '';
-    if (username) {
-      credentials = `${username}${password ? `:${password}` : ''}@`;
-    }
+    const credentials = username
+      ? `${username}${password ? `:${password}` : ''}@`
+      : '';
+    const optsUriPart = options ? this.getOptionsUriPart(options) : '';
+    const portUriPart = protocol !== 'mongodb+srv' ? `:${port}` : '';
 
-    if (protocol === 'mongodb+srv') {
-      return `${protocol}://${credentials}${host}/${name}`;
-    }
-    return `${protocol}://${credentials}${host}:${port}/${name}`;
+    return `${protocol}://${credentials}${host}${portUriPart}/${name}${optsUriPart}`;
+  }
+
+  getOptionsUriPart(options: SeederDatabaseConfigObjectOptions): string {
+    return Object.keys(options).reduce((previousUri, currentKey) => {
+      let uriPartFirstChar;
+      if (previousUri == '') {
+        uriPartFirstChar = '?';
+      } else {
+        uriPartFirstChar = '&';
+      }
+
+      return `${previousUri}${uriPartFirstChar}${currentKey}=${options[currentKey]}`;
+    }, '');
   }
 
   maskUriCredentials(uri: string): string {

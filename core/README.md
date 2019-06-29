@@ -124,7 +124,12 @@ export interface SeederDatabaseConfigObject {
   name: string;
   username?: string;
   password?: string;
+  options?: SeederDatabaseConfigObjectOptions; // see all options for Database Connection URI: https://docs.mongodb.com/manual/reference/connection-string
 }
+
+export type SeederDatabaseConfigObjectOptions = {
+  [key:string]: string; 
+};
 ```
 
 In order to configure database connection, specify connection URI for `database` property or assign a partial `SeederDatabaseConfigObject` object, overriding necessary properties.
@@ -146,6 +151,7 @@ const defaultConfig = {
   databaseReconnectTimeout: 10000,
   dropDatabase: false,
   dropCollections: false,
+  options: undefined,
 };
 ```
 
