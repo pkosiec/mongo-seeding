@@ -1,8 +1,8 @@
 export type SeederDatabaseConfig = string | SeederDatabaseConfigObject;
 
-export type SeederDatabaseConfigObjectOptions = {
+export interface SeederDatabaseConfigObjectOptions {
   [key: string]: string;
-};
+}
 
 export interface SeederDatabaseConfigObject {
   protocol: string;

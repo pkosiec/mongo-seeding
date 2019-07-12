@@ -1,10 +1,10 @@
 # Run with context of the upper level directory
 
 #
-# Stage 1 
+# Stage 1: Core
 #
 
-FROM node:11-alpine AS builder
+FROM node:11-alpine AS coreBuilder
 LABEL Maintainer="Pawel Kosiec <pawel@kosiec.net>"
 
 ENV CORE_DIR=./core
@@ -21,35 +21,36 @@ RUN npm install --no-optional
 RUN npm run build
 
 # Remove sources
-RUN rm -rf /app/src/
+RUN rm -rf /app/src/ &&  \
+    rm -rf /app/node_modules/
+RUN npm i --production --no-optional
 
 #
-# Stage 2 
+# Stage 2: CLI
 #
 
 FROM node:11-alpine
 
-ENV DIR cli
-WORKDIR /cli
+ENV CLI_DIR=./cli
+WORKDIR /app
 
 # Install git
 RUN apk add --update git && \
     rm -rf /tmp/* /var/cache/apk/*
 
 # Install dependencies
-COPY $DIR/package.json $DIR/package-lock.json /$DIR/
+COPY $CLI_DIR/package.json $CLI_DIR/package-lock.json $CLI_DIR/tsconfig.json /app/
 RUN npm i --no-optional
 
 # Copy core
-COPY --from=builder /app/ /app/node_modules/mongo-seeding/
+COPY --from=coreBuilder /app/ node_modules/mongo-seeding/
 
 # Copy app sources
 COPY ./codecov.yml /
 COPY ./.git/ /
-COPY ./$DIR/tsconfig.json /$DIR/
-COPY ./$DIR/src/ /$DIR/src/
-COPY ./$DIR/bin/ /$DIR/bin/
-COPY ./$DIR/test/ /$DIR/test/
+COPY $CLI_DIR/src/ /app/src/
+COPY $CLI_DIR/bin/ /app/bin/
+COPY $CLI_DIR/test/ /app/test/
 
 # Build app
 RUN npm run build
