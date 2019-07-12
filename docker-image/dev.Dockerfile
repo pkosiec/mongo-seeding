@@ -39,7 +39,7 @@ COPY $CLI_DIR/package.json $CLI_DIR/package-lock.json $CLI_DIR/tsconfig.json /ap
 RUN npm i --no-optional
 
 # Copy built core 
-COPY --from=coreBuilder /app/ /app/node_modules/mongo-seeding/
+COPY --from=coreBuilder /app/ node_modules/mongo-seeding/
 
 # Copy app sources
 COPY $CLI_DIR/src/ /app/src/

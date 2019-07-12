@@ -21,6 +21,7 @@ export interface CommandLineArguments {
   'db-name'?: string;
   'db-username'?: string;
   'db-password'?: string;
+  'db-options'?: string;
   'db-uri'?: string;
   'reconnect-timeout'?: number;
   'transpile-only'?: boolean;

@@ -59,6 +59,7 @@ You can use the following parameters while using `seed` tool:
 | `--db-name {DB_NAME}` | `database` | Name of the database |
 | `--db-username {DB_USERNAME}` | *`undefined`*  | Username for connecting with database that requires authentication |
 | `--db-password {DB_PASSWORD}` | *`undefined`*  | Password for connecting with database that requires authentication |
+| `--db-options` | *`undefined`* | [MongoDB connection options](https://docs.mongodb.com/manual/reference/connection-string/) in a form of multiple `{key}={value}` values, separated by semicolon. For example: `ssl=true;maxPoolSize=50` |
 | `--drop-database` | `false` | Drops entire database before data import |
 | `--drop-collections` | `false` | Drops every collection which is being imported |
 | `--replace-id` | `false` | Replaces `id` property with `_id` for every document during data import |
@@ -78,6 +79,7 @@ You can use the following environmental variables while using `seed` tool:
 | DB_NAME | `database` | Name of the database |
 | DB_USERNAME | *`undefined`* | Username for connecting with database that requires authentication |
 | DB_PASSWORD | *`undefined`* | Password for connecting with database that requires authentication |
+| DB_OPTIONS | *`undefined`* | [MongoDB connection options](https://docs.mongodb.com/manual/reference/connection-string/) in a form of multiple `{key}={value}` values, separated by semicolon. For example: `ssl=true;maxPoolSize=50`. |
 | DROP_DATABASE | `false` | Drops entire database before data import |
 | DROP_COLLECTIONS | `false` | Drops every collection which is being imported |
 | REPLACE_ID | `false` | Replaces `id` property with `_id` for every document during import; useful for ORMs | 
