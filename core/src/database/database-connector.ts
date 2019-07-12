@@ -3,22 +3,52 @@ import { log } from '../common';
 import {
   Database,
   sleep,
-  checkTimeoutExpired,
+  checkTimeout,
   SeederDatabaseConfig,
   isSeederDatabaseConfigObject,
   SeederDatabaseConfigObject,
 } from '.';
 import { SeederDatabaseConfigObjectOptions } from './config';
 
+/**
+ * Provides functionality to manage connection to a MongoDB database.
+ */
 export class DatabaseConnector {
+  /**
+   * Default database name.
+   */
   static DEFAULT_DB_NAME = 'admin';
+
+  /**
+   * Default reconnect timeout in milliseconds.
+   */
   static DEFAULT_RECONNECT_TIMEOUT_MILLIS = 10000;
+
+  /**
+   * Sleep interval in milliseconds.
+   */
   static SLEEP_INTERVAL_MILLIS = 500;
+
+  /**
+   * Masked URI credentials token.
+   */
   static MASKED_URI_CREDENTIALS = '[secure]';
 
+  /**
+   * MongoDB Client.
+   */
   client?: MongoClient;
+
+  /**
+   * Reconnect timeout in milliseconds.
+   */
   reconnectTimeoutMillis: number;
 
+  /**
+   * Constructs the `DatabaseConnector` object.
+   *
+   * @param reconnectTimeoutMillis Reconnect timeout in milliseconds
+   */
   constructor(reconnectTimeoutMillis?: number) {
     this.reconnectTimeoutMillis =
       reconnectTimeoutMillis != null
@@ -26,6 +56,11 @@ export class DatabaseConnector {
         : DatabaseConnector.DEFAULT_RECONNECT_TIMEOUT_MILLIS;
   }
 
+  /**
+   * Connects to database.
+   *
+   * @param config Database configuration
+   */
   async connect(config: SeederDatabaseConfig): Promise<Database> {
     let uri, databaseName;
     if (typeof config === 'string') {
@@ -43,6 +78,12 @@ export class DatabaseConnector {
     return this.connectWithUri(uri, databaseName);
   }
 
+  /**
+   * Connects to database using database connection URI.
+   *
+   * @param dbConnectionUri Database connection URI
+   * @param dbName Database name
+   */
   async connectWithUri(
     dbConnectionUri: string,
     dbName: string,
@@ -57,7 +98,7 @@ export class DatabaseConnector {
           useNewUrlParser: true,
         });
       } catch (err) {
-        if (checkTimeoutExpired(startMillis, this.reconnectTimeoutMillis)) {
+        if (checkTimeout(startMillis, this.reconnectTimeoutMillis)) {
           throw new Error(
             `Timeout ${this.reconnectTimeoutMillis}s expired while connecting to database due to: ${err.name}: ${err.message}`,
           );
@@ -75,6 +116,9 @@ export class DatabaseConnector {
     return new Database(db);
   }
 
+  /**
+   * Closes connection with database.
+   */
   async close() {
     log('Closing connection...');
     if (!this.client || !this.client.isConnected()) {
@@ -84,6 +128,11 @@ export class DatabaseConnector {
     await this.client.close(true);
   }
 
+  /**
+   * Constructs database connection URI from database configuration object.
+   *
+   * @param param0 Database connection object
+   */
   getDbConnectionUri({
     protocol,
     host,
@@ -102,6 +151,11 @@ export class DatabaseConnector {
     return `${protocol}://${credentials}${host}${portUriPart}/${name}${optsUriPart}`;
   }
 
+  /**
+   * Constructs database connection options query string from database configuration object.
+   *
+   * @param options Database configuration object
+   */
   getOptionsUriPart(options: SeederDatabaseConfigObjectOptions): string {
     return Object.keys(options).reduce((previousUri, currentKey) => {
       let uriPartFirstChar;
@@ -115,6 +169,11 @@ export class DatabaseConnector {
     }, '');
   }
 
+  /**
+   * Detects database connection credentials and masks them, replacing with masked URI credentials token.
+   *
+   * @param uri Database connection URI
+   */
   maskUriCredentials(uri: string): string {
     if (!uri.includes('@')) {
       return uri;
@@ -124,6 +183,11 @@ export class DatabaseConnector {
     return uri.replace(creds, DatabaseConnector.MASKED_URI_CREDENTIALS);
   }
 
+  /**
+   * Extracts database name from database connection URI.
+   *
+   * @param dbConnectionUri Database connection URI
+   */
   getDbName(dbConnectionUri: string) {
     const url = dbConnectionUri.replace('mongodb://', '');
     const parts = url.split('/');
