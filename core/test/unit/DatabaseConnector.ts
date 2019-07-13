@@ -9,13 +9,13 @@ import {
 } from '../../src/database';
 
 // Import mocks
-jest.mock('../../src/database/time-utils', () => ({
+jest.mock('../../src/database/time', () => ({
   sleep: jest.fn().mockReturnValue(
     new Promise((resolve, _) => {
       resolve();
     }),
   ),
-  checkTimeoutExpired: jest
+  checkTimeout: jest
     .fn()
     .mockReturnValueOnce(false)
     .mockReturnValueOnce(false)
