@@ -1,9 +1,16 @@
 import { ObjectId } from 'mongodb';
 import { SeederCollection } from '../common';
 
+/**
+ * Defines transformer function, which manipulates collections before using them to database seeding.
+ */
 export type CollectionTransformerFn = (c: SeederCollection) => SeederCollection;
 
-// Rewrites `id` property to `_id` for every document
+/**
+ * Rewrites `id` property to `_id` for every document in given collection.
+ *
+ * @param collection Collection details
+ */
 const replaceDocumentIdWithUnderscoreId = (
   collection: SeederCollection,
 ): SeederCollection => {
@@ -29,6 +36,9 @@ const replaceDocumentIdWithUnderscoreId = (
   };
 };
 
+/**
+ * Contains default transformer functions.
+ */
 export const DefaultTransformers = {
   replaceDocumentIdWithUnderscoreId,
 };

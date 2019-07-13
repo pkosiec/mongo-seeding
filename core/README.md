@@ -101,7 +101,7 @@ The `Seeder` class contains the following methods.
 
 ### `constructor(partialConfig?)`
 
-Creates a new `Seeder` object and loads configuration for data import.
+Constructs a new `Seeder` instance and loads configuration for data import.
 
 **Configuration**
 
@@ -157,7 +157,7 @@ const defaultConfig = {
 
 ### `readCollectionsFromPath(path, partialOptions?)`
 
-This method populates collections and their documents from given path. The path has to contain import data structure described [here](https://github.com/pkosiec/mongo-seeding/blob/master/docs/import-data-definition.md).
+Populates collections and their documents from given path. The path has to contain import data structure described [here](https://github.com/pkosiec/mongo-seeding/blob/master/docs/import-data-definition.md).
 
 **Options**
 

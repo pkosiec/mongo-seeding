@@ -12,15 +12,36 @@ import {
 
 export * from './config';
 
+/**
+ * Allows to seed database. It is a main Mongo Seeding class.
+ */
 export class Seeder {
+  /**
+   * Transformer functions for collections before data import.
+   */
   static Transformers = DefaultTransformers;
 
+  /**
+   * Configuration for seeding database.
+   */
   config: SeederConfig = defaultSeederConfig;
 
+  /**
+   * Constructs a new `Seeder` instance and loads configuration for data import.
+   *
+   * @param config Optional partial object with database seeding configuration. The object is merged with the default configuration object. To use all default settings, simply omit this parameter.
+   */
   constructor(config?: DeepPartial<SeederConfig>) {
     this.config = mergeSeederConfig(config);
   }
 
+  /**
+   * Populates collections and their documents from given path.
+   * The path has to contain file structure described on https://github.com/pkosiec/mongo-seeding/blob/master/docs/import-data-definition.md.
+   *
+   * @param path File path
+   * @param partialConfig Optional partial collection reading configuration object. It is merged with default configuration object. To use all default settings, simply omit this parameter.
+   */
   readCollectionsFromPath = (
     path: string,
     partialConfig?: DeepPartial<SeederCollectionReadingOptions>,
@@ -48,6 +69,12 @@ export class Seeder {
     return collections;
   };
 
+  /**
+   * Connects to a database and imports all collections.
+   *
+   * @param collections Array of collection definitions
+   * @param partialConfig Optional partial configuration object. Ita allows to change the database seeding configuration for single data import.   It is merged with default configuration object. To use the configuration provided in `Seeder` constructor, simply omit this parameter.
+   */
   import = async (
     collections: SeederCollection[],
     partialConfig?: DeepPartial<SeederConfig>,
@@ -89,6 +116,11 @@ export class Seeder {
   };
 }
 
+/**
+ * Wraps error with custom name
+ *
+ * @param err Original error
+ */
 const wrapError = (err: Error) => {
   const error = new Error(`${err.name}: ${err.message}`);
   error.name = 'MongoSeedingError';

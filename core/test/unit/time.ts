@@ -1,4 +1,4 @@
-import { sleep, checkTimeoutExpired } from '../../src/database';
+import { sleep, checkTimeout } from '../../src/database';
 
 jest.useFakeTimers();
 
@@ -22,7 +22,7 @@ describe('checkTimeoutExpired function', () => {
     const expectedTimeout = new Date();
     expectedTimeout.setMinutes(expectedTimeout.getMinutes() - 1);
 
-    expect(checkTimeoutExpired(tomorrow.getTime(), 5)).toBeFalsy();
-    expect(checkTimeoutExpired(expectedTimeout.getTime(), 5)).toBeTruthy();
+    expect(checkTimeout(tomorrow.getTime(), 5)).toBeFalsy();
+    expect(checkTimeout(expectedTimeout.getTime(), 5)).toBeTruthy();
   });
 });
