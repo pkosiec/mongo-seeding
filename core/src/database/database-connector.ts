@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, MongoClientOptions } from 'mongodb';
 import { log } from '../common';
 import {
   Database,
@@ -33,6 +33,12 @@ export class DatabaseConnector {
    * Masked URI credentials token.
    */
   static MASKED_URI_CREDENTIALS = '[secure]';
+
+  static CLIENT_OPTIONS: MongoClientOptions = {
+    ignoreUndefined: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  };
 
   /**
    * MongoDB Client.
@@ -93,10 +99,10 @@ export class DatabaseConnector {
     let client: MongoClient | undefined;
     do {
       try {
-        client = await MongoClient.connect(dbConnectionUri, {
-          ignoreUndefined: true,
-          useNewUrlParser: true,
-        });
+        client = await MongoClient.connect(
+          dbConnectionUri,
+          DatabaseConnector.CLIENT_OPTIONS,
+        );
       } catch (err) {
         if (checkTimeout(startMillis, this.reconnectTimeoutMillis)) {
           throw new Error(
