@@ -1,6 +1,7 @@
 import { cliSeeder } from '../../src/index';
 import { MongoClient } from 'mongodb';
 import * as tsNode from 'ts-node';
+import { DatabaseConnector } from 'mongo-seeding/dist/database';
 
 console.error = jest.fn();
 console.log = jest.fn();
@@ -40,10 +41,10 @@ describe('CLI', () => {
     expect(console.error).not.toBeCalled();
     expect(exit).toBeCalledWith(0);
 
-    const client = await MongoClient.connect(dbConnectionUri, {
-      ignoreUndefined: true,
-      useNewUrlParser: true,
-    });
+    const client = await MongoClient.connect(
+      dbConnectionUri,
+      DatabaseConnector.CLIENT_OPTIONS,
+    );
     const db = client.db(databaseName);
 
     const testCases = [

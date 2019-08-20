@@ -1,5 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
-const { ObjectId, MaxKey, MinKey } = require('bson');
+const { ObjectId } = require('bson');
 
 let client, db;
 beforeAll(async () => {
@@ -10,6 +10,7 @@ beforeAll(async () => {
   client = await MongoClient.connect(dbConnectionUri, {
     ignoreUndefined: true,
     useNewUrlParser: true,
+    useUnifiedTopology: true,
   });
   db = client.db(databaseName);
 });
