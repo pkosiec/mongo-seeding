@@ -1,6 +1,3 @@
-// Enable debug output for Mongo Seeding
-process.env.DEBUG = 'mongo-seeding';
-
 import * as commandLineArgs from 'command-line-args';
 import { register } from 'ts-node';
 import { resolve } from 'path';
@@ -95,6 +92,11 @@ class CliSeeder {
   };
 
   private useCliSpecificOptions(options: DeepPartial<CliSpecificOptions>) {
+    if (!options.silent) {
+      // Enable debug output for Mongo Seeding
+      process.env.DEBUG = 'mongo-seeding';
+    }
+
     register({
       transpileOnly: options.transpileOnly,
       compiler: require.resolve('typescript', { paths: [__dirname] }),

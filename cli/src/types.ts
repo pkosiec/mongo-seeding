@@ -10,8 +10,9 @@ export interface CommandLineOption {
 }
 
 export interface CommandLineArguments {
-  data?: string;
   [key: string]: string | number | boolean | undefined;
+  data?: string;
+  silent?: boolean;
   'drop-database'?: boolean;
   'drop-collections'?: boolean;
   'replace-id'?: boolean;
@@ -32,4 +33,5 @@ export type PartialCliOptions = DeepPartial<
 >;
 export interface CliSpecificOptions {
   transpileOnly: boolean;
+  silent: boolean;
 }

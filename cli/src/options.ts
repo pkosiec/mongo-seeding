@@ -93,6 +93,13 @@ export const cliOptions: CommandLineOption[] = [
     type: Boolean,
   },
   {
+    name: 'silent',
+    alias: 's',
+    description:
+      'Disables printing logging of Mongo Seeding status to standard output',
+    type: Boolean,
+  },
+  {
     name: 'help',
     alias: 'h',
     description: 'Shows this help info',
@@ -133,6 +140,7 @@ function populateCommandLineOptions(
     dropDatabase: options['drop-database'],
     dropCollections: options['drop-collections'],
     transpileOnly: options['transpile-only'],
+    silent: options['silent'],
   };
 }
 
@@ -182,6 +190,7 @@ function populateEnvOptions(): PartialCliOptions {
     dropDatabase: env.DROP_DATABASE === 'true',
     dropCollections: env.DROP_COLLECTIONS === 'true',
     transpileOnly: env.TRANSPILE_ONLY === 'true',
+    silent: env.SILENT === 'true',
   };
 }
 
