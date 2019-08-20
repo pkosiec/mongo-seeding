@@ -46,6 +46,7 @@ describe('Options', () => {
           'db-name': 'testName',
           'db-username': 'testUserName',
           'db-password': 'testPasswd',
+          silent: true,
         },
         expected: {
           database: {
@@ -59,6 +60,7 @@ describe('Options', () => {
           dropDatabase: false,
           dropCollections: false,
           transpileOnly: false,
+          silent: true,
         },
       },
       {
@@ -153,6 +155,7 @@ describe('Options', () => {
           DB_NAME: 'testName',
           DB_USERNAME: 'testUserName',
           DB_PASSWORD: 'testPasswd',
+          SILENT: 'true',
         },
         expected: {
           database: {
@@ -166,6 +169,7 @@ describe('Options', () => {
           dropDatabase: false,
           dropCollections: false,
           transpileOnly: false,
+          silent: true,
         },
       },
       {

@@ -89,6 +89,32 @@ describe('CLI', () => {
     await client.close(true);
   });
 
+  it('should import data silently', async () => {
+    const dbConnectionUri = process.env.DB_URI
+      ? process.env.DB_URI
+      : 'mongodb://127.0.0.1:27017/clidb';
+    const databaseName = process.env.DB_NAME ? process.env.DB_NAME : 'clidb';
+
+    const exit = jest.spyOn(process, 'exit').mockImplementation();
+
+    process.argv = [
+      '',
+      '',
+      '--replace-id',
+      '--drop-collections',
+      '--silent',
+      './test/integration/_importdata',
+      '--db-uri',
+      dbConnectionUri,
+    ];
+
+    await cliSeeder.run();
+
+    expect(console.error).not.toBeCalled();
+    expect(console.log).not.toBeCalled();
+    expect(exit).toBeCalledWith(0);
+  });
+
   it('should show help', async () => {
     const exit = jest.spyOn(process, 'exit').mockImplementation();
 
