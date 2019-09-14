@@ -11,6 +11,7 @@ import {
 } from './config';
 
 export * from './config';
+export * from './helpers';
 
 /**
  * Allows to seed database. It is a main Mongo Seeding class.
