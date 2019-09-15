@@ -17,12 +17,16 @@ echo "Updating dependencies..."
 
 function updateDependencies() {
     echo "> $1"
+    cd ${ROOT_PATH}/${1}
     npm outdated
     npm update
 }
 
 for directory in "${DIRECTORIES[@]}"
    do
-     CURRENT_PATH=${ROOT_PATH}/${directory}
      updateDependencies ${directory}
    done
+
+echo "Bringing back symlinks..."
+cd ${ROOT_PATH}
+npm run bootstrap

@@ -15,7 +15,8 @@
   },
   "dependencies": {
     "mongodb": "^3.3.2",
-    "typeorm": "^0.2.19"
+    "typeorm": "^0.2.19",
+    "mongo-seeding": "^3.4.0"
   },
   "devDependencies": {
     "@types/mongodb": "^3.3.4",

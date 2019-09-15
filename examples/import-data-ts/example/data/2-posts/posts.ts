@@ -1,4 +1,4 @@
-import { getObjectId, getObjectIds } from '../../helpers';
+import { getObjectId, getObjectIds } from 'mongo-seeding';
 import { Post } from '../../models';
 
 const posts: Post[] = [
