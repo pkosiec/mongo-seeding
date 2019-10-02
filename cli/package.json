@@ -69,19 +69,19 @@
     "command-line-usage": "^6.0.2",
     "extend": "^3.0.2",
     "mongo-seeding": "^3.3.0",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.5.3"
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
   },
   "devDependencies": {
     "@types/command-line-args": "^5.0.0",
     "@types/extend": "^3.0.1",
-    "@types/jest": "^24.0.17",
-    "@types/mongodb": "^3.2.2",
-    "@types/node": "^12.7.2",
-    "codecov": "^3.5.0",
+    "@types/jest": "^24.0.18",
+    "@types/mongodb": "^3.3.4",
+    "@types/node": "^12.7.9",
+    "codecov": "^3.6.1",
     "jest": "^24.9.0",
-    "mongodb": "^3.3.0",
-    "ts-jest": "^24.0.2"
+    "mongodb": "^3.3.2",
+    "ts-jest": "^24.1.0"
   },
   "jest": {
     "verbose": false,
