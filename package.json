@@ -16,7 +16,8 @@
     "bootstrap": "lerna bootstrap",
     "changelog": "lerna-changelog",
     "publish": "lerna publish",
-    "clean": "lerna clean"
+    "clean": "lerna clean",
+    "update-deps": "bash ./.ci/update-packages.sh"
   },
   "husky": {
     "hooks": {
