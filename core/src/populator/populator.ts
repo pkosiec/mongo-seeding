@@ -1,5 +1,6 @@
 import { SeederCollection, log } from '../common';
 import { fileSystem } from './filesystem';
+import { Collection } from 'mongodb';
 
 /**
  * Populates collections from disk.
@@ -39,7 +40,7 @@ export class CollectionPopulator {
    * @param inputDirectory Base directory
    */
   private readCollections(directories: string[], inputDirectory: string) {
-    return directories.reduce(
+    const collections = directories.reduce(
       (collections: SeederCollection[], directoryName: string) => {
         const relativePath = `${inputDirectory}/${directoryName}`;
         const collection = this.readCollection(relativePath, directoryName);
@@ -50,6 +51,21 @@ export class CollectionPopulator {
       },
       [],
     );
+
+    return this.sortCollections(collections);
+  }
+
+  private sortCollections(collections: SeederCollection[]): SeederCollection[] {
+    return collections.sort((a, b) => {
+      if (!a.orderNo || !b.orderNo) {
+        return 0;
+      }
+
+      if (a.orderNo > b.orderNo) {
+        return 1;
+      }
+      return -1;
+    });
   }
 
   /**
@@ -58,14 +74,18 @@ export class CollectionPopulator {
    * @param path Collection Path
    * @param directoryName Directory name
    */
-  private readCollection(path: string, directoryName: string) {
-    const name = this.getCollectionName(directoryName);
+  private readCollection(
+    path: string,
+    directoryName: string,
+  ): SeederCollection | null {
+    const { name, orderNo } = this.getCollectionMetadata(directoryName);
     const documents = this.populateDocumentsContent(path);
     if (!documents) {
       return null;
     }
 
     return {
+      orderNo,
       name,
       documents,
     };
@@ -105,23 +125,27 @@ export class CollectionPopulator {
    *
    * @param directoryName Directory name
    */
-  private getCollectionName(directoryName: string) {
+  private getCollectionMetadata(
+    directoryName: string,
+  ): { name: string; orderNo?: number } {
     const separators = /\s*[-_\.\s]\s*/;
 
     const isMatch = directoryName.match(separators);
     if (!isMatch) {
-      return directoryName;
+      return { name: directoryName };
     }
 
     const firstSeparator = isMatch[0];
     const splitArr = directoryName.split(firstSeparator);
     if (!this.isNumber(splitArr[0])) {
-      return directoryName;
+      return { name: directoryName };
     }
 
-    splitArr.shift();
-
-    return splitArr.join(firstSeparator);
+    const orderNo = Number(splitArr.shift());
+    return {
+      name: splitArr.join(firstSeparator),
+      orderNo: orderNo,
+    };
   }
 
   /**
