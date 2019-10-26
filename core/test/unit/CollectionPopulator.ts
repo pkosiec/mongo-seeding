@@ -1,5 +1,5 @@
 import { CollectionPopulator } from '../../src/populator';
-import { SeederCollection } from '../../src/common';
+import { SeederCollection, SeederCollectionMetadata } from '../../src/common';
 
 describe('CollectionPopulator', () => {
   it('should throw an error when passed no supported extensions', () => {
@@ -8,57 +8,69 @@ describe('CollectionPopulator', () => {
     }).toThrowError('Array of supported extensions must not be empty');
   });
 
-  it('should get proper collection name from directory name', () => {
+  it('should get proper collection metadata from directory name', () => {
     const collectionPopulator = new CollectionPopulator(['js']);
     const camelCaseName = 'TestCollection';
     const dashCaseName = 'collection-name';
-    const testCases: Array<{ name: string; expected: string }> = [
+    const dotCaseName = 'collection.name';
+    const testCases: Array<{
+      name: string;
+      expected: SeederCollectionMetadata;
+    }> = [
       {
         name: camelCaseName,
-        expected: camelCaseName,
+        expected: { name: camelCaseName },
       },
       {
         name: `1-${camelCaseName}`,
-        expected: camelCaseName,
+        expected: { name: camelCaseName, orderNo: 1 },
       },
       {
         name: `4_${camelCaseName}`,
-        expected: camelCaseName,
+        expected: { name: camelCaseName, orderNo: 4 },
       },
       {
         name: `2.${camelCaseName}`,
-        expected: camelCaseName,
+        expected: { name: camelCaseName, orderNo: 2 },
+      },
+      {
+        name: `2.${dotCaseName}`,
+        expected: { name: dotCaseName, orderNo: 2 },
       },
       {
         name: `5 ${camelCaseName}`,
-        expected: camelCaseName,
+        expected: { name: camelCaseName, orderNo: 5 },
       },
       {
         name: `test-${dashCaseName}`,
-        expected: `test-${dashCaseName}`,
+        expected: { name: `test-${dashCaseName}` },
       },
       {
         name: `32-${dashCaseName}`,
-        expected: dashCaseName,
+        expected: { name: dashCaseName, orderNo: 32 },
       },
       {
         name: `23 ${dashCaseName}`,
-        expected: dashCaseName,
+        expected: { name: dashCaseName, orderNo: 23 },
       },
       {
         name: `1_${dashCaseName}`,
-        expected: dashCaseName,
+        expected: { name: dashCaseName, orderNo: 1 },
       },
       {
         name: '23232',
-        expected: '23232',
+        expected: { name: '23232' },
+      },
+      {
+        name: '0004-foo',
+        expected: { name: 'foo', orderNo: 4 },
       },
     ];
 
     for (const testCase of testCases) {
       // @ts-ignore
-      const result = collectionPopulator.getCollectionName(testCase.name);
-      expect(result).toBe(testCase.expected);
+      const result = collectionPopulator.getCollectionMetadata(testCase.name);
+      expect(result).toEqual(testCase.expected);
     }
   });
 

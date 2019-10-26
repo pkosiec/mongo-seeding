@@ -1,6 +1,5 @@
-import { SeederCollection, log } from '../common';
+import { SeederCollection, log, SeederCollectionMetadata } from '../common';
 import { fileSystem } from './filesystem';
-import { Collection } from 'mongodb';
 
 /**
  * Populates collections from disk.
@@ -132,7 +131,7 @@ export class CollectionPopulator {
    */
   private getCollectionMetadata(
     directoryName: string,
-  ): { name: string; orderNo?: number } {
+  ): SeederCollectionMetadata {
     const separators = /\s*[-_\.\s]\s*/;
 
     const isMatch = directoryName.match(separators);
