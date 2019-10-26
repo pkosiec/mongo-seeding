@@ -20,7 +20,7 @@
   "dependencies": {
     "bson": "^4.0.2",
     "jest": "^24.9.0",
-    "mongodb": "^3.3.2"
+    "mongodb": "^3.4.1"
   },
   "jest": {
     "verbose": false,

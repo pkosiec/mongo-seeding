@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
 ROOT_PATH=$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )
 
 DIRECTORIES=(
@@ -17,14 +16,16 @@ echo "Updating dependencies..."
 
 function updateDependencies() {
     echo "> $1"
-    cd ${ROOT_PATH}/${1}
+    cd $2
     npm outdated
     npm update
+    npm audit fix
 }
 
 for directory in "${DIRECTORIES[@]}"
    do
-     updateDependencies ${directory}
+     CURRENT_PATH=${ROOT_PATH}/${directory}
+     updateDependencies ${directory} ${CURRENT_PATH}
    done
 
 echo "Bringing back symlinks..."
