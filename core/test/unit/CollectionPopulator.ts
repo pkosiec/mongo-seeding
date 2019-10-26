@@ -1,4 +1,5 @@
 import { CollectionPopulator } from '../../src/populator';
+import { SeederCollection } from '../../src/common';
 
 describe('CollectionPopulator', () => {
   it('should throw an error when passed no supported extensions', () => {
@@ -59,5 +60,66 @@ describe('CollectionPopulator', () => {
       const result = collectionPopulator.getCollectionName(testCase.name);
       expect(result).toBe(testCase.expected);
     }
+  });
+
+  it('should sort collections', () => {
+    const collectionPopulator = new CollectionPopulator(['json']);
+    const input: SeederCollection[] = [
+      {
+        name: 'no-number',
+        documents: [],
+      },
+      {
+        name: 'three',
+        documents: [],
+        orderNo: 3,
+      },
+      {
+        name: 'zero',
+        documents: [],
+        orderNo: 0,
+      },
+      {
+        name: 'one-hundred',
+        orderNo: 100,
+        documents: [],
+      },
+      {
+        name: 'one',
+        documents: [],
+        orderNo: 1,
+      },
+    ];
+    const expectedResult: SeederCollection[] = [
+      {
+        name: 'zero',
+        documents: [],
+        orderNo: 0,
+      },
+      {
+        name: 'one',
+        documents: [],
+        orderNo: 1,
+      },
+      {
+        name: 'three',
+        documents: [],
+        orderNo: 3,
+      },
+      {
+        name: 'one-hundred',
+        orderNo: 100,
+        documents: [],
+      },
+      {
+        name: 'no-number',
+        documents: [],
+      },
+    ];
+
+    // @ts-ignore
+    const result = collectionPopulator.sortCollections(input);
+
+    expect(result).toStrictEqual(expectedResult);
   });
 });

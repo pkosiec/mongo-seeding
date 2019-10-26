@@ -57,14 +57,19 @@ export class CollectionPopulator {
 
   private sortCollections(collections: SeederCollection[]): SeederCollection[] {
     return collections.sort((a, b) => {
-      if (!a.orderNo || !b.orderNo) {
-        return 0;
-      }
+      const aOrderNo =
+        typeof a.orderNo !== 'undefined' ? a.orderNo : Number.MAX_SAFE_INTEGER;
+      const bOrderNo =
+        typeof b.orderNo !== 'undefined' ? b.orderNo : Number.MAX_SAFE_INTEGER;
 
-      if (a.orderNo > b.orderNo) {
+      if (aOrderNo > bOrderNo) {
         return 1;
       }
-      return -1;
+      if (aOrderNo < bOrderNo) {
+        return -1;
+      }
+
+      return 0;
     });
   }
 
