@@ -1,4 +1,4 @@
-import { SeederCollection, log } from '../common';
+import { SeederCollection, log, SeederCollectionMetadata } from '../common';
 import { fileSystem } from './filesystem';
 
 /**
@@ -39,7 +39,7 @@ export class CollectionPopulator {
    * @param inputDirectory Base directory
    */
   private readCollections(directories: string[], inputDirectory: string) {
-    return directories.reduce(
+    const collections = directories.reduce(
       (collections: SeederCollection[], directoryName: string) => {
         const relativePath = `${inputDirectory}/${directoryName}`;
         const collection = this.readCollection(relativePath, directoryName);
@@ -50,6 +50,26 @@ export class CollectionPopulator {
       },
       [],
     );
+
+    return this.sortCollections(collections);
+  }
+
+  private sortCollections(collections: SeederCollection[]): SeederCollection[] {
+    return collections.sort((a, b) => {
+      const aOrderNo =
+        typeof a.orderNo !== 'undefined' ? a.orderNo : Number.MAX_SAFE_INTEGER;
+      const bOrderNo =
+        typeof b.orderNo !== 'undefined' ? b.orderNo : Number.MAX_SAFE_INTEGER;
+
+      if (aOrderNo > bOrderNo) {
+        return 1;
+      }
+      if (aOrderNo < bOrderNo) {
+        return -1;
+      }
+
+      return 0;
+    });
   }
 
   /**
@@ -58,14 +78,18 @@ export class CollectionPopulator {
    * @param path Collection Path
    * @param directoryName Directory name
    */
-  private readCollection(path: string, directoryName: string) {
-    const name = this.getCollectionName(directoryName);
+  private readCollection(
+    path: string,
+    directoryName: string,
+  ): SeederCollection | null {
+    const { name, orderNo } = this.getCollectionMetadata(directoryName);
     const documents = this.populateDocumentsContent(path);
     if (!documents) {
       return null;
     }
 
     return {
+      orderNo,
       name,
       documents,
     };
@@ -105,23 +129,27 @@ export class CollectionPopulator {
    *
    * @param directoryName Directory name
    */
-  private getCollectionName(directoryName: string) {
+  private getCollectionMetadata(
+    directoryName: string,
+  ): SeederCollectionMetadata {
     const separators = /\s*[-_\.\s]\s*/;
 
     const isMatch = directoryName.match(separators);
     if (!isMatch) {
-      return directoryName;
+      return { name: directoryName };
     }
 
     const firstSeparator = isMatch[0];
     const splitArr = directoryName.split(firstSeparator);
     if (!this.isNumber(splitArr[0])) {
-      return directoryName;
+      return { name: directoryName };
     }
 
-    splitArr.shift();
-
-    return splitArr.join(firstSeparator);
+    const orderNo = Number(splitArr.shift());
+    return {
+      name: splitArr.join(firstSeparator),
+      orderNo: orderNo,
+    };
   }
 
   /**
