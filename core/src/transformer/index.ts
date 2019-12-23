@@ -1,2 +1,2 @@
-export * from './collection-transformer';
+export * from './transformer';
 export * from './transformer-functions';
