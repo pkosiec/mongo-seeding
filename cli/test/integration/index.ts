@@ -43,7 +43,7 @@ describe('CLI', () => {
 
     const client = await MongoClient.connect(
       dbConnectionUri,
-      DatabaseConnector.CLIENT_OPTIONS,
+      DatabaseConnector.DEFAULT_CLIENT_OPTIONS,
     );
     const db = client.db(databaseName);
 

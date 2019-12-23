@@ -83,7 +83,7 @@
       "/test/integration/_importdata/",
       "/test/_helpers.ts"
     ],
-    "testRegex": "(/test/[^_][a-zA-Z0-9/]*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testRegex": "(/test/[^_][a-zA-Z0-9-/]*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",

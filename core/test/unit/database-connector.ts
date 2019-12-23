@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, MongoClientOptions } from 'mongodb';
 
 import {
   DatabaseConnector,
@@ -22,7 +22,15 @@ jest.mock('../../src/database/time', () => ({
     .mockReturnValue(true),
 }));
 
-const databaseConnector = new DatabaseConnector();
+const getConnectionRefusedError = () => {
+  const connectionRefusedError = {
+    name: 'MongoNetworkError',
+    message: `failed to connect to server [127.0.0.1:27017] on first connect
+      [MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017]`,
+  };
+  return new Promise((_, reject) => reject(connectionRefusedError));
+};
+
 const dbConfig: SeederDatabaseConfig = {
   protocol: 'mongodb',
   host: '127.0.0.1',
@@ -32,17 +40,21 @@ const dbConfig: SeederDatabaseConfig = {
 
 describe('DatabaseConnector', () => {
   it('should throw error when trying connecting without config', async () => {
+    const databaseConnector = new DatabaseConnector();
     // @ts-ignore
     await expect(databaseConnector.connect({})).rejects.toThrow();
   });
 
   it('should return valid DB connection URI', () => {
+    const databaseConnector = new DatabaseConnector();
+
     const expectedUri = 'mongodb://127.0.0.1:27017/database';
     const uri = databaseConnector.getDbConnectionUri(dbConfig);
     expect(uri).toBe(expectedUri);
   });
 
   it('should return valid DB connection URI with Mongo 3.6 protocol', () => {
+    const databaseConnector = new DatabaseConnector();
     const dbConfig: SeederDatabaseConfig = {
       protocol: 'mongodb+srv',
       host: '127.0.0.1',
@@ -55,6 +67,7 @@ describe('DatabaseConnector', () => {
   });
 
   it('should return valid DB connection URI with username only', () => {
+    const databaseConnector = new DatabaseConnector();
     const authConfig: SeederDatabaseConfig = {
       protocol: 'mongodb',
       username: 'user',
@@ -71,6 +84,7 @@ describe('DatabaseConnector', () => {
   });
 
   it('should return valid DB connection URI with username and login', () => {
+    const databaseConnector = new DatabaseConnector();
     const authConfig: SeederDatabaseConfig = {
       protocol: 'mongodb',
       username: 'user',
@@ -85,6 +99,7 @@ describe('DatabaseConnector', () => {
   });
 
   it('should return valid database name from URI', () => {
+    const databaseConnector = new DatabaseConnector();
     interface Test {
       url: string;
       expectedDbName: string;
@@ -125,6 +140,8 @@ describe('DatabaseConnector', () => {
   });
 
   it('should mask user credentials in database connection URI', () => {
+    const databaseConnector = new DatabaseConnector();
+
     interface Test {
       uri: string;
       expectedMaskedUri: string;
@@ -161,6 +178,8 @@ describe('DatabaseConnector', () => {
   });
 
   it('should convert Database Config Object URI to valid options URI part', () => {
+    const databaseConnector = new DatabaseConnector();
+
     interface Test {
       options: SeederDatabaseConfigObjectOptions;
       expectedUriPart: string;
@@ -201,14 +220,7 @@ describe('DatabaseConnector', () => {
   });
 
   it('should retry connecting to DB within given time limit', async () => {
-    const getConnectionRefusedError = () => {
-      const connectionRefusedError = {
-        name: 'MongoNetworkError',
-        message: `failed to connect to server [127.0.0.1:27017] on first connect
-          [MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017]`,
-      };
-      return new Promise((_, reject) => reject(connectionRefusedError));
-    };
+    const databaseConnector = new DatabaseConnector();
 
     const result = new Database(jest.genMockFromModule('mongodb'));
     (result.db as any) = jest.fn().mockReturnValue({});
@@ -225,6 +237,8 @@ describe('DatabaseConnector', () => {
   });
 
   it('should fail after given connection timeout', async () => {
+    const databaseConnector = new DatabaseConnector();
+
     MongoClient.connect = jest.fn().mockReturnValue(
       new Promise((_, reject) => {
         reject(new Error('MongoError'));
@@ -235,5 +249,29 @@ describe('DatabaseConnector', () => {
       'Timeout',
     );
     expect(sleep).toHaveBeenCalledTimes(2);
+  });
+
+  it('should allow passing custom Mongo client options', () => {
+    const opts: MongoClientOptions = {
+      acceptableLatencyMS: 3000,
+      domainsEnabled: true,
+      bufferMaxEntries: 1,
+    };
+
+    const connector = new DatabaseConnector(3000, opts);
+    const connectMock = jest
+      .fn()
+      .mockReturnValue(
+        new Promise((resolve, _) =>
+          resolve(new Database(jest.genMockFromModule('mongodb'))),
+        ),
+      );
+
+    MongoClient.connect = connectMock;
+
+    connector.connectWithUri('foo.bar', 'name');
+
+    expect(connectMock).toBeCalledTimes(1);
+    expect(connectMock).toBeCalledWith('foo.bar', opts);
   });
 });
