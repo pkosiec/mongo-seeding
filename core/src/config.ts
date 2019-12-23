@@ -1,6 +1,7 @@
 import * as extend from 'extend';
 import { SeederCollection, DeepPartial } from './common';
 import { SeederDatabaseConfig, defaultDatabaseConfigObject } from './database';
+import { CollectionInsertManyOptions, MongoClientOptions } from 'mongodb';
 
 /**
  * Defines configuration for database seeding.
@@ -10,6 +11,8 @@ export interface SeederConfig {
   databaseReconnectTimeout: number; // maximum time of waiting for successful MongoDB connection in milliseconds
   dropDatabase: boolean; // drops entire database before import
   dropCollections: boolean; // drops collection before importing it
+  mongoClientOptions?: MongoClientOptions; // optional MongoDB client options
+  collectionInsertManyOptions?: CollectionInsertManyOptions; // optional MongoDB collection import options
 }
 
 /**

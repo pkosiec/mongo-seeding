@@ -1,4 +1,4 @@
-import { Db } from 'mongodb';
+import { Db, CollectionInsertManyOptions } from 'mongodb';
 
 /**
  * Provides functionality for managing documents, collections in database.
@@ -16,13 +16,17 @@ export class Database {
    *
    * @param documentsToInsert Array of documents, which are being imported
    * @param collectionName Collection name
+   * @param collectionInsertOptions Optional collection import options
    */
   async insertDocumentsIntoCollection(
     documentsToInsert: any[],
     collectionName: string,
+    collectionInsertOptions?: CollectionInsertManyOptions,
   ) {
     const documentsCopy = documentsToInsert.map(document => ({ ...document }));
-    return this.db.collection(collectionName).insertMany(documentsCopy);
+    return this.db
+      .collection(collectionName)
+      .insertMany(documentsCopy, collectionInsertOptions);
   }
 
   /**

@@ -106,7 +106,10 @@ export class Seeder {
         await database.drop();
       }
 
-      await new CollectionImporter(database).import(collections);
+      await new CollectionImporter(
+        database,
+        config.collectionInsertManyOptions,
+      ).import(collections);
     } catch (err) {
       throw wrapError(err);
     } finally {

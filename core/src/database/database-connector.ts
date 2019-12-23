@@ -34,11 +34,17 @@ export class DatabaseConnector {
    */
   static MASKED_URI_CREDENTIALS = '[secure]';
 
-  static CLIENT_OPTIONS: MongoClientOptions = {
+  static DEFAULT_CLIENT_OPTIONS: MongoClientOptions = {
     ignoreUndefined: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    connectTimeoutMS: 1,
   };
+
+  /**
+   * MongoDB Client options
+   */
+  clientOptions: MongoClientOptions;
 
   /**
    * MongoDB Client.
@@ -55,11 +61,19 @@ export class DatabaseConnector {
    *
    * @param reconnectTimeoutMillis Reconnect timeout in milliseconds
    */
-  constructor(reconnectTimeoutMillis?: number) {
+  constructor(
+    reconnectTimeoutMillis?: number,
+    mongoClientOptions?: MongoClientOptions,
+  ) {
     this.reconnectTimeoutMillis =
       reconnectTimeoutMillis != null
         ? reconnectTimeoutMillis
         : DatabaseConnector.DEFAULT_RECONNECT_TIMEOUT_MILLIS;
+
+    this.clientOptions =
+      mongoClientOptions != null
+        ? mongoClientOptions
+        : DatabaseConnector.DEFAULT_CLIENT_OPTIONS;
   }
 
   /**
@@ -99,10 +113,7 @@ export class DatabaseConnector {
     let client: MongoClient | undefined;
     do {
       try {
-        client = await MongoClient.connect(
-          dbConnectionUri,
-          DatabaseConnector.CLIENT_OPTIONS,
-        );
+        client = await MongoClient.connect(dbConnectionUri, this.clientOptions);
       } catch (err) {
         if (checkTimeout(startMillis, this.reconnectTimeoutMillis)) {
           throw new Error(
