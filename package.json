@@ -25,13 +25,13 @@
     }
   },
   "devDependencies": {
-    "husky": "^3.1.0",
-    "lerna": "^3.19.0",
+    "husky": "^4.2.1",
+    "lerna": "^3.20.2",
     "lerna-changelog": "^1.0.0",
-    "lint-staged": "^9.5.0",
+    "lint-staged": "^10.0.7",
     "prettier": "^1.19.1",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.4"
+    "tslint": "^6.0.0",
+    "typescript": "^3.7.5"
   },
   "lint-staged": {
     "**/*.{ts,js,json}": [
