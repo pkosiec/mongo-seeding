@@ -15,7 +15,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "changelog": "lerna-changelog",
-    "publish": "lerna publish",
+    "publish": "lerna publish --pre-dist-tag next",
     "clean": "lerna clean",
     "update-deps": "bash ./.ci/update-packages.sh"
   },
@@ -25,13 +25,13 @@
     }
   },
   "devDependencies": {
-    "husky": "^3.0.8",
-    "lerna": "^3.16.4",
-    "lerna-changelog": "^0.8.2",
-    "lint-staged": "^9.4.1",
-    "prettier": "^1.18.2",
-    "tslint": "^5.20.0",
-    "typescript": "^3.6.3"
+    "husky": "^4.2.1",
+    "lerna": "^3.20.2",
+    "lerna-changelog": "^1.0.0",
+    "lint-staged": "^10.0.7",
+    "prettier": "^1.19.1",
+    "tslint": "^6.0.0",
+    "typescript": "^3.7.5"
   },
   "lint-staged": {
     "**/*.{ts,js,json}": [

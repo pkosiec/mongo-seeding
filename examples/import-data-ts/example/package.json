@@ -16,11 +16,11 @@
   "dependencies": {
     "mongodb": "^3.3.2",
     "typeorm": "^0.2.19",
-    "mongo-seeding": "^3.4.0"
+    "mongo-seeding": "latest"
   },
   "devDependencies": {
     "@types/mongodb": "^3.3.4",
-    "@types/node": "^10.14.19",
+    "@types/node": "^12.12.27",
     "typescript": "^3.6.3"
   }
 }

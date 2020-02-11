@@ -66,22 +66,22 @@
   },
   "dependencies": {
     "command-line-args": "^5.1.1",
-    "command-line-usage": "^6.0.2",
+    "command-line-usage": "^6.1.0",
     "extend": "^3.0.2",
     "mongo-seeding": "^3.4.0-alpha.1",
-    "ts-node": "^8.4.1",
-    "typescript": "^3.6.3"
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
   },
   "devDependencies": {
     "@types/command-line-args": "^5.0.0",
     "@types/extend": "^3.0.1",
-    "@types/jest": "^24.0.18",
-    "@types/mongodb": "^3.3.5",
-    "@types/node": "^12.7.11",
-    "codecov": "^3.6.1",
-    "jest": "^24.9.0",
-    "mongodb": "^3.3.2",
-    "ts-jest": "^24.1.0"
+    "@types/jest": "^25.1.2",
+    "@types/mongodb": "^3.3.16",
+    "@types/node": "^12.12.27",
+    "codecov": "^3.6.5",
+    "jest": "^25.1.0",
+    "mongodb": "3.3.2",
+    "ts-jest": "^25.2.0"
   },
   "jest": {
     "verbose": false,
