@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
+ROOT_PATH=$( cd "$( dirname "${BASH_SOURCE[0]}" )/../../" && pwd )
+
 IMAGE_NAME="core-test"
+
+cd ${ROOT_PATH}
 
 echo "Building test image..."
 docker build -t $IMAGE_NAME:$CI_BUILD_NUMBER -f ./core/Dockerfile .
