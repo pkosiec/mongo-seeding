@@ -54,7 +54,7 @@
     "bson": "^4.0.3",
     "debug": "^4.1.1",
     "extend": "^3.0.0",
-    "mongodb": "^3.5.2"
+    "mongodb": "3.3.2"
   },
   "devDependencies": {
     "@types/extend": "^3.0.1",
