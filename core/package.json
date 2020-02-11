@@ -60,7 +60,7 @@
     "@types/extend": "^3.0.1",
     "@types/fs-extra": "^8.0.0",
     "@types/jest": "^24.0.18",
-    "@types/mongodb": "^3.3.4",
+    "@types/mongodb": "^3.3.5",
     "babel-core": "^6.26.0",
     "codecov": "^3.6.1",
     "fs-extra": "^8.1.0",

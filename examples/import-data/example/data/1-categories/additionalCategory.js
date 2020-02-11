@@ -1,4 +1,4 @@
-const { getObjectId } = require('../../helpers/index');
+const { getObjectId } = require('mongo-seeding');
 
 const name = 'Additional Category';
 

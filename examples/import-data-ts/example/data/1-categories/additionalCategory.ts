@@ -1,5 +1,5 @@
 import { Category } from '../../models';
-import { getObjectId } from '../../helpers/index';
+import { getObjectId } from 'mongo-seeding';
 
 const name = 'Additional Category';
 
