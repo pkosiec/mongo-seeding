@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+ROOT_PATH=$( cd "$( dirname "${BASH_SOURCE[0]}" )/../../" && pwd )
+
 echo "Building image..."
-cd ./docker-image
+cd ${ROOT_PATH}/docker-image
 
 COMMIT_TAG=$(git tag -l --points-at HEAD | xargs)
 BUILD_VERSION="develop"
@@ -19,9 +21,7 @@ DB_NAME=dockertestdb
 docker run --rm -it --network="host" -e DB_NAME=${DB_NAME} -e REPLACE_ID=true -v ${DATA_IMPORT_PATH}:${DATA_IMPORT_PATH} -w ${DATA_IMPORT_PATH} $DOCKER_IMAGE_REPOSITORY:$CI_BUILD_NUMBER
 
 # Build & run tester
-cd ./test/tester
+cd ${ROOT_PATH}/docker-image/test/tester
 docker build -t ${TESTER_IMAGE_NAME} .
 docker run --rm -it --network="host" -e DB_NAME=${DB_NAME} ${TESTER_IMAGE_NAME}
-cd ../..
 
-cd ..

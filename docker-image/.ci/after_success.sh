@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+ROOT_PATH=$( cd "$( dirname "${BASH_SOURCE[0]}" )/../../" && pwd )
+
+cd ${ROOT_PATH}
+
 [ "${CI_PULL_REQUEST}" == "false" ] && [ "${CI_BRANCH}" == "master" ] && IS_MASTER=1 || IS_MASTER=0
 [ "${CI_PULL_REQUEST}" == "true" ] && IS_PR=1 || IS_PR=0
 
@@ -35,9 +39,9 @@ docker push $DOCKER_IMAGE_REPOSITORY:$TAG;
 
 # Push additional tag with version if necessary
 if [ $IS_MASTER -eq 1 ]; then
-  cd ./cli
+  cd ${ROOT_PATH}/cli
   NPM_VERSION=$(node -p -e "require('./package.json').version");
-  cd ..
+  cd ${ROOT_PATH}
   echo "Package version: $NPM_VERSION";
 
   echo "Tagging the Docker image with $NPM_VERSION tag...";

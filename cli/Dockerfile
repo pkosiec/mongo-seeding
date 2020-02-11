@@ -4,7 +4,7 @@
 # Stage 1: Core
 #
 
-FROM node:11-alpine AS coreBuilder
+FROM node:12-alpine AS coreBuilder
 LABEL Maintainer="Pawel Kosiec <pawel@kosiec.net>"
 
 ENV CORE_DIR=./core
@@ -29,7 +29,7 @@ RUN npm i --production --no-optional
 # Stage 2: CLI
 #
 
-FROM node:11-alpine
+FROM node:12-alpine
 
 ENV CLI_DIR=./cli
 WORKDIR /app
