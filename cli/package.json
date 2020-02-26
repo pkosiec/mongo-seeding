@@ -1,7 +1,7 @@
 {
   "name": "mongo-seeding-cli",
   "description": "The ultimate command line tool for populating your MongoDB database.",
-  "version": "3.4.0-alpha.2",
+  "version": "3.4.0",
   "license": "MIT",
   "keywords": [
     "mongo",
@@ -68,7 +68,7 @@
     "command-line-args": "^5.1.1",
     "command-line-usage": "^6.1.0",
     "extend": "^3.0.2",
-    "mongo-seeding": "^3.4.0-alpha.2",
+    "mongo-seeding": "^3.4.0",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
   },
