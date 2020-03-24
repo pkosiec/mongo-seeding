@@ -117,6 +117,7 @@ export class Seeder {
     }
 
     log('Finishing...');
+    return true;
   };
 }
 
