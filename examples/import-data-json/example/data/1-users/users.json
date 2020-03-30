@@ -1,0 +1,26 @@
+[
+    {   
+        "_id": { "$oid": "5e601e82b3f2a43b5477b647" },
+        "name": "Dalthon",
+        "lastname": "Mamani",
+        "username": "D4ITON",
+        "password": "$2a$10$hhn8vSvl6rpv42undbkQ.O5XIdIJkujyqQWqKIxRJgLQYCGlM/6rW",
+        "role": "admin"
+    },
+    {   
+        "_id": { "$oid": "5e601e8cb3f2a43b5477b648" },
+        "name": "Juan",
+        "lastname": "Pérez",
+        "username": "miguel",
+        "password": "$2a$10$hhn8vSvl6rpv42undbkQ.O5XIdIJkujyqQWqKIxRJgLQYCGlM/6rW",
+        "role": "mozo"
+    },
+    {   
+        "_id": { "$oid": "5e606354dc8aec3040688a7f" },
+        "name": "Marta",
+        "lastname": "López",
+        "username": "hilaria",
+        "password": "$2a$10$hhn8vSvl6rpv42undbkQ.O5XIdIJkujyqQWqKIxRJgLQYCGlM/6rW",
+        "role": "despachador"
+    }
+]
