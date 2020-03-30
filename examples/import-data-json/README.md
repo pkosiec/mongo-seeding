@@ -8,7 +8,7 @@ For this, I separated it into four important points:
 ### 1. Have the data odel
 To seed your database, using mongo seeding cli, you must have the idea of ​​the datamodel that you require, for example take the case of a restaurant, it contain the following documents in mongodb (tables in a relational database ), users, plates and orders, note that there are a relation between plate and order models.
 
-**User model*
+**User model**
 ```js
 const mongoose = require("mongoose");
 
