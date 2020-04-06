@@ -166,7 +166,7 @@ To use it in more than one project, you must install it globally with this comma
 npm install -g mongo-seeding-cli
 ```
 
-You can specify custom settings with command line parameters. The following example imports data from `./mongoose-express/data` directory using MongoDB connection URI mongodb://127.0.0.1:27017/mydb with option to drop database before import:
+You can specify custom settings with command line parameters. The following example imports data from `./mongoose-express/example/data` directory using MongoDB connection URI mongodb://127.0.0.1:27017/mydb with option to drop database before import:
 > **NOTE:** You can use the [following parameters](../../cli/README.md#command-line-parameters) while using `seed` tool
 
 ```bash
