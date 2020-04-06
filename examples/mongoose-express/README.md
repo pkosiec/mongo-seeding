@@ -1,6 +1,6 @@
 # How to use Mongo Seeding with Mongoose and Express
 
-This example shows you how to import data from mongoose model to Mongodb database.
+This example shows you how to import data from Mongoose model to MongoDB database.
 There are three models defined, `customers`, `menus`, and `orders`.
 
 ## Pre requisites
@@ -10,7 +10,7 @@ In order to run this example, it's recommended to install the following tools:
 - [Express](https://expressjs.com/)
 
 ## Prepare data model
-Consider the following mongoose models:
+Consider the following Mongoose models:
 
 **Customer model**
 ```js
@@ -68,7 +68,7 @@ module.exports = mongoose.model("Order", OrderSchema);
 ## Define proper directory structure
 To learn how to structure import data, see the [Import data definition guide](../../docs/import-data-definition.md). In this example the following directory structure is used:
 
-> **NOTE:** it is important that the end of the folder (collection name) ends in plural.  
+> **NOTE:** It is important that the end of the folder name (collection name) ends in plural.  
 
 ```js
    .
@@ -173,10 +173,10 @@ You can specify custom settings with command line parameters. The following exam
 seed -u mongodb://127.0.0.1:27017/dbname --drop-database ./data
 ```
 
-After run the command it does not give us a message but if you look at your database GUI you will notice that you already have your tables populated with the information that we have placed :rocket:
+After run the command it does not give us a message but if you look at your database GUI you will notice that you already have your tables populated with the information :rocket:
 
 ## Fetch data from DB with Mongoose
-To bring the defined relation of customers, menus, and orders you must use the [populate](https://mongoosejs.com/docs/populate.html) function of mongoose, the function it can be the following:
+To bring the defined relation of customers, menus, and orders you must use the [populate](https://mongoosejs.com/docs/populate.html) function of Mongoose, the function it can be the following:
 
 ```js
 const Order = require("./models/order");
