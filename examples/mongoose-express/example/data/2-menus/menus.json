@@ -3,24 +3,24 @@
         "_id": { "$oid": "5e606408dc8aec3040688a86" },
         "name": "Lomo saltado",
         "price": 20.00,
-        "category": "fund"
+        "category": "mainCourse"
     },
     {   
         "_id": { "$oid": "5e60650ea0403411bc4a332f" },
-        "name": "Arroz con pollo",
-        "price": 22.00,
-        "category": "fund"
+        "name": "Stew",
+        "price": 20.00,
+        "category": "mainCourse"
     },
     {   
         "_id": { "$oid": "5e6066bea0403411bc4a3333" },
         "name": "Ceviche",
         "price": 18.00,
-        "category": "entry"
+        "category": "firstCourse"
     },
     {   
         "_id": { "$oid": "5e6066e9a0403411bc4a3334" },
-        "name": "Causa",
+        "name": "Tacos",
         "price": 18.00,
-        "category": "entry"
+        "category": "firstCourse"
     }
 ]
