@@ -252,4 +252,4 @@ The response must be:
 ]
 ```
 
-To read more examples for the set of Mongo Seeding tools you can read this **[Readme](../../docker-image/README.md)**
+To read more examples for the set of Mongo Seeding tools you can read this **[Readme](../README.md#examples)**
