@@ -184,7 +184,7 @@ const Order = require("./models/order");
 api.get("/get-orders", (req, res) => {
     Order.find()
         .populate("order_detail customer")
-        .exec(function (err, order) {
+        .exec((err, order) => {
             if (err) return handleError(err);
             res.status(200).send(order);
         });
