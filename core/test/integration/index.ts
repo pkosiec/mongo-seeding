@@ -83,7 +83,7 @@ describe('Mongo Seeding', () => {
         .find()
         .toArray();
 
-      expectedDatabaseState[key].forEach(expectedDocument => {
+      expectedDatabaseState[key].forEach((expectedDocument) => {
         expect(collectionDocuments).toContainEqual(
           expect.objectContaining(expectedDocument),
         );
@@ -108,7 +108,7 @@ describe('Mongo Seeding', () => {
 
     const dbCollections = await listExistingCollections(database.db);
     expect(dbCollections).toHaveLength(expectedCollections.length);
-    expectedCollections.forEach(expectedCollection => {
+    expectedCollections.forEach((expectedCollection) => {
       expect(dbCollections).toContainEqual(expectedCollection);
     });
   });
@@ -136,7 +136,7 @@ describe('Mongo Seeding', () => {
 
     const dbCollections = await listExistingCollections(database.db);
     expect(dbCollections).toHaveLength(expectedCollections.length);
-    expectedCollections.forEach(expectedCollection => {
+    expectedCollections.forEach((expectedCollection) => {
       expect(dbCollections).toContainEqual(expectedCollection);
     });
   });
@@ -150,8 +150,11 @@ describe('Mongo Seeding', () => {
 
   it('should throw error when cannot connect to database', async () => {
     const config: DeepPartial<SeederConfig> = {
-      database: 'mongodb://unresolved.host:27017/name',
-      databaseReconnectTimeout: 0,
+      database: 'mongodb://foo:bar@localhost:27017/name',
+      databaseReconnectTimeout: 1,
+      mongoClientOptions: {
+        useUnifiedTopology: false,
+      },
     };
 
     const path = `${IMPORT_DATA_DIR}/index-import`;
