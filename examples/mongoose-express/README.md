@@ -27,7 +27,6 @@ const CustomerShema = mongoose.Schema({
 });
 
 module.exports = mongoose.model("Customer", CustomerShema);
-});
 
 ```
 
