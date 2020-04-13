@@ -1,4 +1,9 @@
-import { log, DeepPartial, SeederCollection } from './common';
+import {
+  DeepPartial,
+  SeederCollection,
+  LogFn,
+  NewLoggerInstance,
+} from './common';
 import { DatabaseConnector } from './database';
 import { DefaultTransformers, CollectionTransformer } from './transformer';
 import { CollectionImporter } from './importer';
@@ -23,6 +28,11 @@ export class Seeder {
   static Transformers = DefaultTransformers;
 
   /**
+   * Logger instance
+   */
+  log: LogFn;
+
+  /**
    * Configuration for seeding database.
    */
   config: SeederConfig = defaultSeederConfig;
@@ -34,6 +44,7 @@ export class Seeder {
    */
   constructor(config?: DeepPartial<SeederConfig>) {
     this.config = mergeSeederConfig(config);
+    this.log = NewLoggerInstance();
   }
 
   /**
@@ -51,16 +62,16 @@ export class Seeder {
     let collections;
     try {
       const { CollectionPopulator } = require('./populator');
-      const populator = new CollectionPopulator(config.extensions);
+      const populator = new CollectionPopulator(config.extensions, this.log);
 
-      log(`Reading collections from ${path}...`);
+      this.log(`Reading collections from ${path}...`);
       collections = populator.readFromPath(path);
     } catch (err) {
       throw wrapError(err);
     }
 
     if (config.transformers.length > 0) {
-      log('Transforming collections...');
+      this.log('Transforming collections...');
       collections = new CollectionTransformer().transform(
         collections,
         config.transformers,
@@ -81,35 +92,37 @@ export class Seeder {
     partialConfig?: DeepPartial<SeederConfig>,
   ) => {
     if (collections.length === 0) {
-      log('No data to import. Finishing...');
+      this.log('No data to import. Finishing...');
       return;
     }
 
-    log('Starting collection import...');
+    this.log('Starting collection import...');
     const config = mergeSeederConfig(partialConfig, this.config);
     const databaseConnector = new DatabaseConnector(
       config.databaseReconnectTimeout,
       config.mongoClientOptions,
+      this.log,
     );
 
     try {
       const database = await databaseConnector.connect(config.database);
 
       if (!config.dropDatabase && config.dropCollections) {
-        log('Dropping collections...');
+        this.log('Dropping collections...');
         for (const collection of collections) {
           await database.dropCollectionIfExists(collection.name);
         }
       }
 
       if (config.dropDatabase) {
-        log('Dropping database...');
+        this.log('Dropping database...');
         await database.drop();
       }
 
       await new CollectionImporter(
         database,
         config.collectionInsertManyOptions,
+        this.log,
       ).import(collections);
     } catch (err) {
       throw wrapError(err);
@@ -117,7 +130,7 @@ export class Seeder {
       await databaseConnector.close();
     }
 
-    log('Finishing...');
+    this.log('Finishing...');
   };
 }
 

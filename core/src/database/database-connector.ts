@@ -1,5 +1,4 @@
 import { MongoClient, MongoClientOptions } from 'mongodb';
-import { log } from '../common';
 import {
   Database,
   sleep,
@@ -9,6 +8,7 @@ import {
   SeederDatabaseConfigObject,
 } from '.';
 import { SeederDatabaseConfigObjectOptions } from './config';
+import { LogFn } from '../common';
 
 /**
  * Provides functionality to manage connection to a MongoDB database.
@@ -52,6 +52,11 @@ export class DatabaseConnector {
   client?: MongoClient;
 
   /**
+   * Logger instance
+   */
+  log: LogFn;
+
+  /**
    * Reconnect timeout in milliseconds.
    */
   reconnectTimeoutMillis: number;
@@ -64,6 +69,7 @@ export class DatabaseConnector {
   constructor(
     reconnectTimeoutMillis?: number,
     mongoClientOptions?: MongoClientOptions,
+    log?: LogFn,
   ) {
     this.reconnectTimeoutMillis =
       reconnectTimeoutMillis != null
@@ -77,6 +83,7 @@ export class DatabaseConnector {
             ...DatabaseConnector.DEFAULT_CLIENT_OPTIONS,
             connectTimeoutMS: this.reconnectTimeoutMillis,
           };
+    this.log = log ? log : () => {};
   }
 
   /**
@@ -111,7 +118,7 @@ export class DatabaseConnector {
     dbConnectionUri: string,
     dbName: string,
   ): Promise<Database> {
-    log(`Connecting to ${this.maskUriCredentials(dbConnectionUri)}...`);
+    this.log(`Connecting to ${this.maskUriCredentials(dbConnectionUri)}...`);
     const startMillis = new Date().getTime();
     let client: MongoClient | undefined;
     do {
@@ -124,12 +131,12 @@ export class DatabaseConnector {
           );
         }
 
-        log(`${err.message}\nRetrying...`);
+        this.log(`${err.message}\nRetrying...`);
         await sleep(DatabaseConnector.SLEEP_INTERVAL_MILLIS);
       }
     } while (!client);
 
-    log('Connection with database established.');
+    this.log('Connection with database established.');
     this.client = client;
 
     const db = client.db(dbName);
@@ -140,7 +147,7 @@ export class DatabaseConnector {
    * Closes connection with database.
    */
   async close() {
-    log('Closing connection...');
+    this.log('Closing connection...');
     if (!this.client || !this.client.isConnected()) {
       return;
     }

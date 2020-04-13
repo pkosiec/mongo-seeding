@@ -1,4 +1,4 @@
-import { SeederCollection, log, SeederCollectionMetadata } from '../common';
+import { SeederCollection, SeederCollectionMetadata, LogFn } from '../common';
 import { fileSystem } from './filesystem';
 
 /**
@@ -11,15 +11,21 @@ export class CollectionPopulator {
   extensions: string[];
 
   /**
+   * Logger instance
+   */
+  log: LogFn;
+
+  /**
    * Constructs new `CollectionPopulator` object.
    *
    * @param extensions Array of file extensions
    */
-  constructor(extensions: string[]) {
+  constructor(extensions: string[], log?: LogFn) {
     if (extensions.length === 0) {
       throw new Error('Array of supported extensions must not be empty');
     }
     this.extensions = extensions;
+    this.log = log ? log : () => {};
   }
 
   /**
@@ -103,7 +109,7 @@ export class CollectionPopulator {
   private populateDocumentsContent(collectionPath: string) {
     const fileNames = fileSystem.listFileNames(collectionPath);
     if (fileNames.length === 0) {
-      log(`Directory '${collectionPath}' is empty. Skipping...`);
+      this.log(`Directory '${collectionPath}' is empty. Skipping...`);
       return;
     }
 
@@ -112,14 +118,14 @@ export class CollectionPopulator {
       this.extensions,
     );
     if (documentFileNames.length === 0) {
-      log(
+      this.log(
         `No supported files found in directory '${collectionPath}'. Skipping...`,
       );
       return;
     }
 
     const documentPaths = documentFileNames.map(
-      fileName => `${collectionPath}/${fileName}`,
+      (fileName) => `${collectionPath}/${fileName}`,
     );
     return fileSystem.readFilesContent(documentPaths);
   }
