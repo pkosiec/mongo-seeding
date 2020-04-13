@@ -4,7 +4,7 @@ import {
   LogFn,
   NewLoggerInstance,
 } from './common';
-import { DatabaseConnector } from './database';
+import { DatabaseConnector, Database } from './database';
 import { DefaultTransformers, CollectionTransformer } from './transformer';
 import { CollectionImporter } from './importer';
 import {
@@ -104,8 +104,9 @@ export class Seeder {
       this.log,
     );
 
+    let database;
     try {
-      const database = await databaseConnector.connect(config.database);
+      database = await databaseConnector.connect(config.database);
 
       if (!config.dropDatabase && config.dropCollections) {
         this.log('Dropping collections...');
@@ -127,7 +128,9 @@ export class Seeder {
     } catch (err) {
       throw wrapError(err);
     } finally {
-      await databaseConnector.close();
+      if (database) {
+        await database.closeConnection();
+      }
     }
 
     this.log('Finishing...');

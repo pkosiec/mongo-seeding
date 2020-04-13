@@ -112,7 +112,7 @@ The following snippet represents the type definition of `Seeder` config with all
 ```javascript
 export interface SeederConfig {
   database: string | SeederDatabaseConfigObject; // database connection URI or configuration object
-  databaseReconnectTimeout: number; // maximum time of waiting for successful MongoDB connection in milliseconds
+  databaseReconnectTimeout: number; // maximum time of waiting for successful MongoDB connection in milliseconds. Ignored when `mongoClientOptions` are passed.
   dropDatabase: boolean; // drops entire database before import
   dropCollections: boolean; // drops every collection which is being imported
   mongoClientOptions?: MongoClientOptions; // optional MongoDB connect options

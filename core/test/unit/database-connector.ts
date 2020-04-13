@@ -1,35 +1,5 @@
+import { DatabaseConnector, SeederDatabaseConfig } from '../../src/database';
 import { MongoClient, MongoClientOptions } from 'mongodb';
-
-import {
-  DatabaseConnector,
-  sleep,
-  Database,
-  SeederDatabaseConfig,
-  SeederDatabaseConfigObjectOptions,
-} from '../../src/database';
-
-// Import mocks
-jest.mock('../../src/database/time', () => ({
-  sleep: jest.fn().mockReturnValue(
-    new Promise((resolve, _) => {
-      resolve();
-    }),
-  ),
-  checkTimeout: jest
-    .fn()
-    .mockReturnValueOnce(false)
-    .mockReturnValueOnce(false)
-    .mockReturnValue(true),
-}));
-
-const getConnectionRefusedError = () => {
-  const connectionRefusedError = {
-    name: 'MongoNetworkError',
-    message: `failed to connect to server [127.0.0.1:27017] on first connect
-      [MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017]`,
-  };
-  return new Promise((_, reject) => reject(connectionRefusedError));
-};
 
 const dbConfig: SeederDatabaseConfig = {
   protocol: 'mongodb',
@@ -38,7 +8,25 @@ const dbConfig: SeederDatabaseConfig = {
   name: 'database',
 };
 
+const uri = 'mongodb://foo.bar';
+
+const connectMock = jest.fn();
+
+jest.mock('mongodb', () => {
+  return {
+    MongoClient: jest.fn().mockImplementation(() => {
+      return { connect: connectMock, db: jest.fn() };
+    }),
+  };
+});
+
 describe('DatabaseConnector', () => {
+  beforeEach(() => {
+    //@ts-ignore
+    MongoClient.mockClear();
+    connectMock.mockClear();
+  });
+
   it('should throw error when trying connecting without config', async () => {
     const databaseConnector = new DatabaseConnector();
     // @ts-ignore
@@ -49,6 +37,7 @@ describe('DatabaseConnector', () => {
     const databaseConnector = new DatabaseConnector();
 
     const expectedUri = 'mongodb://127.0.0.1:27017/database';
+    // @ts-ignore
     const uri = databaseConnector.getDbConnectionUri(dbConfig);
     expect(uri).toBe(expectedUri);
   });
@@ -62,6 +51,7 @@ describe('DatabaseConnector', () => {
       name: 'database',
     };
     const expectedUri = 'mongodb+srv://127.0.0.1/database';
+    // @ts-ignore
     const uri = databaseConnector.getDbConnectionUri(dbConfig);
     expect(uri).toBe(expectedUri);
   });
@@ -76,9 +66,12 @@ describe('DatabaseConnector', () => {
       name: 'authDb',
       options: {
         ssl: 'false',
+        foo: 'bar',
       },
     };
-    const expectedUri = 'mongodb://user@10.10.10.1:27017/authDb?ssl=false';
+    const expectedUri =
+      'mongodb://user@10.10.10.1:27017/authDb?ssl=false&foo=bar';
+    // @ts-ignore
     const uri = databaseConnector.getDbConnectionUri(authConfig);
     expect(uri).toBe(expectedUri);
   });
@@ -93,50 +86,10 @@ describe('DatabaseConnector', () => {
       port: 27017,
       name: 'authDb',
     };
+    // @ts-ignore
     const uri = databaseConnector.getDbConnectionUri(authConfig);
     const expectedUri = 'mongodb://user:pass@10.10.10.1:27017/authDb';
     expect(uri).toBe(expectedUri);
-  });
-
-  it('should return valid database name from URI', () => {
-    const databaseConnector = new DatabaseConnector();
-    interface Test {
-      url: string;
-      expectedDbName: string;
-    }
-
-    const tests: Test[] = [
-      {
-        url: 'mongodb://user@10.10.10.1:27017/dbName',
-        expectedDbName: 'dbName',
-      },
-      {
-        url: 'mongodb://user@10.10.10.1:27017/dbName?retryWrites=true',
-        expectedDbName: 'dbName',
-      },
-      {
-        url:
-          'mongodb://user@10.10.10.1:27017/dbName?retryWrites=true&something=false',
-        expectedDbName: 'dbName',
-      },
-      {
-        url: 'mongodb://user@10.10.10.1:27017/?retryWrites=true',
-        expectedDbName: 'admin',
-      },
-      {
-        url: 'mongodb://user@10.10.10.1:27017',
-        expectedDbName: 'admin',
-      },
-      {
-        url: 'mongodb://10.10.10.1',
-        expectedDbName: 'admin',
-      },
-    ];
-
-    for (const { url, expectedDbName } of tests) {
-      const dbName = databaseConnector.getDbName(url);
-      expect(dbName).toEqual(expectedDbName);
-    }
   });
 
   it('should mask user credentials in database connection URI', () => {
@@ -172,86 +125,33 @@ describe('DatabaseConnector', () => {
     ];
 
     for (const { uri, expectedMaskedUri } of tests) {
+      // @ts-ignore
       const maskedUri = databaseConnector.maskUriCredentials(uri);
       expect(maskedUri).toEqual(expectedMaskedUri);
     }
   });
 
-  it('should convert Database Config Object URI to valid options URI part', () => {
+  it('should fail when connect fails', async () => {
     const databaseConnector = new DatabaseConnector();
 
-    interface Test {
-      options: SeederDatabaseConfigObjectOptions;
-      expectedUriPart: string;
-    }
-
-    const tests: Test[] = [
-      {
-        options: {
-          foo: 'bar',
-        },
-        expectedUriPart: '?foo=bar',
-      },
-      {
-        options: {
-          foo: 'bar',
-          ssl: 'true',
-        },
-        expectedUriPart: '?foo=bar&ssl=true',
-      },
-      {
-        options: {
-          foo: 'bar',
-          ssl: 'false',
-          baz: 'bar',
-        },
-        expectedUriPart: '?foo=bar&ssl=false&baz=bar',
-      },
-      {
-        options: {},
-        expectedUriPart: '',
-      },
-    ];
-
-    for (const { options, expectedUriPart } of tests) {
-      const uriPart = databaseConnector.getOptionsUriPart(options);
-      expect(uriPart).toEqual(expectedUriPart);
-    }
-  });
-
-  it('should retry connecting to DB within given time limit', async () => {
-    const databaseConnector = new DatabaseConnector();
-
-    const result = new Database(jest.genMockFromModule('mongodb'));
-    (result.db as any) = jest.fn().mockReturnValue({});
-    MongoClient.connect = jest
-      .fn()
-      .mockReturnValueOnce(getConnectionRefusedError())
-      .mockReturnValueOnce(getConnectionRefusedError())
-      .mockReturnValue(new Promise((resolve, _) => resolve(result)));
-
-    await databaseConnector.connect(dbConfig);
-    expect(sleep).toHaveBeenCalledTimes(2);
-    expect(result.db).toHaveBeenCalledTimes(1);
-    expect(result).toBeInstanceOf(Database);
-  });
-
-  it('should fail after given connection timeout', async () => {
-    const databaseConnector = new DatabaseConnector();
-
-    MongoClient.connect = jest.fn().mockReturnValue(
+    connectMock.mockReturnValue(
       new Promise((_, reject) => {
         reject(new Error('MongoError'));
       }),
     );
 
     await expect(databaseConnector.connect(dbConfig)).rejects.toThrowError(
-      'Timeout',
+      'MongoError',
     );
-    expect(sleep).toHaveBeenCalledTimes(2);
   });
 
-  it('should allow passing custom Mongo client options', () => {
+  it('should allow passing custom Mongo client options', async () => {
+    connectMock.mockReturnValue(
+      new Promise((resolve) => {
+        resolve();
+      }),
+    );
+
     const opts: MongoClientOptions = {
       acceptableLatencyMS: 3000,
       domainsEnabled: true,
@@ -259,19 +159,11 @@ describe('DatabaseConnector', () => {
     };
 
     const connector = new DatabaseConnector(3000, opts);
-    const connectMock = jest
-      .fn()
-      .mockReturnValue(
-        new Promise((resolve, _) =>
-          resolve(new Database(jest.genMockFromModule('mongodb'))),
-        ),
-      );
 
-    MongoClient.connect = connectMock;
+    await connector.connect(uri);
 
-    connector.connectWithUri('foo.bar', 'name');
-
+    expect(MongoClient).toBeCalledWith(uri, opts);
+    expect(MongoClient).toBeCalledTimes(1);
     expect(connectMock).toBeCalledTimes(1);
-    expect(connectMock).toBeCalledWith('foo.bar', opts);
   });
 });

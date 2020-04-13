@@ -1,7 +1,7 @@
 import {
   DatabaseConnector,
-  Database,
   defaultDatabaseConfigObject,
+  Database,
 } from '../../src/database';
 import {
   removeUnderscoreIdProperty,
@@ -25,7 +25,7 @@ afterEach(async () => {
 });
 
 afterAll(async () => {
-  await databaseConnector.close();
+  await database.closeConnection();
 });
 
 describe('Database', () => {
@@ -48,10 +48,7 @@ describe('Database', () => {
     const collection = 'db-insert-docs';
 
     await database.insertDocumentsIntoCollection(documents, collection);
-    const result = await database.db
-      .collection(collection)
-      .find()
-      .toArray();
+    const result = await database.db.collection(collection).find().toArray();
 
     expect(result).toHaveLength(documents.length);
     expect(result.map(removeUnderscoreIdProperty)).toEqual(documents);

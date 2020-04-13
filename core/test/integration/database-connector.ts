@@ -19,7 +19,7 @@ describe('DatabaseConnector', () => {
     expect(database.db).toBeInstanceOf(Db);
     expect(collections).toBeInstanceOf(Array);
 
-    await expect(databaseConnector.close()).resolves.toBeUndefined();
+    await expect(database.closeConnection()).resolves.toBeUndefined();
   });
 
   it('should connect to database and close connection using URI', async () => {
@@ -34,6 +34,6 @@ describe('DatabaseConnector', () => {
     expect(database.db).toBeInstanceOf(Db);
     expect(collections).toBeInstanceOf(Array);
 
-    await expect(databaseConnector.close()).resolves.toBeUndefined();
+    await expect(database.closeConnection()).resolves.toBeUndefined();
   });
 });
