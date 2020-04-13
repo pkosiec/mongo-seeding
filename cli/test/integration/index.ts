@@ -3,19 +3,34 @@ import { MongoClient } from 'mongodb';
 import * as tsNode from 'ts-node';
 import { DatabaseConnector } from 'mongo-seeding/dist/database';
 
-console.error = jest.fn();
-console.log = jest.fn();
-
 describe('CLI', () => {
   const previousArgv = process.argv;
+  const previousEnv = process.env;
+
+  let consoleErrorSpy: jest.SpyInstance;
+  let consoleLogSpy: jest.SpyInstance;
+  let stdErrSpy: jest.SpyInstance;
+  let exitSpy: jest.SpyInstance;
 
   beforeEach(() => {
     jest.resetModules();
     process.argv = { ...previousArgv };
+    process.env = { ...previousEnv };
+
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+    consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
+    stdErrSpy = jest.spyOn(process.stderr, 'write');
+    exitSpy = jest.spyOn(process, 'exit').mockImplementation();
   });
 
   afterEach(() => {
     process.argv = previousArgv;
+    process.env = previousEnv;
+
+    consoleErrorSpy.mockRestore();
+    consoleLogSpy.mockRestore();
+    stdErrSpy.mockRestore();
+    exitSpy.mockRestore();
   });
 
   it('should import data', async () => {
@@ -23,8 +38,6 @@ describe('CLI', () => {
       ? process.env.DB_URI
       : 'mongodb://127.0.0.1:27017/clidb';
     const databaseName = process.env.DB_NAME ? process.env.DB_NAME : 'clidb';
-
-    const exit = jest.spyOn(process, 'exit').mockImplementation();
 
     process.argv = [
       '',
@@ -38,8 +51,9 @@ describe('CLI', () => {
 
     await cliSeeder.run();
 
+    expect(process.stderr.write).toBeCalled();
     expect(console.error).not.toBeCalled();
-    expect(exit).toBeCalledWith(0);
+    expect(exitSpy).toBeCalledWith(0);
 
     const client = await MongoClient.connect(
       dbConnectionUri,
@@ -93,9 +107,6 @@ describe('CLI', () => {
     const dbConnectionUri = process.env.DB_URI
       ? process.env.DB_URI
       : 'mongodb://127.0.0.1:27017/clidb';
-    const databaseName = process.env.DB_NAME ? process.env.DB_NAME : 'clidb';
-
-    const exit = jest.spyOn(process, 'exit').mockImplementation();
 
     process.argv = [
       '',
@@ -110,34 +121,29 @@ describe('CLI', () => {
 
     await cliSeeder.run();
 
+    expect(process.stderr.write).not.toBeCalled();
     expect(console.error).not.toBeCalled();
-    expect(console.log).not.toBeCalled();
-    expect(exit).toBeCalledWith(0);
+    expect(consoleLogSpy).not.toBeCalled();
+    expect(exitSpy).toBeCalledWith(0);
   });
 
-  it('should show help', async () => {
-    const exit = jest.spyOn(process, 'exit').mockImplementation();
-
+  it('should show help without error', async () => {
     process.argv = ['', '', '--help'];
     await cliSeeder.run();
 
-    expect(console.log).toBeCalledWith(
+    expect(consoleLogSpy).toBeCalledWith(
       expect.stringContaining('Mongo Seeding CLI'),
     );
-    expect(exit).toBeCalledWith(0);
   });
 
   it('should exit without error when no data to import', async () => {
-    const exit = jest.spyOn(process, 'exit').mockImplementation();
-
     process.argv = ['', '', './no-path'];
     await cliSeeder.run();
-    expect(exit).toBeCalledWith(0);
+    expect(exitSpy).toBeCalledWith(0);
   });
 
   it('should allow transpile only mode for TS files', async () => {
     const registerTsNode = jest.spyOn(tsNode, 'register');
-    jest.spyOn(process, 'exit').mockImplementation();
 
     process.argv = ['', '', '--transpile-only', './no-path'];
     await cliSeeder.run();
@@ -146,11 +152,11 @@ describe('CLI', () => {
         transpileOnly: true,
       }),
     );
+
+    registerTsNode.mockRestore();
   });
 
   it('should exit with error on incorrect values', async () => {
-    const exit = jest.spyOn(process, 'exit').mockImplementation();
-
     const testCases = [
       {
         argv: ['', '', '--reconnect-timeout', '-5'],
@@ -167,19 +173,17 @@ describe('CLI', () => {
       expect(console.error).toBeCalledWith(
         expect.stringContaining('InvalidParameterError'),
       );
-      expect(exit).toBeCalledWith(0);
+      expect(exitSpy).toBeCalledWith(0);
     }
   });
 
   it('should exit with error on command line arguments error', async () => {
-    const exit = jest.spyOn(process, 'exit').mockImplementation();
-
     process.argv = ['', '', '--what-is-this-parameter', 'dunno'];
     await cliSeeder.run();
 
     expect(console.error).toBeCalledWith(
-      expect.stringContaining('InvalidParameterError'),
+      expect.stringContaining('Error UNKNOWN_OPTION'),
     );
-    expect(exit).toBeCalledWith(0);
+    expect(exitSpy).toBeCalledWith(0);
   });
 });

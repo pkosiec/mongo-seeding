@@ -1,4 +1,12 @@
 /**
- * Logs app events to stdout.
+ * Constructs new logger, which logs app events to stderr.
  */
-export const log = require('debug')('mongo-seeding');
+export const NewLoggerInstance = () => {
+  const debug = require('debug');
+  return debug('mongo-seeding');
+};
+
+/**
+ * Logs app events to stderr.
+ */
+export type LogFn = (input: string) => void;
