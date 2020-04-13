@@ -17,4 +17,5 @@ if [ "${CI_SECURE_ENV_VARS}" == "false" ]; then
     RUN_COMMAND="npm test"
 fi
 
-docker run --rm --network="host" -e CODECOV_TOKEN=$CODECOV_TOKEN $IMAGE_NAME:$CI_BUILD_NUMBER $RUN_COMMAND
+CI_ENV=`bash <(curl -s https://codecov.io/env)`
+docker run --rm --network="host" $CI_ENV -e CODECOV_TOKEN=$CODECOV_TOKEN $IMAGE_NAME:$CI_BUILD_NUMBER $RUN_COMMAND
