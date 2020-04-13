@@ -1,15 +1,35 @@
-import { Db, CollectionInsertManyOptions } from 'mongodb';
+import { Db, CollectionInsertManyOptions, MongoClient } from 'mongodb';
+import { LogFn } from '../common';
 
 /**
  * Provides functionality for managing documents, collections in database.
  */
 export class Database {
   /**
+   * MongoDB database object
+   */
+  db: Db;
+
+  /**
+   * MongoDB Client.
+   */
+  client?: MongoClient;
+
+  /**
+   * Logger instance
+   */
+  log: LogFn;
+
+  /**
    * Constructs a new `Database` object.
    *
    * @param db MongoDB database object
    */
-  constructor(public db: Db) {}
+  constructor(mongoClient: MongoClient, log?: LogFn) {
+    this.client = mongoClient;
+    this.db = mongoClient.db();
+    this.log = log ? log : () => {};
+  }
 
   /**
    * Inserts documents into a given collection.
@@ -23,7 +43,9 @@ export class Database {
     collectionName: string,
     collectionInsertOptions?: CollectionInsertManyOptions,
   ) {
-    const documentsCopy = documentsToInsert.map(document => ({ ...document }));
+    const documentsCopy = documentsToInsert.map((document) => ({
+      ...document,
+    }));
     return this.db
       .collection(collectionName)
       .insertMany(documentsCopy, collectionInsertOptions);
@@ -44,7 +66,7 @@ export class Database {
   async ifCollectionExist(collectionName: string): Promise<boolean> {
     const collections = await this.db.collections();
     return collections
-      .map(collection => collection.collectionName)
+      .map((collection) => collection.collectionName)
       .includes(collectionName);
   }
 
@@ -59,5 +81,17 @@ export class Database {
     }
 
     return this.db.collection(collectionName).drop();
+  }
+
+  /**
+   * Closes connection with database.
+   */
+  async closeConnection() {
+    this.log('Closing connection...');
+    if (!this.client || !this.client.isConnected()) {
+      return;
+    }
+
+    await this.client.close(true);
   }
 }

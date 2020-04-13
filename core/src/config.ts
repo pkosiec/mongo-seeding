@@ -8,7 +8,7 @@ import { CollectionInsertManyOptions, MongoClientOptions } from 'mongodb';
  */
 export interface SeederConfig {
   database: SeederDatabaseConfig; // database connection URI or configuration object
-  databaseReconnectTimeout: number; // maximum time of waiting for successful MongoDB connection in milliseconds
+  databaseReconnectTimeout: number; // maximum time of waiting for successful MongoDB connection in milliseconds. Ignored when `mongoClientOptions` are passed.
   dropDatabase: boolean; // drops entire database before import
   dropCollections: boolean; // drops collection before importing it
   mongoClientOptions?: MongoClientOptions; // optional MongoDB client options

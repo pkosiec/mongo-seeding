@@ -30,7 +30,7 @@ afterEach(async () => {
 });
 
 afterAll(async () => {
-  await databaseConnector.close();
+  await database.closeConnection();
 });
 
 describe('Mongo Seeding', () => {
@@ -161,6 +161,6 @@ describe('Mongo Seeding', () => {
     const seeder = new Seeder(config);
     const collections = seeder.readCollectionsFromPath(path);
 
-    await expect(seeder.import(collections)).rejects.toThrowError('Timeout');
+    await expect(seeder.import(collections)).rejects.toThrowError('Error');
   });
 });
