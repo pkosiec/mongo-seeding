@@ -89,6 +89,7 @@ export class Seeder {
     const config = mergeSeederConfig(partialConfig, this.config);
     const databaseConnector = new DatabaseConnector(
       config.databaseReconnectTimeout,
+      config.mongoClientOptions,
     );
 
     try {

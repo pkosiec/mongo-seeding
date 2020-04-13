@@ -38,7 +38,7 @@ export class DatabaseConnector {
     ignoreUndefined: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    connectTimeoutMS: 1,
+    connectTimeoutMS: 0,
   };
 
   /**
@@ -73,7 +73,10 @@ export class DatabaseConnector {
     this.clientOptions =
       mongoClientOptions != null
         ? mongoClientOptions
-        : DatabaseConnector.DEFAULT_CLIENT_OPTIONS;
+        : {
+            ...DatabaseConnector.DEFAULT_CLIENT_OPTIONS,
+            connectTimeoutMS: this.reconnectTimeoutMillis,
+          };
   }
 
   /**
