@@ -18,9 +18,9 @@
     "test": "jest -i"
   },
   "dependencies": {
-    "bson": "^4.0.3",
-    "jest": "^25.1.0",
-    "mongodb": "^3.5.2"
+    "bson": "^4.0.4",
+    "jest": "^25.3.0",
+    "mongodb": "^3.5.5"
   },
   "jest": {
     "verbose": false,
