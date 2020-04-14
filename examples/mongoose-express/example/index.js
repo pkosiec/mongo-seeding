@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use(`/api/v1`, api);
 
 mongoose.connect(
-    `mongodb://localhost:localhost:27017/restaurant`,
+    `mongodb://localhost:localhost:27017/mongooseding_mongoose_express`,
     { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
     (err, res) => {
         if (err) {
