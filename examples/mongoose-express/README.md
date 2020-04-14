@@ -198,7 +198,7 @@ api.get("/orders", (req, res) => {
 
 Run the following command to test if the application works correctly:
 ```bash
-node dev
+yarn dev
 ```
 
 To test the API, you can run the following curl:
