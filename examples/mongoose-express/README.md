@@ -3,7 +3,7 @@
 This example shows you how to import data from mongoose model to Mongodb database.
 There are three models defined, `customers`, `menus`, and `orders`.
 
-## Pre requisites
+## Prerequisites
 In order to run this example, it's recommended to install the following tools:
 - [NodeJS with NPM](https://nodejs.org)
 - [Mongoose](https://mongoosejs.com/)
@@ -21,14 +21,12 @@ const CustomerShema = mongoose.Schema({
     lastname: String,
     email: {
         type: String,
-        unique: true,
+        unique: true
     },
     password: String,
 });
 
 module.exports = mongoose.model("Customer", CustomerShema);
-});
-
 ```
 
 **Menu model**
@@ -68,7 +66,7 @@ module.exports = mongoose.model("Order", OrderSchema);
 ## Define proper directory structure
 To learn how to structure import data, see the [Import data definition guide](../../docs/import-data-definition.md). In this example the following directory structure is used:
 
-> **NOTE:** it is important that the end of the folder (collection name) ends in plural.  
+> **NOTE:** One of MongoDB convention says tha collections names should be plural. 
 
 ```js
    .
@@ -82,7 +80,9 @@ To learn how to structure import data, see the [Import data definition guide](..
 ```
 
 ## Define information files
-The collection directory can contain multiple files with different extensions (json, js or ts). In this example consider using json files:
+The collection directory can contain multiple files with different extensions (JSON, JS or TS). In this example JSON files are used.
+
+Create the following files:
 
 **customer.json**
 ```json
@@ -160,43 +160,53 @@ The collection directory can contain multiple files with different extensions (j
 ```
 
 ## Use Mongo Seeding CLI
-To use it in more than one project, you must install it globally with this command:
+To install Mongo Seeding CLI globally, run the following command:
 
 ```bash
 npm install -g mongo-seeding-cli
 ```
 
 You can specify custom settings with command line parameters. The following example imports data from `./mongoose-express/data` directory using MongoDB connection URI mongodb://127.0.0.1:27017/mydb with option to drop database before import:
+
 > **NOTE:** You can use the [following parameters](../../cli/README.md#command-line-parameters) while using `seed` tool
 
 ```bash
 seed -u mongodb://127.0.0.1:27017/dbname --drop-database ./data
 ```
 
-After run the command it does not give us a message but if you look at your database GUI you will notice that you already have your tables populated with the information that we have placed :rocket:
+Once the database seed finishes, the database is populated with collections from `./data` directory.
 
 ## Fetch data from DB with Mongoose
-To bring the defined relation of customers, menus, and orders you must use the [populate](https://mongoosejs.com/docs/populate.html) function of mongoose, the function it can be the following:
+To bring the defined relation of customers, menus, and orders, use the [populate](https://mongoosejs.com/docs/populate.html) function of Mongoose.
 
+Create or [copy](./example/index.js) the following file:
+
+**index.js**
 ```js
 const Order = require("./models/order");
 
-api.get("/get-orders", (req, res) => {
+api.get("/orders", (req, res) => {
     Order.find()
         .populate("order_detail customer")
         .exec(function (err, order) {
             if (err) return handleError(err);
+
             res.status(200).send(order);
         });
-})
+});
+```
+
+Run the following command to test if the application works correctly:
+```bash
+node dev
 ```
 
 To test the API, you can run the following curl:
 ```bash
-curl --location --request GET 'http://localhost:3978/get-orders'
+curl 'http://localhost:3978/orders'
 ```
 
-The response must be:
+The expected response is:
 ```json
 [
     {
@@ -251,5 +261,3 @@ The response must be:
     }
 ]
 ```
-
-To read more examples for the set of Mongo Seeding tools you can read this **[Readme](../README.md#examples)**

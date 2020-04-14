@@ -6,8 +6,8 @@ const MenuSchema = mongoose.Schema({
     category: {
         type: String,
         enum: ["firstCourse", "mainCourse"],
-        default: "mainCourse"
-    }
+        default: "mainCourse",
+    },
 });
 
 module.exports = mongoose.model("Menu", MenuSchema);
