@@ -1,0 +1,16 @@
+[
+    {
+        "_id": { "$oid": "5e8508ea69a10e42d07414be" },
+        "name": "Emma",
+        "lastname": "Watson",
+        "email": "emma@watson.com",
+        "password": "$2a$10$hhn8vSvl6rpv42undbkQ.O5XIdIJkujyqQWqKIxRJgLQYCGlM/6rW"
+    },
+    {
+        "_id": { "$oid": "5e850bd669a10e42d07414c0" },
+        "name": "Pablo",
+        "lastname": "Picasso",
+        "email": "pablo@picasso.com",
+        "password": "$2a$10$hhn8vSvl6rpv42undbkQ.O5XIdIJkujyqQWqKIxRJgLQYCGlM/6rW"
+    }
+]
