@@ -4,15 +4,20 @@ This example shows you how to import data from mongoose model to Mongodb databas
 There are three models defined, `customers`, `menus`, and `orders`.
 
 ## Prerequisites
-In order to run this example, it's recommended to install the following tools:
+
+In order to run this example, install the following tools:
 - [NodeJS with NPM](https://nodejs.org)
 - [Mongoose](https://mongoosejs.com/)
 - [Express](https://expressjs.com/)
+- [MongoDB](https://mongodb.com) database
+- [Mongo Seeding CLI](../../cli/README.md)
 
 ## Prepare data model
-Consider the following mongoose models:
+
+Create the following Mongoose models:
 
 **Customer model**
+
 ```js
 const mongoose = require("mongoose");
 
@@ -30,6 +35,7 @@ module.exports = mongoose.model("Customer", CustomerShema);
 ```
 
 **Menu model**
+
 ```js
 const mongoose = require("mongoose");
 
@@ -47,6 +53,7 @@ module.exports = mongoose.model("Menu", MenuSchema);
 ```
 
 **Order model**
+
 ```js
 const mongoose = require("mongoose");
 const Menu = require("./menu");
@@ -64,9 +71,10 @@ module.exports = mongoose.model("Order", OrderSchema);
 ```
 
 ## Define proper directory structure
+
 To learn how to structure import data, see the [Import data definition guide](../../docs/import-data-definition.md). In this example the following directory structure is used:
 
-> **NOTE:** One of MongoDB convention says tha collections names should be plural. 
+> **NOTE:** A good practice is to use plural names for MongoDB collections.
 
 ```js
    .
@@ -79,12 +87,14 @@ To learn how to structure import data, see the [Import data definition guide](..
    │        └── order.json
 ```
 
-## Define information files
+## Define import data
+
 The collection directory can contain multiple files with different extensions (JSON, JS or TS). In this example JSON files are used.
 
 Create the following files:
 
 **customer.json**
+
 ```json
 [
     {
@@ -105,6 +115,7 @@ Create the following files:
 ```
 
 **menu.json**
+
 ```json
 [
     {
@@ -159,31 +170,36 @@ Create the following files:
 ]
 ```
 
-## Use Mongo Seeding CLI
-To install Mongo Seeding CLI globally, run the following command:
+## Use Mongo Seeding
+
+> **NOTE:** You can import data using any Mongo Seeding tool. This example shows Mongo Seeding CLI usage. 
+
+The following example imports data from `./mongoose-express/data` directory using MongoDB connection URI `mongodb://127.0.0.1:27017/mydb` with option to drop database before import:
 
 ```bash
-npm install -g mongo-seeding-cli
+seed -u mongodb://127.0.0.1:27017/mydb --drop-database ./data
 ```
 
-You can specify custom settings with command line parameters. The following example imports data from `./mongoose-express/data` directory using MongoDB connection URI mongodb://127.0.0.1:27017/mydb with option to drop database before import:
-
-> **NOTE:** You can use the [following parameters](../../cli/README.md#command-line-parameters) while using `seed` tool
-
-```bash
-seed -u mongodb://127.0.0.1:27017/dbname --drop-database ./data
-```
-
+To specify custom parameters, see the [Command Line Parameters](../../cli/README.md#command-line-parameters) section in Mongo Seeding CLI Readme.
 Once the database seed finishes, the database is populated with collections from `./data` directory.
 
-## Fetch data from DB with Mongoose
-To bring the defined relation of customers, menus, and orders, use the [populate](https://mongoosejs.com/docs/populate.html) function of Mongoose.
+## Create Express.js application
 
-Create or [copy](./example/index.js) the following file:
+To create application which exposes HTTP API, use Express.js. To bring the defined relation of customers, menus, and orders, use the [populate](https://mongoosejs.com/docs/populate.html) function of Mongoose.
+
+Create the following file:
 
 **index.js**
+
 ```js
+const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const port = process.env.PORT || 3000;
 const Order = require("./models/order");
+const app = express();
+
+const api = express.Router();
 
 api.get("/orders", (req, res) => {
     Order.find()
@@ -194,19 +210,43 @@ api.get("/orders", (req, res) => {
             res.status(200).send(order);
         });
 });
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(`/`, api);
+
+mongoose.connect(
+    `mongodb://localhost:27017/mydb`,
+    { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
+    (err, res) => {
+        if (err) {
+            throw err;
+        } else {
+            app.listen(port, () => {
+                console.log(`Server is running on http://localhost:${port}`);
+            });
+        }
+    }
+);
 ```
 
-Run the following command to test if the application works correctly:
+## Run application
+
+> **NOTE:** Before running the application, ensure the MongoDB instance is running.
+
+To run the application, run the following command:
+
 ```bash
-yarn dev
+npm start
 ```
 
-To test the API, you can run the following curl:
+To test the API, run the following command:
+
 ```bash
-curl 'http://localhost:3978/orders'
+curl 'http://localhost:3000/orders'
 ```
 
-The expected response is:
+The response is:
 ```json
 [
     {
