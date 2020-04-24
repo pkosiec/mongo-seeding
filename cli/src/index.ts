@@ -81,7 +81,7 @@ class CliSeeder {
     }
 
     return {
-      extensions: ['ts', 'js', 'json'],
+      extensions: ['ts', 'js', 'cjs', 'json'],
       transformers,
     };
   };

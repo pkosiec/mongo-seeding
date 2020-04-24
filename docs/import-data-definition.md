@@ -13,7 +13,7 @@ This guide describes how to define the data for seeding your MongoDB database.
    - Collection is created in database if it contains at least one MongoDB Document definition.
    - If you mix two approaches: unordered and ordered import, collections with unspecified import order number are always imported last.
 
-1. Create JSON, JavaScript or TypeScript files in every directory that represents MongoDB collection. The collection directory can contain multiple files with different extensions (`json`, `js` or `ts`). In these files export single object or array of objects. Every object represents one MongoDB document.
+1. Create JSON, JavaScript or TypeScript files in every directory that represents MongoDB collection. The collection directory can contain multiple files with different extensions (`json`, `js`, 'cjs', or `ts`). In these files export single object or array of objects. Every object represents one MongoDB document.
 
    - In JavaScript files (`js` extension), use `module.exports = objectOrArray`.
 
