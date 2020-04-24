@@ -167,7 +167,7 @@ You can specify an optional partial options object for this method, which will b
 
 ```javascript
 const collectionReadingOptions = {
-  extensions: ['ts', 'js', 'json'],
+  extensions: ['ts', 'js', 'cjs', 'json'],
   transformers: [
     Seeder.Transformers.replaceDocumentIdWithUnderscoreId,
   ]
@@ -196,7 +196,7 @@ The default options object is as follows:
 
 ```javascript
 const defaultCollectionReadingConfig: SeederCollectionReadingConfig = {
-  extensions: ['json', 'js'],
+  extensions: ['json', 'js', 'cjs'],
   transformers: [],
 };
 ```

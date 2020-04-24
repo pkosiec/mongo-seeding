@@ -71,7 +71,7 @@ describe('SeederCollectionReadingOptions', () => {
       extensions: [],
     };
     const expectedOptions: SeederCollectionReadingOptions = {
-      extensions: ['json', 'js'],
+      extensions: ['json', 'js', 'cjs'],
       transformers: [],
     };
 

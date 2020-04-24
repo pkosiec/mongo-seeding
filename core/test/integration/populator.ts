@@ -29,15 +29,23 @@ describe('CollectionPopulator', () => {
           number: 4,
           name: 'four',
         },
-      ],
-      object: [
         {
           number: 5,
           name: 'five',
-        },
+        }
+      ],
+      object: [
         {
           number: 6,
           name: 'six',
+        },
+        {
+          number: 7,
+          name: 'seven',
+        },
+        {
+          number: 8,
+          name: 'eight',
         },
       ],
     };
