@@ -143,7 +143,7 @@ export class Seeder {
  * @param err Original error
  */
 const wrapError = (err: Error) => {
-  const error = new Error(`${err.name}: ${err.message}`);
-  error.name = 'MongoSeedingError';
-  return error;
+  err.name = 'MongoSeedingError';
+  err.message = `${err.name}: ${err.message}`;
+  return err;
 };
