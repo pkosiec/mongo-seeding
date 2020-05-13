@@ -11,9 +11,9 @@ The ultimate solution for populating your MongoDB database. Define the data in J
 - [Installation](#installation)
 - [Usage](#usage)
 - [API description](#api-description)
-    - [`constructor(partialConfig?)`](#constructorpartialconfig)
-    - [`readCollectionsFromPath(path, partialOptions?)`](#readcollectionsfrompathpath-partialoptions)
-    - [`import(collections, partialConfig?)`](#importcollections-partialconfig)
+  - [`constructor(partialConfig?)`](#constructorpartialconfig)
+  - [`readCollectionsFromPath(path, partialOptions?)`](#readcollectionsfrompathpath-partialoptions)
+  - [`import(collections, partialConfig?)`](#importcollections-partialconfig)
 - [Debug output](#debug-output)
 
 ## Installation
@@ -64,7 +64,9 @@ npm install mongo-seeding --save
 
     ```javascript
     const path = require('path');
-    const collections = seeder.readCollectionsFromPath(path.resolve("./your/path"));
+    const collections = seeder.readCollectionsFromPath(
+      path.resolve('./your/path'),
+    );
     ```
 
 1.  Seed your database:
@@ -88,12 +90,12 @@ npm install mongo-seeding --save
         .then(() => {
           // Do whatever you want after successful import
         })
-        .catch(err => {
+        .catch((err) => {
           // Handle errors
         });
       ```
 
-See an [**import data example**](https://github.com/pkosiec/mongo-seeding/blob/master/examples/import-data) for a sample Node.js application utilizing the library. 
+See an [**import data example**](https://github.com/pkosiec/mongo-seeding/blob/master/examples/import-data) for a sample Node.js application utilizing the library.
 
 ## API description
 
@@ -130,7 +132,7 @@ export interface SeederDatabaseConfigObject {
 }
 
 export type SeederDatabaseConfigObjectOptions = {
-  [key:string]: string; 
+  [key: string]: string,
 };
 ```
 
@@ -148,7 +150,7 @@ const defaultConfig = {
     port: 27017,
     name: 'database',
     username: undefined,
-    password: undefined, 
+    password: undefined,
   },
   databaseReconnectTimeout: 10000,
   dropDatabase: false,
@@ -170,12 +172,13 @@ const collectionReadingOptions = {
   extensions: ['ts', 'js', 'cjs', 'json'],
   transformers: [
     Seeder.Transformers.replaceDocumentIdWithUnderscoreId,
-  ]
-}
+    Seeder.Transformers.setTimestamps,
+  ],
+};
 
 const collections = seeder.readCollectionsFromPath(
   path.resolve('./your/path'),
-  collectionReadingOptions
+  collectionReadingOptions,
 );
 ```
 
@@ -188,7 +191,11 @@ interface SeederCollection {
 }
 ```
 
-There is one built-in transform function: **`Seeder.Transformers.replaceDocumentIdWithUnderscoreId`**, which replaces `id` field with `_id` property for every document in collection.
+There is two built-in transform functions:
+
+- **`Seeder.Transformers.replaceDocumentIdWithUnderscoreId`**, which replaces `id` field with `_id` property for every document in collection.
+
+- **`Seeder.Transformers.setTimestamps`**, which set timestamps for every document in collection.
 
 **Default options**
 

@@ -37,8 +37,33 @@ const replaceDocumentIdWithUnderscoreId = (
 };
 
 /**
+ * Set timestamps for every document in given collection.
+ *
+ * @param collection Collection details
+ */
+const setTimestamps = (collection: SeederCollection): SeederCollection => {
+  const documents = collection.documents.map(
+    (document: { id?: string | ObjectId }) => {
+      const documentToInsert = {
+        ...document,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      return documentToInsert;
+    },
+  );
+
+  return {
+    ...collection,
+    documents,
+  };
+};
+
+/**
  * Contains default transformer functions.
  */
 export const DefaultTransformers = {
   replaceDocumentIdWithUnderscoreId,
+  setTimestamps,
 };

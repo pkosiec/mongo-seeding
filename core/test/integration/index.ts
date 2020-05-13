@@ -69,7 +69,10 @@ describe('Mongo Seeding', () => {
 
     const path = `${IMPORT_DATA_DIR}/index-import`;
     const collections = seeder.readCollectionsFromPath(path, {
-      transformers: [Seeder.Transformers.replaceDocumentIdWithUnderscoreId],
+      transformers: [
+        Seeder.Transformers.replaceDocumentIdWithUnderscoreId,
+        Seeder.Transformers.setTimestamps,
+      ],
     });
 
     await expect(seeder.import(collections)).resolves.toBeUndefined();

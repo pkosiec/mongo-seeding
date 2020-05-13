@@ -57,4 +57,45 @@ describe('CollectionTransformer', () => {
 
     expect(actualData).toEqual(expectedData);
   });
+
+  it('should set document timestamps', () => {
+    const collectionTransformer = new CollectionTransformer();
+    const collections: SeederCollection[] = [
+      {
+        name: 'Test',
+        documents: [
+          { name: 'Test 1', value: 1 },
+          { name: 'Test 2', value: 2 },
+        ],
+      },
+    ];
+
+    const now = new Date();
+
+    const expectedData = [
+      {
+        name: 'Test',
+        documents: [
+          {
+            name: 'Test 1',
+            value: 1,
+            createdAt: now,
+            updatedAt: now,
+          },
+          {
+            name: 'Test 2',
+            value: 2,
+            createdAt: now,
+            updatedAt: now,
+          },
+        ],
+      },
+    ];
+
+    const actualData = collectionTransformer.transform(collections, [
+      DefaultTransformers.setTimestamps,
+    ]);
+
+    expect(actualData).toEqual(expectedData);
+  });
 });
