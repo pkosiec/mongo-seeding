@@ -16,6 +16,7 @@ export interface CommandLineArguments {
   'drop-database'?: boolean;
   'drop-collections'?: boolean;
   'replace-id'?: boolean;
+  'set-timestamps'?: boolean;
   'db-protocol'?: string;
   'db-host'?: string;
   'db-port'?: number;

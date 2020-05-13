@@ -87,7 +87,7 @@ To see the full description of the JS library usage, read the **[Readme](../../c
 Make sure that you have the [Mongo Seeding CLI](../../cli) installed. Then, run the following command from this directory (folder, which contains this Readme file):
 
 ```bash
-seed --drop-database --replace-id --db-name testing ./example/data
+seed --drop-database --replace-id --set-timestamps --db-name testing ./example/data
 ```
 
 To see the full description of the CLI usage, read the **[Readme](../../cli/README.md)** file of the Mongo Seeding CLI.
@@ -97,7 +97,7 @@ To see the full description of the CLI usage, read the **[Readme](../../cli/READ
 Execute the following command:
 
 ```bash
-docker run --rm --network="host" -e DB_NAME=testing -e REPLACE_ID=true -e DROP_DATABASE=true -v /absolute/path/to/examples/import-data/example/:/absolute/path/to/examples/import-data/example/ -w /absolute/path/to/examples/import-data/example/data pkosiec/mongo-seeding
+docker run --rm --network="host" -e DB_NAME=testing -e REPLACE_ID=true SET_TIMESTAMPS=true -e DROP_DATABASE=true -v /absolute/path/to/examples/import-data/example/:/absolute/path/to/examples/import-data/example/ -w /absolute/path/to/examples/import-data/example/data pkosiec/mongo-seeding
 ```
 
 Replace `/absolute/path/to/` with your absolute path to this cloned repository.

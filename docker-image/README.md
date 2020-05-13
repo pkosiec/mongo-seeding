@@ -71,6 +71,7 @@ You can prepare a customized Docker image for data import. It allows you to prep
     ENV DB_PORT 27017
     ENV DROP_DATABASE true
     ENV REPLACE_ID true
+    ENV SET_TIMESTAMPS true
 
     #
     # Set default workspace to not specify it every time the image is ran
