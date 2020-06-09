@@ -14,5 +14,4 @@ const mapToEntities = names => {
 module.exports = {
   mapToEntities,
   getObjectId,
-  getObjectIds,
 };
