@@ -54,19 +54,19 @@
     "bson": "^4.0.4",
     "debug": "^4.1.1",
     "extend": "^3.0.0",
-    "mongodb": "3.5.5"
+    "mongodb": "3.6.0"
   },
   "devDependencies": {
     "@types/extend": "^3.0.1",
-    "@types/fs-extra": "^8.1.0",
-    "@types/jest": "^25.2.1",
-    "@types/mongodb": "^3.5.5",
+    "@types/fs-extra": "^9.0.1",
+    "@types/jest": "^26.0.8",
+    "@types/mongodb": "^3.5.25",
     "babel-core": "^6.26.0",
-    "codecov": "^3.6.5",
-    "fs-extra": "^9.0.0",
-    "jest": "^25.3.0",
-    "ts-jest": "^25.3.1",
-    "typescript": "^3.8.3"
+    "codecov": "^3.7.2",
+    "fs-extra": "^9.0.1",
+    "jest": "^26.2.2",
+    "ts-jest": "^26.1.4",
+    "typescript": "^3.9.7"
   },
   "jest": {
     "verbose": false,
