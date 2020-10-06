@@ -85,6 +85,7 @@ You can use the following environmental variables while using `seed` tool:
 | DROP_DATABASE | `false` | Drops entire database before data import |
 | DROP_COLLECTIONS | `false` | Drops every collection which is being imported |
 | REPLACE_ID | `false` | Replaces `id` property with `_id` for every document during import; useful for ORMs | 
+| SET_TIMESTAMPS | `false` | Set timestamps for every document during data import | 
 | RECONNECT_TIMEOUT | `10000` | Maximum time in milliseconds of waiting for successful MongoDB connection |
 | TRANSPILE_ONLY | `false` | Disables type checking on TypeScript files import. This option vastly improves performance of TypeScript data import |
 | `SILENT` | `false` | Disables printing logging of Mongo Seeding status to standard output |
