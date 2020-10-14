@@ -10,6 +10,7 @@ DIRECTORIES=(
     "examples/import-data/example"
     "examples/import-data-ts/example"
     "examples/custom-docker-image/sample-data"
+    "examples/mongoose-express/example"
 )
 
 echo "Updating dependencies..."

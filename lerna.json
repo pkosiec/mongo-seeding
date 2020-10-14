@@ -1,6 +1,12 @@
 {
   "version": "3.5.0-alpha.0",
-  "packages": ["cli", "core", "docker-image/test/tester"],
+  "packages": [
+    "cli",
+    "core",
+    "docker-image/test/tester",
+    "examples/custom-docker-image/sample-data",
+    "examples/import-data/example",
+    "examples/import-data-ts/example"],
   "command": {
     "publish": {
       "message": "Bump version to %s"

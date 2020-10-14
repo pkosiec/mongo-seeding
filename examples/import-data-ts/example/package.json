@@ -14,7 +14,7 @@
     "url": "https://github.com/pkosiec/mongo-seeding"
   },
   "dependencies": {
-    "mongo-seeding": "^3.4.1",
+    "mongo-seeding": "3.5.0-alpha.0",
     "mongodb": "^3.6.2",
     "typeorm": "^0.2.28"
   },
