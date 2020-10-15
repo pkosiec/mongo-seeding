@@ -84,7 +84,8 @@ class CliSeeder {
       options['set-timestamps'] || process.env.SET_TIMESTAMPS === 'true';
 
     if (setTimestamps) {
-      transformers.push(Seeder.Transformers.setTimestamps);
+      transformers.push(Seeder.Transformers.setCreatedAtTimestamp);
+      transformers.push(Seeder.Transformers.setUpdatedAtTimestamp);
     }
 
     return {

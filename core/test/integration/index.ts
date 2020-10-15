@@ -71,7 +71,8 @@ describe('Mongo Seeding', () => {
     const collections = seeder.readCollectionsFromPath(path, {
       transformers: [
         Seeder.Transformers.replaceDocumentIdWithUnderscoreId,
-        Seeder.Transformers.setTimestamps,
+        Seeder.Transformers.setCreatedAtTimestamp,
+        Seeder.Transformers.setUpdatedAtTimestamp,
       ],
     });
 
@@ -91,6 +92,11 @@ describe('Mongo Seeding', () => {
           expect.objectContaining(expectedDocument),
         );
       });
+
+      for(const document of collectionDocuments){
+        expect(document).toHaveProperty('createdAt');
+        expect(document).toHaveProperty('updatedAt');
+      }
     }
   });
 

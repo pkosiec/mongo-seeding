@@ -87,7 +87,7 @@ export const cliOptions: CommandLineOption[] = [
   },
   {
     name: 'set-timestamps',
-    description: 'Set timestamps for every document before import',
+    description: 'Sets `createdAt` and `updatedAt` timestamps for every document before import',
     type: Boolean,
   },
   {

@@ -18,7 +18,7 @@ TESTER_IMAGE_NAME="tester:latest"
 DB_NAME=dockertestdb
 
 # Import data
-docker run --rm -it --network="host" -e DB_NAME=${DB_NAME} -e REPLACE_ID=true SET_TIMESTAMPS=true -v ${DATA_IMPORT_PATH}:${DATA_IMPORT_PATH} -w ${DATA_IMPORT_PATH} $DOCKER_IMAGE_REPOSITORY:$CI_BUILD_NUMBER
+docker run --rm -it --network="host" -e DB_NAME=${DB_NAME} -e REPLACE_ID=true -e SET_TIMESTAMPS=true -v ${DATA_IMPORT_PATH}:${DATA_IMPORT_PATH} -w ${DATA_IMPORT_PATH} $DOCKER_IMAGE_REPOSITORY:$CI_BUILD_NUMBER
 
 # Build & run tester
 cd ${ROOT_PATH}/docker-image/test/tester
