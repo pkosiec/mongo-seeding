@@ -43,7 +43,7 @@ const replaceDocumentIdWithUnderscoreId = (
  */
 const setCreatedAtTimestamp = (collection: SeederCollection): SeederCollection => {
   const documents = collection.documents.map(
-    (document: { id?: string | ObjectId }) => {
+    (document: { createdAt?: Date }) => {
       const documentToInsert = {
         ...document,
         createdAt: new Date()
@@ -66,7 +66,7 @@ const setCreatedAtTimestamp = (collection: SeederCollection): SeederCollection =
  */
 const setUpdatedAtTimestamp = (collection: SeederCollection): SeederCollection => {
   const documents = collection.documents.map(
-    (document: { id?: string | ObjectId }) => {
+    (document: { updatedAt?: Date }) => {
       const documentToInsert = {
         ...document,
         updatedAt: new Date()
