@@ -35,8 +35,7 @@ afterAll(async () => {
 
 describe('Mongo Seeding', () => {
   it('should import documents into collections', async () => {
-
-    const date = new Date();
+    const dateBeforeImport = new Date();
 
     const expectedDatabaseState: ExpectedDatabaseState = {
       'import-one': [
@@ -44,14 +43,10 @@ describe('Mongo Seeding', () => {
           _id: 'testing',
           number: 1,
           name: 'one',
-          createdAt: date,
-          updatedAt: date,
         },
         {
           number: 2,
           name: 'two',
-          createdAt: date,
-          updatedAt: date,
         },
       ],
       'import-two': [
@@ -59,19 +54,13 @@ describe('Mongo Seeding', () => {
           _id: 'test',
           number: 3,
           name: 'three',
-          createdAt: date,
-          updatedAt: date,
         },
         {
           number: 4,
           name: 'four',
-          createdAt: date,
-          updatedAt: date,
         },
       ],
     };
-
-    const dateMock = jest.spyOn(global, 'Date').mockImplementation(() => date as any);
 
     const config: DeepPartial<SeederConfig> = {
       database: {
@@ -106,13 +95,17 @@ describe('Mongo Seeding', () => {
         );
       });
 
-      for(const document of collectionDocuments){
-        expect(document).toHaveProperty('createdAt');
-        expect(document).toHaveProperty('updatedAt');
+      for (const document of collectionDocuments) {
+        expect(document.createdAt).toBeDefined();
+        expect((document.createdAt as Date).getTime()).toBeGreaterThanOrEqual(
+          dateBeforeImport.getTime(),
+        );
+        expect(document.updatedAt).toBeDefined();
+        expect((document.updatedAt as Date).getTime()).toBeGreaterThanOrEqual(
+          dateBeforeImport.getTime(),
+        );
       }
     }
-
-    dateMock.mockRestore();
   });
 
   it('should drop database before importing data', async () => {

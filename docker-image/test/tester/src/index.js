@@ -21,29 +21,30 @@ afterAll(async () => {
 
 describe('Mongo Seeding Docker Image', () => {
   it('should import objects', async () => {
-    const collection = await db
-      .collection('cliobjects')
-      .find()
-      .toArray();
+    const collection = await db.collection('cliobjects').find().toArray();
 
     expect(collection).toHaveLength(4);
 
-    expect(collection).toContainEqual({
-      _id: 'onetest',
-      number: 1,
-      name: 'one',
-    });
+    expect(collection).toContainEqual(
+      expect.objectContaining({
+        _id: 'onetest',
+        number: 1,
+        name: 'one',
+      }),
+    );
     expect(collection).toContainEqual(
       expect.objectContaining({
         number: 2,
         name: 'two',
       }),
     );
-    expect(collection).toContainEqual({
-      _id: 'threetest',
-      number: 3,
-      name: 'three',
-    });
+    expect(collection).toContainEqual(
+      expect.objectContaining({
+        _id: 'threetest',
+        number: 3,
+        name: 'three',
+      }),
+    );
     expect(collection).toContainEqual(
       expect.objectContaining({
         number: 4,
@@ -51,46 +52,49 @@ describe('Mongo Seeding Docker Image', () => {
       }),
     );
 
-    const ejsonElement = collection.find(obj => obj.number === 4);
+    const ejsonElement = collection.find((obj) => obj.number === 4);
     const expectedObjectId = new ObjectId('57e193d7a9cc81b4027498b5');
     expect(expectedObjectId.equals(ejsonElement._id));
   });
 
   it('should import arrays', async () => {
-    const collection = await db
-      .collection('cliarrays')
-      .find()
-      .toArray();
+    const collection = await db.collection('cliarrays').find().toArray();
 
     expect(collection).toHaveLength(6);
 
-    expect(collection).toContainEqual({
-      _id: 'onetest',
-      number: 1,
-      name: 'one',
-    });
+    expect(collection).toContainEqual(
+      expect.objectContaining({
+        _id: 'onetest',
+        number: 1,
+        name: 'one',
+      }),
+    );
     expect(collection).toContainEqual(
       expect.objectContaining({
         number: 2,
         name: 'two',
       }),
     );
-    expect(collection).toContainEqual({
-      _id: 'threetest',
-      number: 3,
-      name: 'three',
-    });
+    expect(collection).toContainEqual(
+      expect.objectContaining({
+        _id: 'threetest',
+        number: 3,
+        name: 'three',
+      }),
+    );
     expect(collection).toContainEqual(
       expect.objectContaining({
         number: 4,
         name: 'four',
       }),
     );
-    expect(collection).toContainEqual({
-      _id: 'fivetest',
-      number: 5,
-      name: 'five',
-    });
+    expect(collection).toContainEqual(
+      expect.objectContaining({
+        _id: 'fivetest',
+        number: 5,
+        name: 'five',
+      }),
+    );
     expect(collection).toContainEqual(
       expect.objectContaining({
         number: 6,
