@@ -80,6 +80,14 @@ class CliSeeder {
       transformers.push(Seeder.Transformers.replaceDocumentIdWithUnderscoreId);
     }
 
+    const setTimestamps =
+      options['set-timestamps'] || process.env.SET_TIMESTAMPS === 'true';
+
+    if (setTimestamps) {
+      transformers.push(Seeder.Transformers.setCreatedAtTimestamp);
+      transformers.push(Seeder.Transformers.setUpdatedAtTimestamp);
+    }
+
     return {
       extensions: ['ts', 'js', 'cjs', 'json'],
       transformers,

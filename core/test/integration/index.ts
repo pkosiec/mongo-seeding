@@ -35,6 +35,8 @@ afterAll(async () => {
 
 describe('Mongo Seeding', () => {
   it('should import documents into collections', async () => {
+    const dateBeforeImport = new Date();
+
     const expectedDatabaseState: ExpectedDatabaseState = {
       'import-one': [
         {
@@ -69,7 +71,11 @@ describe('Mongo Seeding', () => {
 
     const path = `${IMPORT_DATA_DIR}/index-import`;
     const collections = seeder.readCollectionsFromPath(path, {
-      transformers: [Seeder.Transformers.replaceDocumentIdWithUnderscoreId],
+      transformers: [
+        Seeder.Transformers.replaceDocumentIdWithUnderscoreId,
+        Seeder.Transformers.setCreatedAtTimestamp,
+        Seeder.Transformers.setUpdatedAtTimestamp,
+      ],
     });
 
     await expect(seeder.import(collections)).resolves.toBeUndefined();
@@ -88,6 +94,17 @@ describe('Mongo Seeding', () => {
           expect.objectContaining(expectedDocument),
         );
       });
+
+      for (const document of collectionDocuments) {
+        expect(document.createdAt).toBeDefined();
+        expect((document.createdAt as Date).getTime()).toBeGreaterThanOrEqual(
+          dateBeforeImport.getTime(),
+        );
+        expect(document.updatedAt).toBeDefined();
+        expect((document.updatedAt as Date).getTime()).toBeGreaterThanOrEqual(
+          dateBeforeImport.getTime(),
+        );
+      }
     }
   });
 

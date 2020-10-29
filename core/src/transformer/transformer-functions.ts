@@ -37,8 +37,56 @@ const replaceDocumentIdWithUnderscoreId = (
 };
 
 /**
+ * Set createdAt timestamp for every document in given collection.
+ *
+ * @param collection Collection details
+ */
+const setCreatedAtTimestamp = (collection: SeederCollection): SeederCollection => {
+  const documents = collection.documents.map(
+    (document: { createdAt?: Date }) => {
+      const documentToInsert = {
+        ...document,
+        createdAt: new Date()
+      };
+
+      return documentToInsert;
+    },
+  );
+
+  return {
+    ...collection,
+    documents,
+  };
+};
+
+/**
+ * Set updatedAt timestamp for every document in given collection.
+ *
+ * @param collection Collection details
+ */
+const setUpdatedAtTimestamp = (collection: SeederCollection): SeederCollection => {
+  const documents = collection.documents.map(
+    (document: { updatedAt?: Date }) => {
+      const documentToInsert = {
+        ...document,
+        updatedAt: new Date()
+      };
+
+      return documentToInsert;
+    },
+  );
+
+  return {
+    ...collection,
+    documents,
+  };
+};
+
+/**
  * Contains default transformer functions.
  */
 export const DefaultTransformers = {
   replaceDocumentIdWithUnderscoreId,
+  setCreatedAtTimestamp,
+  setUpdatedAtTimestamp
 };

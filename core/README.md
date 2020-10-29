@@ -188,7 +188,11 @@ interface SeederCollection {
 }
 ```
 
-There is one built-in transform function: **`Seeder.Transformers.replaceDocumentIdWithUnderscoreId`**, which replaces `id` field with `_id` property for every document in collection.
+There is two built-in transform functions:
+
+- **`Seeder.Transformers.replaceDocumentIdWithUnderscoreId`**, which replaces `id` field with `_id` property for every document in collection.
+
+- **`Seeder.Transformers.setTimestamps`**, which sets `createdAt` and `updatedAt` timestamps for every document in collection.
 
 **Default options**
 
