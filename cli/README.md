@@ -63,7 +63,7 @@ You can use the following parameters while using `seed` tool:
 | `--drop-database` | `false` | Drops entire database before data import |
 | `--drop-collections` | `false` | Drops every collection which is being imported |
 | `--replace-id` | `false` | Replaces `id` property with `_id` for every document during data import |
-| `--set-timesamps` | `false` | Sets `createdAt` and `updatedAt` timestamps for every document during data import |
+| `--set-timestamps` | `false` | Sets `createdAt` and `updatedAt` timestamps for every document during data import |
 | `--reconnect-timeout` | `10000` | Maximum time in milliseconds of waiting for successful MongoDB connection |
 | `--transpile-only` | `false` | Disables type checking on TypeScript files import. This option vastly improves performance of TypeScript data import |
 | `--silent` or `-s` | `false` | Disables printing logging of Mongo Seeding status to standard output |
