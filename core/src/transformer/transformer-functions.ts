@@ -83,10 +83,35 @@ const setUpdatedAtTimestamp = (collection: SeederCollection): SeederCollection =
 };
 
 /**
+ * Set __v key for every document in given collection.
+ *
+ * @param collection Collection details
+ */
+const setDocumentVersionKey = (collection: SeederCollection): SeederCollection => {
+  const documents = collection.documents.map(
+    (document: { updatedAt?: Date }) => {
+      const documentToInsert = {
+        ...document,
+        __v: 0
+      };
+
+      return documentToInsert;
+    },
+  );
+
+  return {
+    ...collection,
+    documents,
+  };
+};
+
+
+/**
  * Contains default transformer functions.
  */
 export const DefaultTransformers = {
   replaceDocumentIdWithUnderscoreId,
   setCreatedAtTimestamp,
-  setUpdatedAtTimestamp
+  setUpdatedAtTimestamp,
+  setDocumentVersionKey
 };
