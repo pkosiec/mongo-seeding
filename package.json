@@ -15,9 +15,10 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "changelog": "lerna-changelog",
-    "publish": "lerna publish --pre-dist-tag next",
+    "build-all": "lerna run build",
+    "publish": "bash ./scripts/publish-npm-and-docker.sh",
     "clean": "lerna clean",
-    "update-deps": "bash ./.ci/update-packages.sh"
+    "update-deps": "bash ./scripts/update-dependencies.sh"
   },
   "husky": {
     "hooks": {

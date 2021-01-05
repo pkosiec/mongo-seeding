@@ -55,10 +55,14 @@ describe('CLI', () => {
     expect(console.error).not.toBeCalled();
     expect(exitSpy).toBeCalledWith(0);
 
-    const client = await MongoClient.connect(
-      dbConnectionUri,
-      DatabaseConnector.DEFAULT_CLIENT_OPTIONS,
-    );
+    const client = new MongoClient(dbConnectionUri, {
+      ignoreUndefined: true,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      connectTimeoutMS: 10000,
+    });
+    await client.connect();
+
     const db = client.db(databaseName);
 
     const testCases = [

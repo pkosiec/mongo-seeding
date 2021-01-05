@@ -61,7 +61,6 @@
     "test:unit": "jest unit",
     "test:integration": "jest integration",
     "test:coverage": "jest --coverage",
-    "test:upload-coverage": "codecov -C -F cli",
     "test:watch": "jest --watch --coverage"
   },
   "dependencies": {
@@ -78,7 +77,6 @@
     "@types/jest": "^26.0.14",
     "@types/mongodb": "^3.5.27",
     "@types/node": "^14.11.8",
-    "codecov": "^3.8.0",
     "jest": "^26.5.3",
     "mongodb": "3.6.2",
     "ts-jest": "^26.4.1"

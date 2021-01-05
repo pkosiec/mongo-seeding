@@ -7,11 +7,15 @@ beforeAll(async () => {
     ? process.env.DB_URI
     : 'mongodb://127.0.0.1:27017/database';
   const databaseName = process.env.DB_NAME ? process.env.DB_NAME : 'database';
-  client = await MongoClient.connect(dbConnectionUri, {
+
+  console.log(`Connecting to database using URI '${dbConnectionUri}'...`);
+  client = new MongoClient(dbConnectionUri, {
     ignoreUndefined: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
+  await client.connect();
+  console.log(`Using database '${databaseName}'...`);
   db = client.db(databaseName);
 });
 
