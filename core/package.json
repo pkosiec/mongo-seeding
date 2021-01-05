@@ -53,6 +53,7 @@
     "bson": "^4.2.2",
     "debug": "^4.3.1",
     "extend": "^3.0.0",
+    "import-fresh": "^3.3.0",
     "mongodb": "3.6.3"
   },
   "devDependencies": {
