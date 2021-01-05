@@ -3,7 +3,7 @@
   "author": {
     "name": "Paweł Kosiec",
     "email": "pawel@kosiec.net",
-    "url": "https://www.kosiec.net"
+    "url": "https://kosiec.net"
   },
   "repository": {
     "type": "git",
@@ -26,13 +26,13 @@
     }
   },
   "devDependencies": {
-    "husky": "^4.3.0",
+    "husky": "^4.3.6",
     "lerna": "^3.22.1",
     "lerna-changelog": "^1.0.1",
-    "lint-staged": "^10.4.0",
-    "prettier": "^2.1.2",
+    "lint-staged": "^10.5.3",
+    "prettier": "^2.2.1",
     "tslint": "^6.1.3",
-    "typescript": "^4.0.3"
+    "typescript": "^4.1.3"
   },
   "lint-staged": {
     "**/*.{ts,js,json}": [
