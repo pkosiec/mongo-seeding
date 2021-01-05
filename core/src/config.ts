@@ -2,6 +2,7 @@ import * as extend from 'extend';
 import { SeederCollection, DeepPartial } from './common';
 import { SeederDatabaseConfig, defaultDatabaseConfigObject } from './database';
 import { CollectionInsertManyOptions, MongoClientOptions } from 'mongodb';
+import { EJSON } from 'bson';
 
 /**
  * Defines configuration for database seeding.
@@ -50,6 +51,7 @@ export const mergeSeederConfig = (
  */
 export interface SeederCollectionReadingOptions {
   extensions: string[]; // files that should be imported
+  ejsonParseOptions?: EJSON.Options; // options for parsing EJSON files with `.json` extension
   transformers: Array<(collection: SeederCollection) => SeederCollection>; // optional transformer functions
 }
 
@@ -58,6 +60,9 @@ export interface SeederCollectionReadingOptions {
  */
 export const defaultCollectionReadingOptions: SeederCollectionReadingOptions = {
   extensions: ['json', 'js', 'cjs'],
+  ejsonParseOptions: {
+    relaxed: true,
+  },
   transformers: [],
 };
 

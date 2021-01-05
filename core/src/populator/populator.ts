@@ -1,3 +1,4 @@
+import { EJSON } from 'bson';
 import { SeederCollection, SeederCollectionMetadata, LogFn } from '../common';
 import { fileSystem } from './filesystem';
 
@@ -10,6 +11,8 @@ export class CollectionPopulator {
    */
   extensions: string[];
 
+  ejsonParseOptions: EJSON.Options;
+
   /**
    * Logger instance
    */
@@ -20,11 +23,16 @@ export class CollectionPopulator {
    *
    * @param extensions Array of file extensions
    */
-  constructor(extensions: string[], log?: LogFn) {
+  constructor(
+    extensions: string[],
+    ejsonParseOptions: EJSON.Options,
+    log?: LogFn,
+  ) {
     if (extensions.length === 0) {
       throw new Error('Array of supported extensions must not be empty');
     }
     this.extensions = extensions;
+    this.ejsonParseOptions = ejsonParseOptions;
     this.log = log ? log : () => {};
   }
 
@@ -127,7 +135,7 @@ export class CollectionPopulator {
     const documentPaths = documentFileNames.map(
       (fileName) => `${collectionPath}/${fileName}`,
     );
-    return fileSystem.readFilesContent(documentPaths);
+    return fileSystem.readFilesContent(documentPaths, this.ejsonParseOptions);
   }
 
   /**

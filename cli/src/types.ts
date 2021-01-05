@@ -27,12 +27,22 @@ export interface CommandLineArguments {
   'db-uri'?: string;
   'reconnect-timeout'?: number;
   'transpile-only'?: boolean;
+  'ejson-parse-canonical-mode'?: boolean;
 }
 
-export type PartialCliOptions = DeepPartial<
-  SeederConfig | SeederCollectionReadingOptions | CliSpecificOptions
->;
+interface CliOptions {
+  seeder: SeederConfig;
+  collectionReading: SeederCollectionReadingOptions;
+  cli: CliSpecificOptions;
+}
+
+export type PartialCliOptions = DeepPartial<CliOptions>;
+
 export interface CliSpecificOptions {
+  dataPath: string;
+  replaceId: boolean;
+  setTimestamps: boolean;
+  ejsonParseCanonicalMode: boolean;
   transpileOnly: boolean;
   silent: boolean;
 }

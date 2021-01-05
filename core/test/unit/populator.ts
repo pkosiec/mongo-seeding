@@ -1,15 +1,16 @@
 import { CollectionPopulator } from '../../src/populator';
 import { SeederCollection, SeederCollectionMetadata } from '../../src/common';
+import { defaultCollectionReadingOptions } from '../../src';
 
 describe('CollectionPopulator', () => {
   it('should throw an error when passed no supported extensions', () => {
     expect(() => {
-      new CollectionPopulator([]);
+      new CollectionPopulator([], defaultCollectionReadingOptions.ejsonParseOptions!);
     }).toThrowError('Array of supported extensions must not be empty');
   });
 
   it('should get proper collection metadata from directory name', () => {
-    const collectionPopulator = new CollectionPopulator(['js']);
+    const collectionPopulator = new CollectionPopulator(['js'], defaultCollectionReadingOptions.ejsonParseOptions!);
     const camelCaseName = 'TestCollection';
     const dashCaseName = 'collection-name';
     const dotCaseName = 'collection.name';
@@ -75,7 +76,7 @@ describe('CollectionPopulator', () => {
   });
 
   it('should sort collections', () => {
-    const collectionPopulator = new CollectionPopulator(['json']);
+    const collectionPopulator = new CollectionPopulator(['json'], defaultCollectionReadingOptions.ejsonParseOptions!);
     const input: SeederCollection[] = [
       {
         name: 'no-number',

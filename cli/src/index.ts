@@ -1,11 +1,7 @@
 import * as commandLineArgs from 'command-line-args';
 import { register } from 'ts-node';
 import { resolve } from 'path';
-import {
-  Seeder,
-  SeederCollectionReadingOptions,
-  SeederConfig,
-} from 'mongo-seeding';
+import { Seeder, SeederConfig } from 'mongo-seeding';
 import {
   cliOptions,
   validateOptions,
@@ -16,8 +12,6 @@ import { CommandLineArguments, CliSpecificOptions } from './types';
 import { DeepPartial } from 'mongo-seeding/dist/common';
 
 class CliSeeder {
-  readonly DEFAULT_INPUT_PATH = './';
-
   run = async () => {
     let options: CommandLineArguments;
 
@@ -41,16 +35,14 @@ class CliSeeder {
     }
 
     const config = createConfigFromOptions(options);
-    this.useCliSpecificOptions(config as DeepPartial<CliSpecificOptions>);
-    const seeder = new Seeder(config as DeepPartial<SeederConfig>);
+    this.useCliSpecificOptions(config.cli);
 
-    const collectionsPath = this.getCollectionsPath(options);
-    const collectionReadingConfig = this.getCollectionReadingConfig(options);
+    const seeder = new Seeder(config.seeder);
 
     try {
       const collections = seeder.readCollectionsFromPath(
-        resolve(collectionsPath),
-        collectionReadingConfig,
+        resolve(config.cli!.dataPath!),
+        config.collectionReading,
       );
 
       await seeder.import(collections);
@@ -61,45 +53,12 @@ class CliSeeder {
     process.exit(0);
   };
 
-  private getCollectionsPath(options: CommandLineArguments): string {
-    if (options.data) {
-      return options.data;
-    }
-
-    return this.DEFAULT_INPUT_PATH;
-  }
-
-  private getCollectionReadingConfig = (
-    options: CommandLineArguments,
-  ): SeederCollectionReadingOptions => {
-    const transformers = [];
-    const replaceIdWithUnderscoreId =
-      options['replace-id'] || process.env.REPLACE_ID === 'true';
-
-    if (replaceIdWithUnderscoreId) {
-      transformers.push(Seeder.Transformers.replaceDocumentIdWithUnderscoreId);
-    }
-
-    const setTimestamps =
-      options['set-timestamps'] || process.env.SET_TIMESTAMPS === 'true';
-
-    if (setTimestamps) {
-      transformers.push(Seeder.Transformers.setCreatedAtTimestamp);
-      transformers.push(Seeder.Transformers.setUpdatedAtTimestamp);
-    }
-
-    return {
-      extensions: ['ts', 'js', 'cjs', 'json'],
-      transformers,
-    };
-  };
-
   private printError = (err: Error) => {
     console.error(`Error ${err.name}: ${err.message}`);
     process.exit(0);
   };
 
-  private useCliSpecificOptions(options: DeepPartial<CliSpecificOptions>) {
+  private useCliSpecificOptions(options: DeepPartial<CliSpecificOptions> = {}) {
     if (!options.silent) {
       // Enable debug output for Mongo Seeding
       process.env.DEBUG = 'mongo-seeding';

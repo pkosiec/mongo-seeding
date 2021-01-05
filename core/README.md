@@ -8,13 +8,17 @@ The ultimate solution for populating your MongoDB database. Define the data in J
 
 ## Table of contents
 
+<!-- toc -->
+
 - [Installation](#installation)
 - [Usage](#usage)
 - [API description](#api-description)
-    - [`constructor(partialConfig?)`](#constructorpartialconfig)
-    - [`readCollectionsFromPath(path, partialOptions?)`](#readcollectionsfrompathpath-partialoptions)
-    - [`import(collections, partialConfig?)`](#importcollections-partialconfig)
+  * [`constructor(partialConfig?)`](#constructorpartialconfig)
+  * [`readCollectionsFromPath(path, partialOptions?)`](#readcollectionsfrompathpath-partialoptions)
+  * [`import(collections, partialConfig?)`](#importcollections-partialconfig)
 - [Debug output](#debug-output)
+
+<!-- tocstop -->
 
 ## Installation
 
@@ -109,7 +113,7 @@ You can override any default configuration property by passing partial config ob
 
 The following snippet represents the type definition of `Seeder` config with all available properties:
 
-```javascript
+```typescript
 export interface SeederConfig {
   database: string | SeederDatabaseConfigObject; // database connection URI or configuration object
   databaseReconnectTimeout: number; // maximum time of waiting for successful MongoDB connection in milliseconds. Ignored when `mongoClientOptions` are passed.
@@ -153,7 +157,8 @@ const defaultConfig = {
   databaseReconnectTimeout: 10000,
   dropDatabase: false,
   dropCollections: false,
-  options: undefined,
+  mongoClientOptions: undefined,
+  collectionInsertManyOptions: undefined;
 };
 ```
 
@@ -163,11 +168,24 @@ Populates collections and their documents from given path. The path has to conta
 
 **Options**
 
-You can specify an optional partial options object for this method, which will be merged with default configuration object. One of properties of the configuration object is array of transform functions:
+You can specify an optional partial options object for this method, which will be merged with default configuration object. See the interface of the options, which describes all possible options:
+
+```typescript
+export interface SeederCollectionReadingOptions {
+  extensions: string[]; // files that should be imported
+  ejsonParseOptions?: EJSON.Options; // options for parsing EJSON files with `.json` extension
+  transformers: Array<(collection: SeederCollection) => SeederCollection>; // optional transformer functions
+}
+```
+
+For example, you may provide the following options object:
 
 ```javascript
 const collectionReadingOptions = {
   extensions: ['ts', 'js', 'cjs', 'json'],
+  ejsonParseOptions: {
+    relaxed: false,
+  },
   transformers: [
     Seeder.Transformers.replaceDocumentIdWithUnderscoreId,
   ]
@@ -201,6 +219,9 @@ The default options object is as follows:
 ```javascript
 const defaultCollectionReadingConfig: SeederCollectionReadingConfig = {
   extensions: ['json', 'js', 'cjs'],
+  ejsonParseOptions: {
+    relaxed: true,
+  },
   transformers: [],
 };
 ```

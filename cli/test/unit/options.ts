@@ -1,6 +1,8 @@
+import { Seeder } from 'mongo-seeding';
 import {
   createConfigFromOptions,
   convertEmptyObjectToUndefined,
+  DEFAULT_EXTENSIONS,
 } from '../../src/options';
 import { CommandLineArguments, PartialCliOptions } from '../../src/types';
 
@@ -24,18 +26,33 @@ describe('Options', () => {
     }> = [
       {
         input: {
+          data: './foo/bar',
           'db-uri': 'cmdUri',
           'reconnect-timeout': 7000,
           'drop-database': true,
           'drop-collections': true,
           'transpile-only': true,
+          'ejson-parse-canonical-mode': true,
         },
         expected: {
-          database: 'cmdUri',
-          databaseReconnectTimeout: 7000,
-          dropDatabase: true,
-          dropCollections: true,
-          transpileOnly: true,
+          seeder: {
+            database: 'cmdUri',
+            databaseReconnectTimeout: 7000,
+            dropDatabase: true,
+            dropCollections: true,
+          },
+          cli: {
+            dataPath: './foo/bar',
+            transpileOnly: true,
+            ejsonParseCanonicalMode: true,
+          },
+          collectionReading: {
+            ejsonParseOptions: {
+              relaxed: false,
+            },
+            extensions: DEFAULT_EXTENSIONS,
+            transformers: [],
+          },
         },
       },
       {
@@ -49,18 +66,31 @@ describe('Options', () => {
           silent: true,
         },
         expected: {
-          database: {
-            protocol: 'testing://',
-            host: 'testHost',
-            port: 3232,
-            name: 'testName',
-            username: 'testUserName',
-            password: 'testPasswd',
+          seeder: {
+            database: {
+              protocol: 'testing://',
+              host: 'testHost',
+              port: 3232,
+              name: 'testName',
+              username: 'testUserName',
+              password: 'testPasswd',
+            },
+            dropDatabase: false,
+            dropCollections: false,
           },
-          dropDatabase: false,
-          dropCollections: false,
-          transpileOnly: false,
-          silent: true,
+          cli: {
+            dataPath: './',
+            transpileOnly: false,
+            ejsonParseCanonicalMode: false,
+            silent: true,
+          },
+          collectionReading: {
+            ejsonParseOptions: {
+              relaxed: true,
+            },
+            extensions: DEFAULT_EXTENSIONS,
+            transformers: [],
+          },
         },
       },
       {
@@ -71,12 +101,14 @@ describe('Options', () => {
           'db-options': 'foo=bar;test=testValue',
         },
         expected: {
-          database: {
-            host: 'testHost',
-            port: 3232,
-            options: {
-              foo: 'bar',
-              test: 'testValue',
+          seeder: {
+            database: {
+              host: 'testHost',
+              port: 3232,
+              options: {
+                foo: 'bar',
+                test: 'testValue',
+              },
             },
           },
         },
@@ -89,11 +121,13 @@ describe('Options', () => {
           'db-options': 'foo=bar;',
         },
         expected: {
-          database: {
-            host: 'testHost',
-            port: 3232,
-            options: {
-              foo: 'bar',
+          seeder: {
+            database: {
+              host: 'testHost',
+              port: 3232,
+              options: {
+                foo: 'bar',
+              },
             },
           },
         },
@@ -104,14 +138,25 @@ describe('Options', () => {
           'db-port': 3232,
           'db-name': 'testName',
           'db-options': 'foo=bar',
+          'set-timestamps': true,
+          'replace-id': true,
         },
         expected: {
-          database: {
-            host: 'testHost',
-            port: 3232,
-            options: {
-              foo: 'bar',
+          seeder: {
+            database: {
+              host: 'testHost',
+              port: 3232,
+              options: {
+                foo: 'bar',
+              },
             },
+          },
+          collectionReading: {
+            transformers: [
+              Seeder.Transformers.replaceDocumentIdWithUnderscoreId,
+              Seeder.Transformers.setCreatedAtTimestamp,
+              Seeder.Transformers.setUpdatedAtTimestamp,
+            ],
           },
         },
       },
@@ -140,11 +185,15 @@ describe('Options', () => {
           TRANSPILE_ONLY: 'true',
         },
         expected: {
-          database: 'cmdUri',
-          databaseReconnectTimeout: 7000,
-          dropDatabase: true,
-          dropCollections: true,
-          transpileOnly: true,
+          seeder: {
+            database: 'cmdUri',
+            databaseReconnectTimeout: 7000,
+            dropDatabase: true,
+            dropCollections: true,
+          },
+          cli: {
+            transpileOnly: true,
+          },
         },
       },
       {
@@ -158,18 +207,22 @@ describe('Options', () => {
           SILENT: 'true',
         },
         expected: {
-          database: {
-            protocol: 'testing://',
-            host: 'testHost',
-            port: 3232,
-            name: 'testName',
-            username: 'testUserName',
-            password: 'testPasswd',
+          seeder: {
+            database: {
+              protocol: 'testing://',
+              host: 'testHost',
+              port: 3232,
+              name: 'testName',
+              username: 'testUserName',
+              password: 'testPasswd',
+            },
+            dropDatabase: false,
+            dropCollections: false,
           },
-          dropDatabase: false,
-          dropCollections: false,
-          transpileOnly: false,
-          silent: true,
+          cli: {
+            transpileOnly: false,
+            silent: true,
+          },
         },
       },
       {
@@ -180,12 +233,14 @@ describe('Options', () => {
           DB_OPTIONS: 'foo=bar;test=testValue',
         },
         expected: {
-          database: {
-            host: 'testHost',
-            port: 3232,
-            options: {
-              foo: 'bar',
-              test: 'testValue',
+          seeder: {
+            database: {
+              host: 'testHost',
+              port: 3232,
+              options: {
+                foo: 'bar',
+                test: 'testValue',
+              },
             },
           },
         },
@@ -198,11 +253,13 @@ describe('Options', () => {
           DB_OPTIONS: 'foo=bar;',
         },
         expected: {
-          database: {
-            host: 'testHost',
-            port: 3232,
-            options: {
-              foo: 'bar',
+          seeder: {
+            database: {
+              host: 'testHost',
+              port: 3232,
+              options: {
+                foo: 'bar',
+              },
             },
           },
         },
@@ -213,28 +270,49 @@ describe('Options', () => {
           DB_PORT: '3232',
           DB_NAME: 'testName',
           DB_OPTIONS: 'foo=bar',
+          EJSON_PARSE_CANONICAL_MODE: 'true',
+          SET_TIMESTAMPS: 'true',
+          REPLACE_ID: 'true',
         },
         expected: {
-          database: {
-            host: 'testHost',
-            port: 3232,
-            options: {
-              foo: 'bar',
+          seeder: {
+            database: {
+              host: 'testHost',
+              port: 3232,
+              options: {
+                foo: 'bar',
+              },
             },
+          },
+          cli: {
+            dataPath: './',
+            ejsonParseCanonicalMode: true,
+            setTimestamps: true,
+            replaceId: true,
+          },
+          collectionReading: {
+            ejsonParseOptions: {
+              relaxed: false,
+            },
+            transformers: [
+              Seeder.Transformers.replaceDocumentIdWithUnderscoreId,
+              Seeder.Transformers.setCreatedAtTimestamp,
+              Seeder.Transformers.setUpdatedAtTimestamp,
+            ],
           },
         },
       },
     ];
 
     for (const testCase of testCases) {
-      Object.keys(testCase.input).forEach(key => {
+      Object.keys(testCase.input).forEach((key) => {
         process.env[key] = testCase.input[key];
       });
 
       const result = createConfigFromOptions({});
       expect(result).toMatchObject(testCase.expected);
 
-      process.env = previousEnvs;
+      process.env = { ...previousEnvs };
     }
   });
 
@@ -242,19 +320,33 @@ describe('Options', () => {
     process.env.DB_URI = 'envUri';
     process.env.RECONNECT_TIMEOUT = '5000';
     process.env.DROP_DATABASE = 'true';
+    process.env.REPLACE_ID = 'true';
 
     const cmdArgs: CommandLineArguments = {
       'db-uri': 'cmdUri',
       'reconnect-timeout': 7000,
+      'replace-id': false,
     };
 
     const result = createConfigFromOptions(cmdArgs);
 
     expect(result).toMatchObject({
-      database: 'cmdUri',
-      databaseReconnectTimeout: 7000,
-      dropDatabase: true,
-    });
+      seeder: {
+        database: 'cmdUri',
+        databaseReconnectTimeout: 7000,
+        dropDatabase: true,
+      },
+      cli: {
+        ejsonParseCanonicalMode: false,
+        dataPath: './',
+      },
+      collectionReading: {
+        extensions: DEFAULT_EXTENSIONS,
+        ejsonParseOptions: {
+          relaxed: true,
+        },
+      },
+    } as PartialCliOptions);
   });
 
   it('should convert empty object to undefined', () => {

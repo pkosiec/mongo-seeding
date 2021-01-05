@@ -62,7 +62,7 @@ export class Seeder {
     let collections;
     try {
       const { CollectionPopulator } = require('./populator');
-      const populator = new CollectionPopulator(config.extensions, this.log);
+      const populator = new CollectionPopulator(config.extensions, config.ejsonParseOptions, this.log);
 
       this.log(`Reading collections from ${path}...`);
       collections = populator.readFromPath(path);

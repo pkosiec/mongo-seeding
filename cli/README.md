@@ -65,6 +65,7 @@ You can use the following parameters while using `seed` tool:
 | `--replace-id` | `false` | Replaces `id` property with `_id` for every document during data import |
 | `--set-timestamps` | `false` | Sets `createdAt` and `updatedAt` timestamps for every document during data import |
 | `--reconnect-timeout` | `10000` | Maximum time in milliseconds of waiting for successful MongoDB connection |
+| `--ejson-parse-canonical-mode` | `false` | Enables [EJSON Canonical Mode](https://docs.mongodb.com/manual/reference/mongodb-extended-json/) for all parsed `.json` files. By default the EJSON Relaxed mode is enabled. |
 | `--transpile-only` | `false` | Disables type checking on TypeScript files import. This option vastly improves performance of TypeScript data import |
 | `--silent` or `-s` | `false` | Disables printing logging of Mongo Seeding status to standard output |
 | `--help` or `-h` | n/a | Help
@@ -75,17 +76,18 @@ You can use the following environmental variables while using `seed` tool:
 
 | Name        | Default Value  | Description         |
 |-------------|----------------|---------------------|
-| DB_URI | *`undefined`* | If defined, the URI is used for establishing connection to database, ignoring values given in `DB_*` environmental variables (e.g. `DB_HOST`, `DB_PORT`, etc.).
-| DB_HOST | `127.0.0.1` | MongoDB database host |
-| DB_PORT | `27017` | MongoDB database port |
-| DB_NAME | `database` | Name of the database |
-| DB_USERNAME | *`undefined`* | Username for connecting with database that requires authentication |
-| DB_PASSWORD | *`undefined`* | Password for connecting with database that requires authentication |
-| DB_OPTIONS | *`undefined`* | [MongoDB connection options](https://docs.mongodb.com/manual/reference/connection-string/) in a form of multiple `{key}={value}` values, separated by semicolon. For example: `ssl=true;maxPoolSize=50`. |
-| DROP_DATABASE | `false` | Drops entire database before data import |
-| DROP_COLLECTIONS | `false` | Drops every collection which is being imported |
-| REPLACE_ID | `false` | Replaces `id` property with `_id` for every document during import; useful for ORMs | 
-| SET_TIMESTAMPS | `false` | Sets `createdAt` and `updatedAt` timestamps for every document during data import |
-| RECONNECT_TIMEOUT | `10000` | Maximum time in milliseconds of waiting for successful MongoDB connection |
-| TRANSPILE_ONLY | `false` | Disables type checking on TypeScript files import. This option vastly improves performance of TypeScript data import |
+| `DB_URI` | *`undefined`* | If defined, the URI is used for establishing connection to database, ignoring values given in `DB_*` environmental variables (e.g. `DB_HOST`, `DB_PORT`, etc.).
+| `DB_HOST` | `127.0.0.1` | MongoDB database host |
+| `DB_PORT` | `27017` | MongoDB database port |
+| `DB_NAME` | `database` | Name of the database |
+| `DB_USERNAME` | *`undefined`* | Username for connecting with database that requires authentication |
+| `DB_PASSWORD` | *`undefined`* | Password for connecting with database that requires authentication |
+| `DB_OPTIONS` | *`undefined`* | [MongoDB connection options](https://docs.mongodb.com/manual/reference/connection-string/) in a form of multiple `{key}={value}` values, separated by semicolon. For example: `ssl=true;maxPoolSize=50`. |
+| `DROP_DATABASE` | `false` | Drops entire database before data import |
+| `DROP_COLLECTIONS` | `false` | Drops every collection which is being imported |
+| `REPLACE_ID` | `false` | Replaces `id` property with `_id` for every document during import; useful for ORMs | 
+| `SET_TIMESTAMPS` | `false` | Sets `createdAt` and `updatedAt` timestamps for every document during data import |
+| `RECONNECT_TIMEOUT` | `10000` | Maximum time in milliseconds of waiting for successful MongoDB connection |
+| `EJSON_PARSE_CANONICAL_MODE` | `false` | Enables [EJSON Canonical Mode](https://docs.mongodb.com/manual/reference/mongodb-extended-json/) for all parsed `.json` files. By default the EJSON Relaxed mode is enabled. |
+| `TRANSPILE_ONLY` | `false` | Disables type checking on TypeScript files import. This option vastly improves performance of TypeScript data import |
 | `SILENT` | `false` | Disables printing logging of Mongo Seeding status to standard output |

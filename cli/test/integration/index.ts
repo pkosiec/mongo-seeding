@@ -1,7 +1,6 @@
 import { cliSeeder } from '../../src/index';
 import { MongoClient } from 'mongodb';
 import * as tsNode from 'ts-node';
-import { DatabaseConnector } from 'mongo-seeding/dist/database';
 
 describe('CLI', () => {
   const previousArgv = process.argv;
@@ -75,6 +74,9 @@ describe('CLI', () => {
         expectedLength: 6,
       },
     ];
+
+    const cols = await db.collections();
+    console.log("cols", cols);
 
     for (const testCase of testCases) {
       const collection = await db

@@ -53,6 +53,7 @@ describe('CollectionPopulator', () => {
     for (const key of Object.keys(expectedDocuments)) {
       const collectionPopulator = new CollectionPopulator(
         defaultCollectionReadingOptions.extensions,
+        defaultCollectionReadingOptions.ejsonParseOptions!,
       );
       const path = `${IMPORT_DATA_DIR}/populator-docs/${key}`;
 
@@ -71,6 +72,7 @@ describe('CollectionPopulator', () => {
     const path = '/surely/not/existing/path';
     const collectionPopulator = new CollectionPopulator(
       defaultCollectionReadingOptions.extensions,
+      defaultCollectionReadingOptions.ejsonParseOptions!,
     );
 
     expect(() => {
@@ -81,6 +83,7 @@ describe('CollectionPopulator', () => {
   it('should skip empty directories', () => {
     const collectionPopulator = new CollectionPopulator(
       defaultCollectionReadingOptions.extensions,
+      defaultCollectionReadingOptions.ejsonParseOptions!,
     );
     const path = `${IMPORT_DATA_DIR}/populator-skip-empty`;
 
