@@ -16,7 +16,7 @@ echo "Building Docker image..."
 IMAGE_VERSION_TAG=$(node -p -e "require('./cli/package.json').version");
 echo "Using tag: ${IMAGE_VERSION_TAG}"
 
-docker build -f ./docker-image/prod.Dockerfile --build-arg cliVersion=${NPM_VERSION} -t ${IMAGE_NAME}:${IMAGE_VERSION_TAG} .
+docker build -f ./docker-image/prod.Dockerfile --build-arg cliVersion=${IMAGE_VERSION_TAG} -t ${IMAGE_NAME}:${IMAGE_VERSION_TAG} .
 
 echo "Tagging Docker image with '${IMAGE_LATEST_TAG}' tag..."
 docker tag ${IMAGE_NAME}:${IMAGE_VERSION_TAG} ${IMAGE_NAME}:${IMAGE_LATEST_TAG}
