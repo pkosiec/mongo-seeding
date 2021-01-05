@@ -17,7 +17,7 @@
     "changelog": "lerna-changelog",
     "publish": "lerna publish --pre-dist-tag next",
     "clean": "lerna clean",
-    "update-deps": "bash ./.ci/update-packages.sh"
+    "update-deps": "bash ./script/update-dependencies.sh"
   },
   "husky": {
     "hooks": {
