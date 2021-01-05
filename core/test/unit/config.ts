@@ -73,6 +73,9 @@ describe('SeederCollectionReadingOptions', () => {
     const expectedOptions: SeederCollectionReadingOptions = {
       extensions: ['json', 'js', 'cjs'],
       transformers: [],
+      ejsonParseOptions: {
+        relaxed: true,
+      }
     };
 
     const options = mergeCollectionReadingOptions(partialOptions);

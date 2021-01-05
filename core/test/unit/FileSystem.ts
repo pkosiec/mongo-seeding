@@ -121,14 +121,14 @@ describe('FileSystem', () => {
       },
     ];
 
-    const actualContentArray = fileSystem.readFilesContent(documentFilePaths);
+    const actualContentArray = fileSystem.readFilesContent(documentFilePaths, {});
 
     expect(actualContentArray).toEqual(expectedContentArray);
   });
 
   it('should parse EJSON files', () => {
     const filePath = 'mockFiles/ejson.json';
-    const result = fileSystem.readFile(filePath);
+    const result = fileSystem.readFile(filePath, {});
 
     expect(result).toEqual({
       _id: new ObjectId('57e193d7a9cc81b4027498b5'),

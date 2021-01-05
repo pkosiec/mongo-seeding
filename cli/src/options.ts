@@ -6,6 +6,10 @@ import {
   PartialCliOptions,
 } from './types';
 import { SeederDatabaseConfigObjectOptions } from 'mongo-seeding/dist/database';
+import { Seeder, SeederCollectionReadingOptions } from 'mongo-seeding';
+
+export const DEFAULT_INPUT_PATH = './';
+export const DEFAULT_EXTENSIONS = ['ts', 'js', 'cjs', 'json']
 
 export const cliOptions: CommandLineOption[] = [
   {
@@ -87,7 +91,8 @@ export const cliOptions: CommandLineOption[] = [
   },
   {
     name: 'set-timestamps',
-    description: 'Sets `createdAt` and `updatedAt` timestamps for every document before import',
+    description:
+      'Sets `createdAt` and `updatedAt` timestamps for every document before import',
     type: Boolean,
   },
   {
@@ -122,30 +127,71 @@ export const createConfigFromOptions = (
 ): PartialCliOptions => {
   const commandLineConfig = populateCommandLineOptions(cmdArgs);
   const envConfig = populateEnvOptions();
-  const config = {};
-  return extend(true, config, envConfig, commandLineConfig);
+  const config: PartialCliOptions = {};
+  const defaultConfig: PartialCliOptions = {
+    cli: {
+      dataPath: DEFAULT_INPUT_PATH,
+    },
+  };
+
+  const mergedConfig = extend(true, config, defaultConfig, envConfig, commandLineConfig);
+  mergedConfig.collectionReading = getCollectionReadingConfig(mergedConfig);
+  return mergedConfig;
 };
+
+function getCollectionReadingConfig(
+  opts: PartialCliOptions,
+): SeederCollectionReadingOptions {
+  const transformers = [];
+  if (opts?.cli?.replaceId) {
+    transformers.push(Seeder.Transformers.replaceDocumentIdWithUnderscoreId);
+  }
+
+  if (opts?.cli?.setTimestamps) {
+    transformers.push(
+      Seeder.Transformers.setCreatedAtTimestamp,
+      Seeder.Transformers.setUpdatedAtTimestamp,
+    );
+  }
+
+  const ejsonCanonicalMode = opts.cli?.ejsonParseCanonicalMode || false;
+  return {
+    extensions: DEFAULT_EXTENSIONS,
+    ejsonParseOptions: {
+      relaxed: !ejsonCanonicalMode,
+    },
+    transformers,
+  };
+}
 
 function populateCommandLineOptions(
   options: CommandLineArguments,
 ): PartialCliOptions {
   return {
-    database: options['db-uri']
-      ? options['db-uri']
-      : convertEmptyObjectToUndefined({
-          protocol: options['db-protocol'],
-          host: options['db-host'],
-          port: options['db-port'],
-          name: options['db-name'],
-          username: options['db-username'],
-          password: options['db-password'],
-          options: readDbOptions(options['db-options']),
-        }),
-    databaseReconnectTimeout: options['reconnect-timeout'],
-    dropDatabase: options['drop-database'],
-    dropCollections: options['drop-collections'],
-    transpileOnly: options['transpile-only'],
-    silent: options['silent'],
+    seeder: {
+      database: options['db-uri']
+        ? options['db-uri']
+        : convertEmptyObjectToUndefined({
+            protocol: options['db-protocol'],
+            host: options['db-host'],
+            port: options['db-port'],
+            name: options['db-name'],
+            username: options['db-username'],
+            password: options['db-password'],
+            options: readDbOptions(options['db-options']),
+          }),
+      databaseReconnectTimeout: options['reconnect-timeout'],
+      dropDatabase: options['drop-database'],
+      dropCollections: options['drop-collections'],
+    },
+    cli: {
+      dataPath: options['data'],
+      ejsonParseCanonicalMode: options['ejson-parse-canonical-mode'],
+      replaceId: options['replace-id'],
+      setTimestamps: options['set-timestamps'],
+      transpileOnly: options['transpile-only'],
+      silent: options['silent'],
+    },
   };
 }
 
@@ -176,26 +222,34 @@ function readDbOptions(
 function populateEnvOptions(): PartialCliOptions {
   const env = process.env;
   return {
-    database: env.DB_URI
-      ? String(env.DB_URI)
-      : convertEmptyObjectToUndefined({
-          protocol: env.DB_PROTOCOL ? String(env.DB_PROTOCOL) : undefined,
-          host: env.DB_HOST ? String(env.DB_HOST) : undefined,
-          port: env.DB_PORT ? Number(env.DB_PORT) : undefined,
-          name: env.DB_NAME ? String(env.DB_NAME) : undefined,
-          username: env.DB_USERNAME ? String(env.DB_USERNAME) : undefined,
-          password: env.DB_PASSWORD ? String(env.DB_PASSWORD) : undefined,
-          options: env.DB_OPTIONS
-            ? readDbOptions(String(env.DB_OPTIONS))
-            : undefined,
-        }),
-    databaseReconnectTimeout: env.RECONNECT_TIMEOUT
-      ? Number(env.RECONNECT_TIMEOUT)
-      : undefined,
-    dropDatabase: env.DROP_DATABASE === 'true',
-    dropCollections: env.DROP_COLLECTIONS === 'true',
-    transpileOnly: env.TRANSPILE_ONLY === 'true',
-    silent: env.SILENT === 'true',
+    seeder: {
+      database: env.DB_URI
+        ? String(env.DB_URI)
+        : convertEmptyObjectToUndefined({
+            protocol: env.DB_PROTOCOL ? String(env.DB_PROTOCOL) : undefined,
+            host: env.DB_HOST ? String(env.DB_HOST) : undefined,
+            port: env.DB_PORT ? Number(env.DB_PORT) : undefined,
+            name: env.DB_NAME ? String(env.DB_NAME) : undefined,
+            username: env.DB_USERNAME ? String(env.DB_USERNAME) : undefined,
+            password: env.DB_PASSWORD ? String(env.DB_PASSWORD) : undefined,
+            options: env.DB_OPTIONS
+              ? readDbOptions(String(env.DB_OPTIONS))
+              : undefined,
+          }),
+      databaseReconnectTimeout: env.RECONNECT_TIMEOUT
+        ? Number(env.RECONNECT_TIMEOUT)
+        : undefined,
+      dropDatabase: env.DROP_DATABASE === 'true',
+      dropCollections: env.DROP_COLLECTIONS === 'true',
+    },
+    cli: {
+      ejsonParseCanonicalMode:
+        process.env.EJSON_PARSE_CANONICAL_MODE === 'true',
+      replaceId: process.env.REPLACE_ID === 'true',
+      setTimestamps: process.env.SET_TIMESTAMPS === 'true',
+      transpileOnly: env.TRANSPILE_ONLY === 'true',
+      silent: env.SILENT === 'true',
+    },
   };
 }
 
