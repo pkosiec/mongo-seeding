@@ -16,6 +16,3 @@ flags:
   cli:
     paths:
       - cli/
-
-fixes:
-  - "/home/runner/work/mongo-seeding/mongo-seeding/::"

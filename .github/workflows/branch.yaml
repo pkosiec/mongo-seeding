@@ -47,8 +47,12 @@ jobs:
         run: npm run test:coverage
 
       - name: Upload test coverage
-        working-directory: ./${{ matrix.component }}
-        run: npm run test:upload-coverage 
+        uses: codecov/codecov-action@v1
+        with:
+          files: ./${{ matrix.component }}/coverage/lcov.info
+          flags: ${{ matrix.component }}
+          fail_ci_if_error: true
+          verbose: true
   
   build-docker-image:
     name: Build and test Docker image
