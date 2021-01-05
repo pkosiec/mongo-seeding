@@ -147,7 +147,7 @@ describe('DatabaseConnector', () => {
 
   it('should allow passing custom Mongo client options', async () => {
     connectMock.mockReturnValue(
-      new Promise((resolve) => {
+      new Promise<void>((resolve) => {
         resolve();
       }),
     );

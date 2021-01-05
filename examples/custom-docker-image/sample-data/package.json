@@ -7,15 +7,15 @@
   "author": {
     "name": "Paweł Kosiec",
     "email": "pawel@kosiec.net",
-    "url": "https://www.kosiec.net"
+    "url": "https://kosiec.net"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/pkosiec/mongo-seeding"
   },
   "dependencies": {
-    "@types/node": "^14.11.8",
+    "@types/node": "^14.14.20",
     "mongo-seeding": "^3.5.0",
-    "mongodb": "^3.6.2"
+    "mongodb": "^3.6.3"
   }
 }
