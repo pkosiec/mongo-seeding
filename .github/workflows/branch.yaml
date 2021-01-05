@@ -1,0 +1,81 @@
+name: Branch build
+
+on:
+  push:
+    branches:
+      - master
+      - migrate-to-gh-actions 
+
+jobs:
+  build-node-apps:
+    name: Build Node.js apps
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        component:
+          - core
+          - cli
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm install && npm run bootstrap
+
+      - name: Build all applications
+        run: npm run build-all
+
+      - name: Run tests with coverage
+        working-directory: ./${{ matrix.component }}
+        run: npm run test:coverage
+
+      - name: Upload test coverage
+        working-directory: ./${{ matrix.component }}
+        run: npm run test:upload-coverage 
+  
+  build-docker-image:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+    env:
+      DB_URI: mongodb://mongo:27017/dockertest
+      DB_NAME: dockertest
+      DATA_IMPORT_PATH: docker-image/test/_importdata
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build -f ./docker-image/dev.Dockerfile -t mongo-seeding-dev . 
+
+      - name: Run image
+        run: docker run --network=${{ job.services.mongo.network }} -e DB_URI -e DB_NAME -e REPLACE_ID=true -e SET_TIMESTAMPS=true -v $(pwd)/${DATA_IMPORT_PATH}:/data -w /data mongo-seeding-dev
+
+      - name: Build Tester image
+        run: docker build -t tester . 
+        working-directory: ./docker-image/test/tester
+
+      - name: Run Tester
+        run: docker run --network=${{ job.services.mongo.network }} -e DB_URI -e DB_NAME tester

@@ -15,6 +15,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "changelog": "lerna-changelog",
+    "build-all": "lerna run build",
     "publish": "lerna publish --pre-dist-tag next",
     "clean": "lerna clean",
     "update-deps": "bash ./script/update-dependencies.sh"

@@ -30,5 +30,6 @@ for directory in "${DIRECTORIES[@]}"
    done
 
 echo "Bringing back symlinks..."
+
 cd ${ROOT_PATH}
 npm run bootstrap

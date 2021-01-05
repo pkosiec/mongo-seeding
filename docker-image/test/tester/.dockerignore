@@ -1,4 +1,3 @@
-/**/.ci/
 /**/node_modules/
 /**/coverage/
 *.log
