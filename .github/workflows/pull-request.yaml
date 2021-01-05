@@ -1,7 +1,8 @@
-name: Branch build
+name: Pull request build
 
 on:
-  push:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
     branches:
       - master
 
