@@ -107,9 +107,9 @@ export class FileSystem {
    *
    * @param paths Array of paths
    */
-  readFilesContent(paths: string[]) {
+  readFilesContent(paths: string[], ejsonParseOptions: EJSON.Options) {
     return paths.reduce<any[]>((arr: any[], path) => {
-      const fileContent: any = this.readFile(path);
+      const fileContent: any = this.readFile(path, ejsonParseOptions);
       return arr.concat(fileContent);
     }, []);
   }
@@ -119,7 +119,7 @@ export class FileSystem {
    *
    * @param path File path
    */
-  readFile(path: string): any {
+  readFile(path: string, ejsonParseOptions: EJSON.Options): any {
     const fileExtension = extname(path);
 
     if (fileExtension !== '.json') {
@@ -127,9 +127,7 @@ export class FileSystem {
     }
 
     const content = readFileSync(path, 'utf-8');
-    return EJSON.parse(content, {
-      relaxed: true,
-    });
+    return EJSON.parse(content, ejsonParseOptions);
   }
 }
 

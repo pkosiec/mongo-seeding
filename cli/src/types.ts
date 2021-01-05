@@ -27,6 +27,7 @@ export interface CommandLineArguments {
   'db-uri'?: string;
   'reconnect-timeout'?: number;
   'transpile-only'?: boolean;
+  'ejson-parse-canonical-mode'?: boolean;
 }
 
 export type PartialCliOptions = DeepPartial<

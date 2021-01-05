@@ -90,6 +90,11 @@ class CliSeeder {
 
     return {
       extensions: ['ts', 'js', 'cjs', 'json'],
+      ejsonParseOptions: {
+        relaxed:
+          !options['ejson-parse-canonical-mode'] &&
+          process.env.EJSON_PARSE_CANONICAL_MODE !== 'true',
+      },
       transformers,
     };
   };
