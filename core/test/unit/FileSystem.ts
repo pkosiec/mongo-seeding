@@ -45,14 +45,12 @@ jest.mock('fs', () => ({
   }),
 }));
 
-jest.mock(
-  'mockFiles/test2.js',
-  () => ({
+jest.mock('import-fresh', () =>
+  jest.fn().mockReturnValue({
     value: {
       second: true,
     },
   }),
-  { virtual: true },
 );
 
 describe('FileSystem', () => {

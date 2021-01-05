@@ -1,6 +1,7 @@
 import { readdirSync, lstatSync, readFileSync } from 'fs';
 import { EJSON } from 'bson';
 import { extname } from 'path';
+const importFresh = require('import-fresh');
 
 /**
  * Provides functionality for manipulating files and directories.
@@ -24,7 +25,7 @@ export class FileSystem {
    */
   listValidDirectories(path: string) {
     const filesAndDirectories = this.listFileNames(path);
-    const directories = filesAndDirectories.filter(fileOrDirectory => {
+    const directories = filesAndDirectories.filter((fileOrDirectory) => {
       const itemPath = `${path}/${fileOrDirectory}`;
       return (
         this.isDirectory(itemPath) &&
@@ -73,7 +74,7 @@ export class FileSystem {
     fileNames: string[],
     supportedExtensions: string[],
   ) {
-    const documentFileNames = fileNames.filter(fileName => {
+    const documentFileNames = fileNames.filter((fileName) => {
       const fileNameSplit = fileName.split(
         FileSystem.FILE_NAME_SPLIT_CHARACTER,
       );
@@ -83,7 +84,7 @@ export class FileSystem {
 
       const fileExtension = fileNameSplit.pop()!;
       return supportedExtensions.some(
-        extension => extension.toLowerCase() === fileExtension.toLowerCase(),
+        (extension) => extension.toLowerCase() === fileExtension.toLowerCase(),
       );
     });
 
@@ -120,14 +121,15 @@ export class FileSystem {
    */
   readFile(path: string): any {
     const fileExtension = extname(path);
-    if (fileExtension === '.json') {
-      const content = readFileSync(path, 'utf-8');
-      return EJSON.parse(content, {
-        relaxed: true,
-      });
+
+    if (fileExtension !== '.json') {
+      return importFresh(path);
     }
 
-    return require(path);
+    const content = readFileSync(path, 'utf-8');
+    return EJSON.parse(content, {
+      relaxed: true,
+    });
   }
 }
 
