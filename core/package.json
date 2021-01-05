@@ -33,7 +33,7 @@
   "bugs": {
     "url": "https://github.com/pkosiec/mongo-seeding/issues"
   },
-  "version": "3.5.0",
+  "version": "3.6.0-alpha.0",
   "main": "dist/index.js",
   "files": [
     "dist/"
