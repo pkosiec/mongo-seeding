@@ -76,7 +76,7 @@ describe('CLI', () => {
     ];
 
     const cols = await db.collections();
-    console.log("cols", cols);
+    console.log('cols', cols);
 
     for (const testCase of testCases) {
       const collection = await db
@@ -143,8 +143,9 @@ describe('CLI', () => {
   });
 
   it('should exit without error when no data to import', async () => {
-    process.argv = ['', '', './no-path'];
+    process.argv = ['', '', './test/integration/_importdata/empty'];
     await cliSeeder.run();
+    expect(console.error).not.toBeCalled();
     expect(exitSpy).toBeCalledWith(0);
   });
 
@@ -170,6 +171,9 @@ describe('CLI', () => {
       {
         argv: ['', '', '--db-port', '-5'],
       },
+      {
+        argv: ['', '', '--transpile-only', './not-existing-path'],
+      },
     ];
 
     for (const testCase of testCases) {
@@ -179,7 +183,7 @@ describe('CLI', () => {
       expect(console.error).toBeCalledWith(
         expect.stringContaining('InvalidParameterError'),
       );
-      expect(exitSpy).toBeCalledWith(0);
+      expect(exitSpy).toBeCalledWith(1);
     }
   });
 
@@ -190,6 +194,6 @@ describe('CLI', () => {
     expect(console.error).toBeCalledWith(
       expect.stringContaining('Error UNKNOWN_OPTION'),
     );
-    expect(exitSpy).toBeCalledWith(0);
+    expect(exitSpy).toBeCalledWith(1);
   });
 });
