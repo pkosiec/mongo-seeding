@@ -18,8 +18,7 @@ class CliSeeder {
     try {
       options = commandLineArgs(cliOptions) as CommandLineArguments;
     } catch (err) {
-      this.printError(err);
-      return;
+      return this.printErrorAndExit(err);
     }
 
     if (shouldShowHelp(options)) {
@@ -30,8 +29,7 @@ class CliSeeder {
     try {
       validateOptions(options);
     } catch (err) {
-      this.printError(err);
-      return;
+      return this.printErrorAndExit(err);
     }
 
     const config = createConfigFromOptions(options);
@@ -47,15 +45,15 @@ class CliSeeder {
 
       await seeder.import(collections);
     } catch (err) {
-      this.printError(err);
+      return this.printErrorAndExit(err);
     }
 
     process.exit(0);
   };
 
-  private printError = (err: Error) => {
+  private printErrorAndExit = (err: Error) => {
     console.error(`Error ${err.name}: ${err.message}`);
-    process.exit(0);
+    process.exit(1);
   };
 
   private useCliSpecificOptions(options: DeepPartial<CliSpecificOptions> = {}) {
