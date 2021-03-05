@@ -62,6 +62,7 @@ You can use the following parameters while using `seed` tool:
 | `--db-options` | *`undefined`* | [MongoDB connection options](https://docs.mongodb.com/manual/reference/connection-string/) in a form of multiple `{key}={value}` values, separated by semicolon. For example: `ssl=true;maxPoolSize=50` |
 | `--drop-database` | `false` | Drops entire database before data import |
 | `--drop-collections` | `false` | Drops every collection which is being imported |
+| `--remove-all-documents` | `false` | Delete all documents from every collection that is being imported |
 | `--replace-id` | `false` | Replaces `id` property with `_id` for every document during data import |
 | `--set-timestamps` | `false` | Sets `createdAt` and `updatedAt` timestamps for every document during data import |
 | `--reconnect-timeout` | `10000` | Maximum time in milliseconds of waiting for successful MongoDB connection |
@@ -85,6 +86,7 @@ You can use the following environmental variables while using `seed` tool:
 | `DB_OPTIONS` | *`undefined`* | [MongoDB connection options](https://docs.mongodb.com/manual/reference/connection-string/) in a form of multiple `{key}={value}` values, separated by semicolon. For example: `ssl=true;maxPoolSize=50`. |
 | `DROP_DATABASE` | `false` | Drops entire database before data import |
 | `DROP_COLLECTIONS` | `false` | Drops every collection which is being imported |
+| `REMOVE_ALL_DOCUMENTS` | `false` | Delete all documents from every collection that is being imported |
 | `REPLACE_ID` | `false` | Replaces `id` property with `_id` for every document during import; useful for ORMs | 
 | `SET_TIMESTAMPS` | `false` | Sets `createdAt` and `updatedAt` timestamps for every document during data import |
 | `RECONNECT_TIMEOUT` | `10000` | Maximum time in milliseconds of waiting for successful MongoDB connection |

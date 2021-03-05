@@ -9,7 +9,7 @@ import { SeederDatabaseConfigObjectOptions } from 'mongo-seeding/dist/database';
 import { Seeder, SeederCollectionReadingOptions } from 'mongo-seeding';
 
 export const DEFAULT_INPUT_PATH = './';
-export const DEFAULT_EXTENSIONS = ['ts', 'js', 'cjs', 'json']
+export const DEFAULT_EXTENSIONS = ['ts', 'js', 'cjs', 'json'];
 
 export const cliOptions: CommandLineOption[] = [
   {
@@ -84,6 +84,12 @@ export const cliOptions: CommandLineOption[] = [
     type: Boolean,
   },
   {
+    name: 'remove-all-documents',
+    description:
+      'Delete all documents from every collection that is being imported',
+    type: Boolean,
+  },
+  {
     name: 'replace-id',
     description:
       'Replaces `id` property with `_id` for every document before import',
@@ -134,7 +140,13 @@ export const createConfigFromOptions = (
     },
   };
 
-  const mergedConfig = extend(true, config, defaultConfig, envConfig, commandLineConfig);
+  const mergedConfig = extend(
+    true,
+    config,
+    defaultConfig,
+    envConfig,
+    commandLineConfig,
+  );
   mergedConfig.collectionReading = getCollectionReadingConfig(mergedConfig);
   return mergedConfig;
 };
@@ -183,6 +195,7 @@ function populateCommandLineOptions(
       databaseReconnectTimeout: options['reconnect-timeout'],
       dropDatabase: options['drop-database'],
       dropCollections: options['drop-collections'],
+      removeAllDocuments: options['remove-all-documents'],
     },
     cli: {
       dataPath: options['data'],
@@ -241,6 +254,7 @@ function populateEnvOptions(): PartialCliOptions {
         : undefined,
       dropDatabase: env.DROP_DATABASE === 'true',
       dropCollections: env.DROP_COLLECTIONS === 'true',
+      removeAllDocuments: env.REMOVE_ALL_DOCUMENTS === 'true',
     },
     cli: {
       ejsonParseCanonicalMode:

@@ -15,6 +15,7 @@ export interface CommandLineArguments {
   silent?: boolean;
   'drop-database'?: boolean;
   'drop-collections'?: boolean;
+  'remove-all-documents'?: boolean;
   'replace-id'?: boolean;
   'set-timestamps'?: boolean;
   'db-protocol'?: string;

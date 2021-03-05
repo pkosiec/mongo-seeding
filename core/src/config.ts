@@ -12,6 +12,7 @@ export interface SeederConfig {
   databaseReconnectTimeout: number; // maximum time of waiting for successful MongoDB connection in milliseconds. Ignored when `mongoClientOptions` are passed.
   dropDatabase: boolean; // drops entire database before import
   dropCollections: boolean; // drops collection before importing it
+  removeAllDocuments: boolean; // deletes all documents from every collection that is being imported
   mongoClientOptions?: MongoClientOptions; // optional MongoDB client options
   collectionInsertManyOptions?: CollectionInsertManyOptions; // optional MongoDB collection import options
 }
@@ -24,6 +25,7 @@ export const defaultSeederConfig: SeederConfig = {
   databaseReconnectTimeout: 10000,
   dropDatabase: false,
   dropCollections: false,
+  removeAllDocuments: false,
 };
 
 /**

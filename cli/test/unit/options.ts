@@ -31,6 +31,7 @@ describe('Options', () => {
           'reconnect-timeout': 7000,
           'drop-database': true,
           'drop-collections': true,
+          'remove-all-documents': true,
           'transpile-only': true,
           'ejson-parse-canonical-mode': true,
         },
@@ -40,6 +41,7 @@ describe('Options', () => {
             databaseReconnectTimeout: 7000,
             dropDatabase: true,
             dropCollections: true,
+            removeAllDocuments: true,
           },
           cli: {
             dataPath: './foo/bar',
@@ -182,6 +184,7 @@ describe('Options', () => {
           RECONNECT_TIMEOUT: '7000',
           DROP_DATABASE: 'true',
           DROP_COLLECTIONS: 'true',
+          REMOVE_ALL_DOCUMENTS: 'true',
           TRANSPILE_ONLY: 'true',
         },
         expected: {
@@ -190,6 +193,7 @@ describe('Options', () => {
             databaseReconnectTimeout: 7000,
             dropDatabase: true,
             dropCollections: true,
+            removeAllDocuments: true,
           },
           cli: {
             transpileOnly: true,
@@ -218,6 +222,7 @@ describe('Options', () => {
             },
             dropDatabase: false,
             dropCollections: false,
+            removeAllDocuments: false,
           },
           cli: {
             transpileOnly: false,

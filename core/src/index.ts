@@ -62,7 +62,11 @@ export class Seeder {
     let collections;
     try {
       const { CollectionPopulator } = require('./populator');
-      const populator = new CollectionPopulator(config.extensions, config.ejsonParseOptions, this.log);
+      const populator = new CollectionPopulator(
+        config.extensions,
+        config.ejsonParseOptions,
+        this.log,
+      );
 
       this.log(`Reading collections from ${path}...`);
       collections = populator.readFromPath(path);
@@ -104,7 +108,7 @@ export class Seeder {
       this.log,
     );
 
-    let database;
+    let database: Database | undefined;
     try {
       database = await databaseConnector.connect(config.database);
 
@@ -113,6 +117,14 @@ export class Seeder {
         for (const collection of collections) {
           await database.dropCollectionIfExists(collection.name);
         }
+      }
+
+      if (!config.dropDatabase && config.removeAllDocuments) {
+        this.log('Removing all documents from collections...');
+        const promises = collections.map((collection) =>
+          database!.removeAllDocumentsIfCollectionExists(collection.name),
+        );
+        await Promise.all(promises);
       }
 
       if (config.dropDatabase) {
