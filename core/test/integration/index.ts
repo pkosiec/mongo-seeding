@@ -158,6 +158,72 @@ describe('Mongo Seeding', () => {
     });
   });
 
+  it('should remove all documents from collections before importing data', async () => {
+    const collections = ['import-one', 'import-two'];
+
+    const seeder = new Seeder({
+      database: {
+        name: DATABASE_NAME,
+      },
+    });
+    const pathOldState = `${IMPORT_DATA_DIR}/remove-docs/old-state`;
+    const oldState = seeder.readCollectionsFromPath(pathOldState);
+
+    collections.forEach(async (collection) => {
+      await database.db
+        .collection(collection)
+        .createIndex({ number: 1 }, { unique: true });
+    });
+
+    await expect(seeder.import(oldState)).resolves.toBeUndefined();
+    await expect(database.db.listCollections().toArray()).resolves.toHaveLength(
+      2,
+    );
+
+    collections.forEach(async (collection) => {
+      const currentDocuments = await database.db
+        .collection(collection)
+        .find()
+        .toArray();
+
+      expect(currentDocuments).toHaveLength(2);
+    });
+
+    const pathNewState = `${IMPORT_DATA_DIR}/remove-docs/new-state`;
+    const newState = seeder.readCollectionsFromPath(pathNewState);
+    const config: DeepPartial<SeederConfig> = {
+      database: {
+        name: DATABASE_NAME,
+      },
+      removeAllDocuments: true,
+    };
+    await expect(seeder.import(newState, config)).resolves.toBeUndefined();
+    await expect(database.db.listCollections().toArray()).resolves.toHaveLength(
+      2,
+    );
+
+    const docsCollectionOne = await database.db
+      .collection(collections[0])
+      .find()
+      .toArray();
+    expect(docsCollectionOne).toHaveLength(1);
+
+    const docsCollectionTwo = await database.db
+      .collection(collections[1])
+      .find()
+      .toArray();
+    expect(docsCollectionTwo).toHaveLength(2);
+
+    collections.forEach(async (collection) => {
+      const indexes = await database.db.collection(collection).indexes();
+
+      const index = indexes.find(
+        (o: any) => o.key.number === 1 && o.unique === true,
+      );
+      expect(indexes).not.toBeUndefined();
+    });
+  });
+
   it('should throw error when wrong path given', async () => {
     const seeder = new Seeder();
     await expect(() =>

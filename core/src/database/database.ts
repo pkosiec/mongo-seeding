@@ -84,6 +84,20 @@ export class Database {
   }
 
   /**
+   * Remove all documents from a given collection
+   * if it exists.
+   *
+   * @param collectionName Collection name
+   */
+  async removeAllDocumentsIfCollectionExists(collectionName: string) {
+    if (!(await this.ifCollectionExist(collectionName))) {
+      return;
+    }
+
+    return this.db.collection(collectionName).deleteMany({});
+  }
+
+  /**
    * Closes connection with database.
    */
   async closeConnection() {

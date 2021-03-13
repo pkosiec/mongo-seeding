@@ -30,6 +30,7 @@ describe('SeederConfig', () => {
       },
       dropDatabase: false,
       dropCollections: false,
+      removeAllDocuments: false,
       databaseReconnectTimeout: 20000,
     };
 
@@ -75,7 +76,7 @@ describe('SeederCollectionReadingOptions', () => {
       transformers: [],
       ejsonParseOptions: {
         relaxed: true,
-      }
+      },
     };
 
     const options = mergeCollectionReadingOptions(partialOptions);
