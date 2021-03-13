@@ -87,9 +87,15 @@ describe('Database', () => {
     ]);
   });
 
-  it('should not fail if collection does not exists', async () => {
-    await database.removeAllDocumentsIfCollectionExists(
-      'non-existing-collection',
-    );
+  it('should not fail if collection to drop does not exists', async () => {
+    await expect(
+      database.dropCollectionIfExists('non-existing-collection'),
+    ).resolves.toBeUndefined();
+  });
+
+  it('should not fail if collection with documents to remove does not exists', async () => {
+    await expect(
+      database.removeAllDocumentsIfCollectionExists('non-existing-collection'),
+    ).resolves.toBeUndefined();
   });
 });
