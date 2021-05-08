@@ -1,7 +1,7 @@
 import * as commandLineArgs from 'command-line-args';
 import { register } from 'ts-node';
 import { resolve } from 'path';
-import { Seeder, SeederConfig } from 'mongo-seeding';
+import { Seeder } from 'mongo-seeding';
 import {
   cliOptions,
   validateOptions,
