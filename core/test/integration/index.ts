@@ -169,25 +169,25 @@ describe('Mongo Seeding', () => {
     const pathOldState = `${IMPORT_DATA_DIR}/remove-docs/old-state`;
     const oldState = seeder.readCollectionsFromPath(pathOldState);
 
-    collections.forEach(async (collection) => {
+    for (const collection of collections) {
       await database.db
-        .collection(collection)
-        .createIndex({ number: 1 }, { unique: true });
-    });
+      .collection(collection)
+      .createIndex({ number: 1 }, { unique: true });
+    }
 
     await expect(seeder.import(oldState)).resolves.toBeUndefined();
     await expect(database.db.listCollections().toArray()).resolves.toHaveLength(
       2,
     );
 
-    collections.forEach(async (collection) => {
+    for (const collection of collections) {
       const currentDocuments = await database.db
-        .collection(collection)
-        .find()
-        .toArray();
+      .collection(collection)
+      .find()
+      .toArray();
 
       expect(currentDocuments).toHaveLength(2);
-    });
+    }
 
     const pathNewState = `${IMPORT_DATA_DIR}/remove-docs/new-state`;
     const newState = seeder.readCollectionsFromPath(pathNewState);
@@ -214,14 +214,10 @@ describe('Mongo Seeding', () => {
       .toArray();
     expect(docsCollectionTwo).toHaveLength(2);
 
-    collections.forEach(async (collection) => {
+    for (const collection of collections) {
       const indexes = await database.db.collection(collection).indexes();
-
-      const index = indexes.find(
-        (o: any) => o.key.number === 1 && o.unique === true,
-      );
       expect(indexes).not.toBeUndefined();
-    });
+    }
   });
 
   it('should throw error when wrong path given', async () => {
