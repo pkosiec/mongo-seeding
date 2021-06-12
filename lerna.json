@@ -15,10 +15,11 @@
   },
   "changelog": {
     "labels": {
-      "breaking": ":boom: Breaking Changes",
-      "enhancement": ":rocket: Enhancements",
-      "bug": ":bug: Bug Fixes",
-      "documentation": ":memo: Documentation"
+      ":boom: breaking": ":boom: Breaking Changes",
+      ":rocket: enhancement": ":rocket: Enhancements",
+      ":bug: bug": ":bug: Bug Fixes",
+      ":book: documentation": ":memo: Documentation",
+      ":hammer: maintenance": ":hammer: Maintenance"
     }
   },
   "lerna": "3.13.0"
