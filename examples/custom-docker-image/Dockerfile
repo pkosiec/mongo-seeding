@@ -1,4 +1,4 @@
-FROM pkosiec/mongo-seeding:3.4.1
+FROM pkosiec/mongo-seeding:3.7.0
 
 WORKDIR /data-import/
 
