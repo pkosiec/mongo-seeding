@@ -1,7 +1,7 @@
 {
   "name": "sample-data-example-ts",
   "description": "TypeScript samples for Mongo Seeding",
-  "version": "3.7.0-alpha.1",
+  "version": "3.7.0",
   "private": true,
   "license": "MIT",
   "author": {
@@ -14,7 +14,7 @@
     "url": "https://github.com/pkosiec/mongo-seeding"
   },
   "dependencies": {
-    "mongo-seeding": "^3.7.0-alpha.1",
+    "mongo-seeding": "^3.7.0",
     "mongodb": "^3.6.3",
     "typeorm": "^0.2.29"
   },
