@@ -3,7 +3,7 @@ name: Branch build
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build-node-apps:

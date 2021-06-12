@@ -1,8 +1,8 @@
-![Mongo Seeding](https://raw.githubusercontent.com/pkosiec/mongo-seeding/master/docs/assets/logo.png)
+![Mongo Seeding](https://raw.githubusercontent.com/pkosiec/mongo-seeding/main/docs/assets/logo.png)
 
 # Mongo Seeding
 
-[![npm version](https://badge.fury.io/js/mongo-seeding.svg)](https://npmjs.org/package/mongo-seeding) [![Build Status](https://travis-ci.org/pkosiec/mongo-seeding.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding) [![codecov](https://codecov.io/gh/pkosiec/mongo-seeding/branch/master/graph/badge.svg?flag=core)](https://codecov.io/gh/pkosiec/mongo-seeding) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg?path=core)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg?path=core)]() [![install size](https://packagephobia.now.sh/badge?p=mongo-seeding)](https://packagephobia.now.sh/result?p=mongo-seeding)
+[![npm version](https://badge.fury.io/js/mongo-seeding.svg)](https://npmjs.org/package/mongo-seeding) [![Build Status](https://github.com/pkosiec/mongo-seeding/actions/workflows/branch.yaml/badge.svg)](https://github.com/pkosiec/mongo-seeding/actions) [![codecov](https://codecov.io/gh/pkosiec/mongo-seeding/branch/main/graph/badge.svg?flag=core)](https://codecov.io/gh/pkosiec/mongo-seeding) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg?path=core)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg?path=core)]() [![install size](https://packagephobia.now.sh/badge?p=mongo-seeding)](https://packagephobia.now.sh/result?p=mongo-seeding)
 
 The ultimate solution for populating your MongoDB database. Define the data in JavaScript or JSON files. Import collections and documents!
 
@@ -64,7 +64,7 @@ npm install mongo-seeding --save
     const seeder = new Seeder(config);
     ```
 
-1.  **(OPTIONAL)** To read MongoDB collections from disk, firstly follow the [tutorial](https://github.com/pkosiec/mongo-seeding/blob/master/docs/import-data-definition.md) in order to define documents and collections to import. Next, read them using `readCollectionsFromPath` method:
+1.  **(OPTIONAL)** To read MongoDB collections from disk, firstly follow the [tutorial](https://github.com/pkosiec/mongo-seeding/blob/main/docs/import-data-definition.md) in order to define documents and collections to import. Next, read them using `readCollectionsFromPath` method:
 
     ```javascript
     const path = require('path');
@@ -97,7 +97,7 @@ npm install mongo-seeding --save
         });
       ```
 
-See an [**import data example**](https://github.com/pkosiec/mongo-seeding/blob/master/examples/import-data) for a sample Node.js application utilizing the library. 
+See an [**import data example**](https://github.com/pkosiec/mongo-seeding/blob/main/examples/import-data) for a sample Node.js application utilizing the library. 
 
 ## API description
 
@@ -164,7 +164,7 @@ const defaultConfig = {
 
 ### `readCollectionsFromPath(path, partialOptions?)`
 
-Populates collections and their documents from given path. The path has to contain import data structure described [here](https://github.com/pkosiec/mongo-seeding/blob/master/docs/import-data-definition.md).
+Populates collections and their documents from given path. The path has to contain import data structure described [here](https://github.com/pkosiec/mongo-seeding/blob/main/docs/import-data-definition.md).
 
 **Options**
 

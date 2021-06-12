@@ -49,7 +49,7 @@ export class Seeder {
 
   /**
    * Populates collections and their documents from given path.
-   * The path has to contain file structure described on https://github.com/pkosiec/mongo-seeding/blob/master/docs/import-data-definition.md.
+   * The path has to contain file structure described on https://github.com/pkosiec/mongo-seeding/blob/main/docs/import-data-definition.md.
    *
    * @param path File path
    * @param partialConfig Optional partial collection reading configuration object. It is merged with default configuration object. To use all default settings, simply omit this parameter.

@@ -1,8 +1,8 @@
-![Mongo Seeding](https://raw.githubusercontent.com/pkosiec/mongo-seeding/master/docs/assets/logo.png)
+![Mongo Seeding](https://raw.githubusercontent.com/pkosiec/mongo-seeding/main/docs/assets/logo.png)
 
 # Mongo Seeding CLI
 
-[![npm version](https://badge.fury.io/js/mongo-seeding-cli.svg)](https://npmjs.org/package/mongo-seeding-cli) [![Build Status](https://travis-ci.org/pkosiec/mongo-seeding.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding) [![codecov](https://codecov.io/gh/pkosiec/mongo-seeding/branch/master/graph/badge.svg?flag=cli)](https://codecov.io/gh/pkosiec/mongo-seeding) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg?path=cli)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg?path=cli)]() [![install size](https://packagephobia.now.sh/badge?p=mongo-seeding-cli)](https://packagephobia.now.sh/result?p=mongo-seeding-cli)
+[![npm version](https://badge.fury.io/js/mongo-seeding-cli.svg)](https://npmjs.org/package/mongo-seeding-cli) [![Build Status](https://github.com/pkosiec/mongo-seeding/actions/workflows/branch.yaml/badge.svg)](https://github.com/pkosiec/mongo-seeding/actions) [![codecov](https://codecov.io/gh/pkosiec/mongo-seeding/branch/main/graph/badge.svg?flag=cli)](https://codecov.io/gh/pkosiec/mongo-seeding) [![David](https://img.shields.io/david/pkosiec/mongo-seeding.svg?path=cli)]() [![David](https://img.shields.io/david/dev/pkosiec/mongo-seeding.svg?path=cli)]() [![install size](https://packagephobia.now.sh/badge?p=mongo-seeding-cli)](https://packagephobia.now.sh/result?p=mongo-seeding-cli)
 
 The ultimate CLI tool for populating your MongoDB database :rocket: 
 
@@ -18,7 +18,7 @@ npm install -g mongo-seeding-cli
 
 ## Usage
 
-1. Follow the [tutorial](https://github.com/pkosiec/mongo-seeding/blob/master/docs/import-data-definition.md) to define documents and collections to import.
+1. Follow the [tutorial](https://github.com/pkosiec/mongo-seeding/blob/main/docs/import-data-definition.md) to define documents and collections to import.
 1. In order to seed your database with data from current directory using default configuration, run the following command:
 
     ```bash
