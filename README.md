@@ -1,7 +1,7 @@
-![Mongo Seeding](https://raw.githubusercontent.com/pkosiec/mongo-seeding/master/docs/assets/logo.png)
+![Mongo Seeding](https://raw.githubusercontent.com/pkosiec/mongo-seeding/main/docs/assets/logo.png)
 
 # Mongo Seeding
-[![GitHub release](https://img.shields.io/github/release/pkosiec/mongo-seeding.svg)](https://github.com/pkosiec/mongo-seeding/releases) [![Build Status](https://travis-ci.org/pkosiec/mongo-seeding.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding) [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+[![GitHub release](https://img.shields.io/github/release/pkosiec/mongo-seeding.svg)](https://github.com/pkosiec/mongo-seeding/releases) [![Build Status](https://github.com/pkosiec/mongo-seeding/actions/workflows/branch.yaml/badge.svg)](https://github.com/pkosiec/mongo-seeding/actions) [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 
 The ultimate solution for populating your MongoDB database :rocket: 
 

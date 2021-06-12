@@ -1,10 +1,10 @@
-![Mongo Seeding](https://raw.githubusercontent.com/pkosiec/mongo-seeding/master/docs/assets/logo.png)
+![Mongo Seeding](https://raw.githubusercontent.com/pkosiec/mongo-seeding/main/docs/assets/logo.png)
 
 # Mongo Seeding Docker Image
 
 [![Docker image version](https://images.microbadger.com/badges/version/pkosiec/mongo-seeding.svg)](https://microbadger.com/images/pkosiec/mongo-seeding)
 [![Docker image size](https://images.microbadger.com/badges/image/pkosiec/mongo-seeding.svg)](https://microbadger.com/images/pkosiec/mongo-seeding)
-[![Build Status](https://travis-ci.org/pkosiec/mongo-seeding.svg?branch=master)](https://travis-ci.org/pkosiec/mongo-seeding)
+[![Build Status](https://travis-ci.org/pkosiec/mongo-seeding.svg?branch=main)](https://travis-ci.org/pkosiec/mongo-seeding)
 
 The ultimate Docker image for populating your MongoDB database :rocket: 
 
