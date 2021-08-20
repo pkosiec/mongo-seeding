@@ -59,7 +59,7 @@
   "devDependencies": {
     "@types/extend": "^3.0.1",
     "@types/fs-extra": "^9.0.6",
-    "@types/jest": "^26.0.19",
+    "@types/jest": "^26.0.24",
     "@types/mongodb": "^3.6.3",
     "babel-core": "^6.26.0",
     "fs-extra": "^10.0.0",

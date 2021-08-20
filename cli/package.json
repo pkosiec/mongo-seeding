@@ -74,11 +74,11 @@
   "devDependencies": {
     "@types/command-line-args": "^5.0.0",
     "@types/extend": "^3.0.1",
-    "@types/jest": "^26.0.19",
-    "@types/mongodb": "^3.6.9",
-    "@types/node": "^15.12.2",
+    "@types/jest": "^26.0.24",
+    "@types/mongodb": "^3.6.20",
+    "@types/node": "^16.6.1",
     "jest": "^27.0.4",
-    "mongodb": "3.6.9",
+    "mongodb": "3.6.11",
     "ts-jest": "^27.0.3"
   },
   "jest": {
