@@ -1,4 +1,4 @@
-import { Db, CollectionInsertManyOptions, MongoClient } from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
 import { LogFn } from '../common';
 
 /**
@@ -41,14 +41,11 @@ export class Database {
   async insertDocumentsIntoCollection(
     documentsToInsert: any[],
     collectionName: string,
-    collectionInsertOptions?: CollectionInsertManyOptions,
   ) {
     const documentsCopy = documentsToInsert.map((document) => ({
       ...document,
     }));
-    return this.db
-      .collection(collectionName)
-      .insertMany(documentsCopy, collectionInsertOptions);
+    return this.db.collection(collectionName).insertMany(documentsCopy);
   }
 
   /**
@@ -102,7 +99,7 @@ export class Database {
    */
   async closeConnection() {
     this.log('Closing connection...');
-    if (!this.client || !this.client.isConnected()) {
+    if (!this.client) {
       return;
     }
 

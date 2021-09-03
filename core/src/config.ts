@@ -1,7 +1,7 @@
 import * as extend from 'extend';
 import { SeederCollection, DeepPartial } from './common';
 import { SeederDatabaseConfig, defaultDatabaseConfigObject } from './database';
-import { CollectionInsertManyOptions, MongoClientOptions } from 'mongodb';
+import { MongoClientOptions } from 'mongodb';
 import { EJSON } from 'bson';
 
 /**
@@ -14,7 +14,6 @@ export interface SeederConfig {
   dropCollections: boolean; // drops collection before importing it
   removeAllDocuments: boolean; // deletes all documents from every collection that is being imported
   mongoClientOptions?: MongoClientOptions; // optional MongoDB client options
-  collectionInsertManyOptions?: CollectionInsertManyOptions; // optional MongoDB collection import options
 }
 
 /**

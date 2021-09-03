@@ -132,11 +132,7 @@ export class Seeder {
         await database.drop();
       }
 
-      await new CollectionImporter(
-        database,
-        config.collectionInsertManyOptions,
-        this.log,
-      ).import(collections);
+      await new CollectionImporter(database, this.log).import(collections);
     } catch (err) {
       throw wrapError(err);
     } finally {
