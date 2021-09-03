@@ -1,7 +1,7 @@
 {
   "name": "docker-image-mongo-seeding-example",
   "description": "JS and JSON samples for Mongo Seeding",
-  "version": "3.7.0-alpha.1",
+  "version": "4.1.1",
   "private": true,
   "license": "MIT",
   "author": {
@@ -14,8 +14,8 @@
     "url": "https://github.com/pkosiec/mongo-seeding"
   },
   "dependencies": {
-    "@types/node": "^15.12.2",
-    "mongo-seeding": "^3.7.0-alpha.1",
-    "mongodb": "^3.6.3"
+    "@types/node": "^16.6.1",
+    "mongo-seeding": "^4.1.1",
+    "mongodb": "^4.1.1"
   }
 }

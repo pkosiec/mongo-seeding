@@ -1,7 +1,7 @@
 {
   "name": "docker-image-tester",
   "description": "Tester app for Mongo Seeding Docker Image",
-  "version": "3.7.0-alpha.1",
+  "version": "4.1.1",
   "private": true,
   "license": "MIT",
   "author": {
@@ -20,7 +20,7 @@
   "dependencies": {
     "bson": "^4.2.2",
     "jest": "^27.0.4",
-    "mongodb": "^3.6.3"
+    "mongodb": "^4.1.1"
   },
   "jest": {
     "verbose": false,
