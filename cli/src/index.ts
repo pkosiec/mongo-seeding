@@ -18,7 +18,7 @@ class CliSeeder {
     try {
       options = commandLineArgs(cliOptions) as CommandLineArguments;
     } catch (err) {
-      return this.printErrorAndExit(err);
+      return this.printErrorAndExit(err as Error);
     }
 
     if (shouldShowHelp(options)) {
@@ -29,7 +29,7 @@ class CliSeeder {
     try {
       validateOptions(options);
     } catch (err) {
-      return this.printErrorAndExit(err);
+      return this.printErrorAndExit(err as Error);
     }
 
     const config = createConfigFromOptions(options);
@@ -45,7 +45,7 @@ class CliSeeder {
 
       await seeder.import(collections);
     } catch (err) {
-      return this.printErrorAndExit(err);
+      return this.printErrorAndExit(err as Error);
     }
 
     process.exit(0);

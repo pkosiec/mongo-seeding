@@ -70,9 +70,8 @@ export class DatabaseConnector {
     try {
       await mongoClient.connect();
     } catch (err) {
-      throw new Error(
-        `Error connecting to database: ${err.name}: ${err.message}`,
-      );
+      const e = err as Error;
+      throw new Error(`Error connecting to database: ${e.name}: ${e.message}`);
     }
 
     this.log('Connection with database established.');

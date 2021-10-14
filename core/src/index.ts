@@ -71,7 +71,7 @@ export class Seeder {
       this.log(`Reading collections from ${path}...`);
       collections = populator.readFromPath(path);
     } catch (err) {
-      throw wrapError(err);
+      throw wrapError(err as Error);
     }
 
     if (config.transformers.length > 0) {
@@ -138,7 +138,7 @@ export class Seeder {
         this.log,
       ).import(collections);
     } catch (err) {
-      throw wrapError(err);
+      throw wrapError(err as Error);
     } finally {
       if (database) {
         await database.closeConnection();
