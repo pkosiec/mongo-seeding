@@ -33,7 +33,7 @@
   "bugs": {
     "url": "https://github.com/pkosiec/mongo-seeding/issues"
   },
-  "version": "3.7.0",
+  "version": "3.7.1",
   "main": "dist/index.js",
   "files": [
     "dist/"
@@ -50,12 +50,12 @@
     "preversion": "npm run test; npm run build"
   },
   "dependencies": {
+    "@types/mongodb": "^3.6.20",
     "bson": "^4.5.3",
     "debug": "^4.3.1",
     "extend": "^3.0.0",
     "import-fresh": "^3.3.0",
-    "mongodb": "^3.6.4",
-    "@types/mongodb": "^3.6.20"
+    "mongodb": "^3.6.4"
   },
   "devDependencies": {
     "@types/extend": "^3.0.1",
