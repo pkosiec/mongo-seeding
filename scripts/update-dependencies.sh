@@ -23,7 +23,7 @@ echo "Updating dependencies..."
 function updateDependencies() {
     echo "> $1"
     cd $2
-    npm outdated
+    npm outdated || true
     npm update
     npm audit fix
 }
