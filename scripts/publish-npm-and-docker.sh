@@ -23,9 +23,16 @@ echo "Using tag: ${IMAGE_VERSION_TAG}"
 
 docker build -f ./docker-image/prod.Dockerfile --build-arg cliVersion=${IMAGE_VERSION_TAG} -t ${IMAGE_NAME}:${IMAGE_VERSION_TAG} .
 
-echo "Tagging Docker image with '${IMAGE_LATEST_TAG}' tag..."
-docker tag ${IMAGE_NAME}:${IMAGE_VERSION_TAG} ${IMAGE_NAME}:${IMAGE_LATEST_TAG}
-
-echo "Pushing images..."
+echo "Pushing Docker image..."
 docker push ${IMAGE_NAME}:${IMAGE_VERSION_TAG}
-docker push ${IMAGE_NAME}:${IMAGE_LATEST_TAG}
+
+
+read -p "Push the Docker image ${IMAGE_VERSION_TAG} as latest (y/n)?" choice
+case "$choice" in 
+  y|Y ) 
+    echo "Tagging and pushing Docker image with '${IMAGE_LATEST_TAG}' tag..."
+    docker tag ${IMAGE_NAME}:${IMAGE_VERSION_TAG} ${IMAGE_NAME}:${IMAGE_LATEST_TAG}
+    docker push ${IMAGE_NAME}:${IMAGE_LATEST_TAG} ;;
+  n|N ) echo "Skipping...";;
+  * ) echo "invalid";;
+esac
