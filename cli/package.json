@@ -76,7 +76,7 @@
     "@types/extend": "^3.0.1",
     "@types/jest": "^27.0.2",
     "@types/mongodb": "^3.6.20",
-    "@types/node": "^16.11.0",
+    "@types/node": "^17.0.23",
     "jest": "^27.2.5",
     "mongodb": "3.6.11",
     "ts-jest": "^27.0.6"
