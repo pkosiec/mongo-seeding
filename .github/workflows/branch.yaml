@@ -21,20 +21,13 @@ jobs:
           - 27017:27017
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '14.x'
-
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-            */*/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          node-version: 17
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install && npm run bootstrap
@@ -47,7 +40,7 @@ jobs:
         run: npm run test:coverage
 
       - name: Upload test coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
         with:
           files: ./${{ matrix.component }}/coverage/lcov.info
           flags: ${{ matrix.component }}
