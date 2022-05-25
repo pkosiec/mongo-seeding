@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "bson": "^4.2.2",
-    "jest": "^27.0.4",
+    "jest": "^28.0.1",
     "mongodb": "^3.6.3"
   },
   "jest": {
