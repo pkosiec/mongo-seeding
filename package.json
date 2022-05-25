@@ -23,7 +23,7 @@
     "update-deps": "bash ./scripts/update-dependencies.sh"
   },
   "devDependencies": {
-    "lerna": "^4.0.0",
+    "lerna": "^5.0.0",
     "lerna-changelog": "^2.2.0",
     "prettier": "^2.4.1",
     "tslint": "^6.1.3",
