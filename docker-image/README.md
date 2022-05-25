@@ -47,6 +47,16 @@ Define MongoDB documents in JSON, JavaScript or even TypeScript file(s). Import 
 
 The Docker image is basically a containerized CLI tool. Therefore, to configure the project, use environmental variables described in [Environmental Variables](../cli/README.md#environmental-variables) section of the CLI tool. Specify them with `-e {key}={value}` parameters.
 
+## Override image entrypoint and command
+
+As with every Docker container, you can override the [entrypoint](https://docs.docker.com/engine/reference/run/#entrypoint-default-command-to-execute-at-runtime) and the [command](https://docs.docker.com/engine/reference/run/#cmd-default-command-or-options).
+
+For example, to prevent Mongo Seeding Docker container from exiting after seeding, use the following command:
+
+```bash
+docker run --rm --entrypoint="sh" pkosiec/mongo-seeding -c 'seed; sleep infinity'
+```
+
 ## Docker image customization
 
 You can prepare a customized Docker image for data import. It allows you to prepare image that contains import data inside and is already configured for your needs.
