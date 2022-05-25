@@ -1,7 +1,7 @@
 {
   "name": "sample-data-example",
   "description": "JS and JSON samples for Mongo Seeding",
-  "version": "3.7.1",
+  "version": "3.7.2",
   "private": true,
   "license": "MIT",
   "author": {
@@ -15,6 +15,6 @@
   },
   "dependencies": {
     "@types/node": "^16.6.1",
-    "mongo-seeding": "^3.7.1"
+    "mongo-seeding": "^3.7.2"
   }
 }
