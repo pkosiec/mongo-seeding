@@ -1,6 +1,28 @@
 {
   "name": "mongo-seeding",
   "description": "The ultimate Node.js library for populating your MongoDB database.",
+  "homepage": "https://mongo-seeding.kosiec.dev",
+  "version": "3.7.2",
+  "license": "MIT",
+  "author": {
+    "name": "Paweł Kosiec",
+    "email": "pawel@kosiec.dev",
+    "url": "https://kosiec.dev"
+  },
+  "maintainers": [
+    {
+      "name": "Paweł Kosiec",
+      "email": "pawel@kosiec.dev",
+      "url": "https://kosiec.dev"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pkosiec/mongo-seeding.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pkosiec/mongo-seeding/issues"
+  },
   "keywords": [
     "mongo",
     "mongodb",
@@ -21,24 +43,10 @@
     "db",
     "ejson"
   ],
-  "author": {
-    "name": "Paweł Kosiec",
-    "email": "pawel@kosiec.dev",
-    "url": "https://kosiec.dev"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/pkosiec/mongo-seeding.git"
-  },
-  "bugs": {
-    "url": "https://github.com/pkosiec/mongo-seeding/issues"
-  },
-  "version": "3.7.2",
   "main": "dist/index.js",
   "files": [
     "dist/"
   ],
-  "license": "MIT",
   "scripts": {
     "test": "jest -i --ci",
     "test:unit": "jest unit",

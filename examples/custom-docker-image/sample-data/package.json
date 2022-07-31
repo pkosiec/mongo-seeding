@@ -6,15 +6,15 @@
   "license": "MIT",
   "author": {
     "name": "Paweł Kosiec",
-    "email": "pawel@kosiec.net",
-    "url": "https://kosiec.net"
+    "email": "pawel@kosiec.dev",
+    "url": "https://kosiec.dev"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/pkosiec/mongo-seeding"
   },
   "dependencies": {
-    "@types/node": "^17.0.35",
+    "@types/node": "^18.6.3",
     "mongo-seeding": "^3.7.2",
     "mongodb": "^3.6.3"
   }

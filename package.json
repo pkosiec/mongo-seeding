@@ -2,12 +2,12 @@
   "private": true,
   "author": {
     "name": "Paweł Kosiec",
-    "email": "pawel@kosiec.net",
-    "url": "https://kosiec.net"
+    "email": "pawel@kosiec.dev",
+    "url": "https://kosiec.dev"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pkosiec/mongo-seeding"
+    "url": "https://github.com/pkosiec/mongo-seeding.git"
   },
   "bugs": {
     "url": "https://github.com/pkosiec/mongo-seeding/issues"
