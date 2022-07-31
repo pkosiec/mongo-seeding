@@ -6,7 +6,8 @@
     "docker-image/test/tester",
     "examples/custom-docker-image/sample-data",
     "examples/import-data/example",
-    "examples/import-data-ts/example"
+    "examples/import-data-ts/example",
+    "examples/mongoose-express/example"
   ],
   "command": {
     "publish": {

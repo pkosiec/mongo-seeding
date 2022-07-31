@@ -1,6 +1,24 @@
 {
-  "main": "Mongo Seeding + Mongoose + Express.JS Example",
+  "name": "mongoose-express",
+  "description": "Mongo Seeding CLI + Mongoose + Express.JS Example",
+  "homepage": "https://mongo-seeding.kosiec.dev",
+  "version": "3.7.2",
+  "license": "MIT",
   "private": true,
+  "maintainers": [
+    {
+      "name": "Paweł Kosiec",
+      "email": "pawel@kosiec.dev",
+      "url": "https://kosiec.dev"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pkosiec/mongo-seeding.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pkosiec/mongo-seeding/issues"
+  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.17.1",

@@ -1,17 +1,23 @@
 {
   "name": "sample-data-example",
   "description": "JS and JSON samples for Mongo Seeding",
+  "homepage": "https://mongo-seeding.kosiec.dev",
   "version": "3.7.2",
-  "private": true,
   "license": "MIT",
-  "author": {
-    "name": "Paweł Kosiec",
-    "email": "pawel@kosiec.net",
-    "url": "https://kosiec.net"
-  },
+  "private": true,
+  "maintainers": [
+    {
+      "name": "Paweł Kosiec",
+      "email": "pawel@kosiec.dev",
+      "url": "https://kosiec.dev"
+    }
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/pkosiec/mongo-seeding"
+    "url": "https://github.com/pkosiec/mongo-seeding.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pkosiec/mongo-seeding/issues"
   },
   "dependencies": {
     "@types/node": "^16.6.1",
