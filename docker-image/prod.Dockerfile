@@ -1,5 +1,4 @@
-FROM node:17-alpine
-LABEL Maintainer="Pawel Kosiec <pawel@kosiec.net>"
+FROM node:18-alpine
 
 ARG cliVersion=""
 ENV CLI_VERSION=${cliVersion}
