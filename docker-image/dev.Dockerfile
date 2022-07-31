@@ -4,8 +4,7 @@
 # Stage 1: Core
 #
 
-FROM node:17-alpine AS coreBuilder
-LABEL Maintainer="Pawel Kosiec <pawel@kosiec.net>"
+FROM node:18-alpine AS coreBuilder
 
 ENV CORE_DIR=./core
 WORKDIR /app
@@ -29,7 +28,7 @@ RUN npm i --production --no-optional
 # Stage 2: CLI
 #
 
-FROM node:17-alpine as cliBuilder
+FROM node:18-alpine as cliBuilder
 
 ENV CLI_DIR=./cli
 WORKDIR /app
@@ -56,8 +55,7 @@ RUN rm -rf /app/src/ && \
 # Stage 3: Final Docker image
 #
 
-FROM node:17-alpine
-LABEL Maintainer="Pawel Kosiec <pawel@kosiec.net>"
+FROM node:18-alpine
 
 WORKDIR /app
 

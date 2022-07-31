@@ -23,12 +23,12 @@
   ],
   "author": {
     "name": "Paweł Kosiec",
-    "email": "pawel@kosiec.net",
-    "url": "https://kosiec.net"
+    "email": "pawel@kosiec.dev",
+    "url": "https://kosiec.dev"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pkosiec/mongo-seeding"
+    "url": "https://github.com/pkosiec/mongo-seeding.git"
   },
   "bugs": {
     "url": "https://github.com/pkosiec/mongo-seeding/issues"
@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@types/extend": "^3.0.1",
-    "@types/jest": "^27.0.2",
+    "@types/jest": "^28.1.6",
     "jest": "^28.1.0",
     "ts-jest": "^28.0.3",
     "typescript": "^4.4.4"
