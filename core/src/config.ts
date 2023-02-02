@@ -1,8 +1,8 @@
 import * as extend from 'extend';
 import { SeederCollection, DeepPartial } from './common';
 import { SeederDatabaseConfig, defaultDatabaseConfigObject } from './database';
-import { CollectionInsertManyOptions, MongoClientOptions } from 'mongodb';
-import { EJSON } from 'bson';
+import { BulkWriteOptions, MongoClientOptions } from 'mongodb';
+import { EJSONOptions } from 'bson';
 
 /**
  * Defines configuration for database seeding.
@@ -14,7 +14,7 @@ export interface SeederConfig {
   dropCollections: boolean; // drops collection before importing it
   removeAllDocuments: boolean; // deletes all documents from every collection that is being imported
   mongoClientOptions?: MongoClientOptions; // optional MongoDB client options
-  collectionInsertManyOptions?: CollectionInsertManyOptions; // optional MongoDB collection import options
+  bulkWriteOptions?: BulkWriteOptions; // optional MongoDB collection create options
 }
 
 /**
@@ -53,7 +53,7 @@ export const mergeSeederConfig = (
  */
 export interface SeederCollectionReadingOptions {
   extensions: string[]; // files that should be imported
-  ejsonParseOptions?: EJSON.Options; // options for parsing EJSON files with `.json` extension
+  ejsonParseOptions?: EJSONOptions; // options for parsing EJSON files with `.json` extension
   transformers: Array<(collection: SeederCollection) => SeederCollection>; // optional transformer functions
 }
 

@@ -1,5 +1,5 @@
 import { readdirSync, lstatSync, readFileSync } from 'fs';
-import { EJSON } from 'bson';
+import { EJSON, EJSONOptions } from 'bson';
 import { extname } from 'path';
 const importFresh = require('import-fresh');
 
@@ -107,7 +107,7 @@ export class FileSystem {
    *
    * @param paths Array of paths
    */
-  readFilesContent(paths: string[], ejsonParseOptions: EJSON.Options) {
+  readFilesContent(paths: string[], ejsonParseOptions: EJSONOptions) {
     return paths.reduce<any[]>((arr: any[], path) => {
       const fileContent: any = this.readFile(path, ejsonParseOptions);
       return arr.concat(fileContent);
@@ -119,7 +119,7 @@ export class FileSystem {
    *
    * @param path File path
    */
-  readFile(path: string, ejsonParseOptions: EJSON.Options): any {
+  readFile(path: string, ejsonParseOptions: EJSONOptions): any {
     const fileExtension = extname(path);
 
     if (fileExtension !== '.json') {

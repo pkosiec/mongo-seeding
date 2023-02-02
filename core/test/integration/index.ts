@@ -171,8 +171,8 @@ describe('Mongo Seeding', () => {
 
     for (const collection of collections) {
       await database.db
-      .collection(collection)
-      .createIndex({ number: 1 }, { unique: true });
+        .collection(collection)
+        .createIndex({ number: 1 }, { unique: true });
     }
 
     await expect(seeder.import(oldState)).resolves.toBeUndefined();
@@ -182,9 +182,9 @@ describe('Mongo Seeding', () => {
 
     for (const collection of collections) {
       const currentDocuments = await database.db
-      .collection(collection)
-      .find()
-      .toArray();
+        .collection(collection)
+        .find()
+        .toArray();
 
       expect(currentDocuments).toHaveLength(2);
     }
@@ -231,9 +231,6 @@ describe('Mongo Seeding', () => {
     const config: DeepPartial<SeederConfig> = {
       database: 'mongodb://foo:bar@localhost:27017/name',
       databaseReconnectTimeout: 1,
-      mongoClientOptions: {
-        useUnifiedTopology: false,
-      },
     };
 
     const path = `${IMPORT_DATA_DIR}/index-import`;

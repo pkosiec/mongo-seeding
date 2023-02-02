@@ -11,8 +11,6 @@ beforeAll(async () => {
   console.log(`Connecting to database using URI '${dbConnectionUri}'...`);
   client = new MongoClient(dbConnectionUri, {
     ignoreUndefined: true,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
   });
   await client.connect();
   console.log(`Using database '${databaseName}'...`);

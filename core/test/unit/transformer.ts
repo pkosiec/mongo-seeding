@@ -71,8 +71,10 @@ describe('CollectionTransformer', () => {
     ];
 
     const now = new Date();
-    const dateMock = jest.spyOn(global, 'Date').mockImplementation(() => now as unknown as string)
-   
+    const dateMock = jest
+      .spyOn(global, 'Date')
+      .mockImplementation(() => now as unknown as Date);
+
     const expectedData = [
       {
         name: 'Test',
@@ -92,7 +94,6 @@ describe('CollectionTransformer', () => {
         ],
       },
     ];
-
 
     const actualData = collectionTransformer.transform(collections, [
       DefaultTransformers.setCreatedAtTimestamp,
