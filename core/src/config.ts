@@ -8,13 +8,34 @@ import { EJSONOptions } from 'bson';
  * Defines configuration for database seeding.
  */
 export interface SeederConfig {
-  database: SeederDatabaseConfig; // database connection URI or configuration object
-  databaseReconnectTimeout: number; // maximum time of waiting for successful MongoDB connection in milliseconds. Ignored when `mongoClientOptions` are passed.
-  dropDatabase: boolean; // drops entire database before import
-  dropCollections: boolean; // drops collection before importing it
-  removeAllDocuments: boolean; // deletes all documents from every collection that is being imported
-  mongoClientOptions?: MongoClientOptions; // optional MongoDB client options
-  bulkWriteOptions?: BulkWriteOptions; // optional MongoDB collection create options
+  /**
+   * Database connection URI or configuration object.
+   */
+  database: SeederDatabaseConfig;
+  /**
+   * Maximum time of waiting for successful MongoDB connection in milliseconds. Ignored when `mongoClientOptions` are passed.
+   */
+  databaseReconnectTimeout: number;
+  /**
+   * Drops entire database before import.
+   */
+  dropDatabase: boolean;
+  /**
+   * Drops collection before importing it.
+   */
+  dropCollections: boolean;
+  /**
+   * Deletes all documents from every collection that is being imported.
+   */
+  removeAllDocuments: boolean;
+  /**
+   * Optional MongoDB client options.
+   */
+  mongoClientOptions?: MongoClientOptions;
+  /**
+   * Optional MongoDB collection write options.
+   */
+  bulkWriteOptions?: BulkWriteOptions;
 }
 
 /**
@@ -52,9 +73,20 @@ export const mergeSeederConfig = (
  * Defines collection reading configuration.
  */
 export interface SeederCollectionReadingOptions {
-  extensions: string[]; // files that should be imported
-  ejsonParseOptions?: EJSONOptions; // options for parsing EJSON files with `.json` extension
-  transformers: Array<(collection: SeederCollection) => SeederCollection>; // optional transformer functions
+  /**
+   * Files extensions that should be imported
+   */
+  extensions: string[];
+
+  /**
+   * Options for parsing EJSON files with `.json` extension
+   */
+  ejsonParseOptions?: EJSONOptions;
+
+  /**
+   * Optional transformer functions that can be used to modify collection data before import.
+   */
+  transformers: ((collection: SeederCollection) => SeederCollection)[];
 }
 
 /**

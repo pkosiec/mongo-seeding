@@ -114,13 +114,40 @@ You can override any default configuration property by passing partial config ob
 The following snippet represents the type definition of `Seeder` config with all available properties:
 
 ```typescript
+
+/**
+ * Defines configuration for database seeding.
+ */
 export interface SeederConfig {
-  database: string | SeederDatabaseConfigObject; // database connection URI or configuration object
-  databaseReconnectTimeout: number; // maximum time of waiting for successful MongoDB connection in milliseconds. Ignored when `mongoClientOptions` are passed.
-  dropDatabase: boolean; // drops entire database before import
-  dropCollections: boolean; // drops every collection which is being imported
-  mongoClientOptions?: MongoClientOptions; // optional MongoDB connect options
-  collectionInsertManyOptions?: CollectionInsertManyOptions; // optional MongoDB collection import options
+
+    /**
+     * Database connection URI or configuration object.
+     */
+    database: SeederDatabaseConfig;
+    /**
+     * Maximum time of waiting for successful MongoDB connection in milliseconds. Ignored when `mongoClientOptions` are passed.
+     */
+    databaseReconnectTimeout: number;
+    /**
+     * Drops entire database before import.
+     */
+    dropDatabase: boolean;
+    /**
+     * Drops collection before importing it.
+     */
+    dropCollections: boolean;
+    /**
+     * Deletes all documents from every collection that is being imported.
+     */
+    removeAllDocuments: boolean;
+    /**
+     * Optional MongoDB client options.
+     */
+    mongoClientOptions?: MongoClientOptions;
+    /**
+     * Optional MongoDB collection write options.
+     */
+    bulkWriteOptions?: BulkWriteOptions;
 }
 
 export interface SeederDatabaseConfigObject {
@@ -158,7 +185,7 @@ const defaultConfig = {
   dropDatabase: false,
   dropCollections: false,
   mongoClientOptions: undefined,
-  collectionInsertManyOptions: undefined;
+  bulkWriteOptions: undefined
 };
 ```
 
@@ -171,16 +198,30 @@ Populates collections and their documents from given path. The path has to conta
 You can specify an optional partial options object for this method, which will be merged with default configuration object. See the interface of the options, which describes all possible options:
 
 ```typescript
+/**
+ * Defines collection reading configuration.
+ */
 export interface SeederCollectionReadingOptions {
-  extensions: string[]; // files that should be imported
-  ejsonParseOptions?: EJSON.Options; // options for parsing EJSON files with `.json` extension
-  transformers: Array<(collection: SeederCollection) => SeederCollection>; // optional transformer functions
+    /**
+     * Files extensions that should be imported
+     */
+    extensions: string[];
+
+    /**
+     * Options for parsing EJSON files with `.json` extension
+     */
+    ejsonParseOptions?: EJSONOptions;
+
+    /**
+     * Optional transformer functions that can be used to modify collection data before import.
+     */
+    transformers: ((collection: SeederCollection) => SeederCollection)[];
 }
 ```
 
 For example, you may provide the following options object:
 
-```javascript
+```typescript
 const collectionReadingOptions = {
   extensions: ['ts', 'js', 'cjs', 'json'],
   ejsonParseOptions: {
@@ -199,7 +240,7 @@ const collections = seeder.readCollectionsFromPath(
 
 Transform function is a simple function in a form of `(collection: SeederCollection) => SeederCollection`. It means that you can manipulate collections after reading them from disk. `SeederCollection` is defined as follows:
 
-```javascript
+```typescript
 interface SeederCollection {
   name: string;
   documents: object[];
@@ -216,7 +257,7 @@ There is two built-in transform functions:
 
 The default options object is as follows:
 
-```javascript
+```typescript
 const defaultCollectionReadingConfig: SeederCollectionReadingConfig = {
   extensions: ['json', 'js', 'cjs'],
   ejsonParseOptions: {
@@ -230,7 +271,7 @@ const defaultCollectionReadingConfig: SeederCollectionReadingConfig = {
 
 This method connects to a database and imports all provided collections. `collections` argument type is an array of `SeederCollection` type, which is defined as follows:
 
-```javascript
+```typescript
 interface SeederCollection {
   name: string;
   documents: object[];
