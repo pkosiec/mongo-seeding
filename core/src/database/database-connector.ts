@@ -51,7 +51,11 @@ export class DatabaseConnector {
             ...DatabaseConnector.DEFAULT_CLIENT_OPTIONS,
             connectTimeoutMS: reconnectTimeoutMillis,
           };
-    this.log = log ? log : () => {};
+    this.log = log
+      ? log
+      : () => {
+          // do nothing
+        };
   }
 
   /**
@@ -87,7 +91,7 @@ export class DatabaseConnector {
       return config;
     }
 
-    if (isSeederDatabaseConfigObject(config)) {
+    if (isSeederDatabaseConfigObject(config as unknown)) {
       return this.getDbConnectionUri(config);
     }
 

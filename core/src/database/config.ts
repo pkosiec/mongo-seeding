@@ -70,13 +70,17 @@ export const defaultDatabaseConfigObject: SeederDatabaseConfigObject = {
  *
  * @param object Input object
  */
-export function isSeederDatabaseConfigObject(
-  object: any,
-): object is SeederDatabaseConfigObject {
+export function isSeederDatabaseConfigObject(object: unknown): boolean {
+  if (typeof object !== 'object' && object === null) {
+    return false;
+  }
+
+  const obj = object as { [key: string]: unknown };
+
   return (
-    typeof object.protocol === 'string' &&
-    typeof object.host === 'string' &&
-    typeof object.port === 'number' &&
-    typeof object.name === 'string'
+    typeof obj.protocol === 'string' &&
+    typeof obj.host === 'string' &&
+    typeof obj.port === 'number' &&
+    typeof obj.name === 'string'
   );
 }

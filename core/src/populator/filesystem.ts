@@ -1,6 +1,7 @@
-import { readdirSync, lstatSync, readFileSync } from 'fs';
+import { lstatSync, readdirSync, readFileSync } from 'fs';
 import { EJSON, EJSONOptions } from 'bson';
 import { extname } from 'path';
+
 const importFresh = require('import-fresh');
 
 /**
@@ -25,7 +26,7 @@ export class FileSystem {
    */
   listValidDirectories(path: string) {
     const filesAndDirectories = this.listFileNames(path);
-    const directories = filesAndDirectories.filter((fileOrDirectory) => {
+    return filesAndDirectories.filter((fileOrDirectory) => {
       const itemPath = `${path}/${fileOrDirectory}`;
       return (
         this.isDirectory(itemPath) &&
@@ -33,7 +34,6 @@ export class FileSystem {
         !this.isHidden(fileOrDirectory)
       );
     });
-    return directories;
   }
 
   /**
@@ -74,7 +74,7 @@ export class FileSystem {
     fileNames: string[],
     supportedExtensions: string[],
   ) {
-    const documentFileNames = fileNames.filter((fileName) => {
+    return fileNames.filter((fileName) => {
       const fileNameSplit = fileName.split(
         FileSystem.FILE_NAME_SPLIT_CHARACTER,
       );
@@ -82,13 +82,11 @@ export class FileSystem {
         return false;
       }
 
-      const fileExtension = fileNameSplit.pop()!;
+      const fileExtension = fileNameSplit.pop();
       return supportedExtensions.some(
-        (extension) => extension.toLowerCase() === fileExtension.toLowerCase(),
+        (extension) => extension.toLowerCase() === fileExtension?.toLowerCase(),
       );
     });
-
-    return documentFileNames;
   }
 
   /**
@@ -106,11 +104,12 @@ export class FileSystem {
    * Reads content for multiple files.
    *
    * @param paths Array of paths
+   * @param ejsonParseOptions EJSON parse options
    */
   readFilesContent(paths: string[], ejsonParseOptions: EJSONOptions) {
-    return paths.reduce<any[]>((arr: any[], path) => {
-      const fileContent: any = this.readFile(path, ejsonParseOptions);
-      return arr.concat(fileContent);
+    return paths.reduce<object[]>((arr: object[], path) => {
+      const fileContent: unknown = this.readFile(path, ejsonParseOptions);
+      return arr.concat(fileContent as object);
     }, []);
   }
 
@@ -118,8 +117,9 @@ export class FileSystem {
    * Reads a file from path. If it is a JSON, uses EJSON parser.
    *
    * @param path File path
+   * @param ejsonParseOptions EJSON parse options
    */
-  readFile(path: string, ejsonParseOptions: EJSONOptions): any {
+  readFile(path: string, ejsonParseOptions: EJSONOptions): unknown {
     const fileExtension = extname(path);
 
     if (fileExtension !== '.json') {

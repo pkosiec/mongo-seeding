@@ -5,12 +5,18 @@ import { defaultCollectionReadingOptions } from '../../src';
 describe('CollectionPopulator', () => {
   it('should throw an error when passed no supported extensions', () => {
     expect(() => {
-      new CollectionPopulator([], defaultCollectionReadingOptions.ejsonParseOptions!);
+      new CollectionPopulator(
+        [],
+        defaultCollectionReadingOptions.ejsonParseOptions!,
+      );
     }).toThrowError('Array of supported extensions must not be empty');
   });
 
   it('should get proper collection metadata from directory name', () => {
-    const collectionPopulator = new CollectionPopulator(['js'], defaultCollectionReadingOptions.ejsonParseOptions!);
+    const collectionPopulator = new CollectionPopulator(
+      ['js'],
+      defaultCollectionReadingOptions.ejsonParseOptions!,
+    );
     const camelCaseName = 'TestCollection';
     const dashCaseName = 'collection-name';
     const dotCaseName = 'collection.name';
@@ -76,7 +82,10 @@ describe('CollectionPopulator', () => {
   });
 
   it('should sort collections', () => {
-    const collectionPopulator = new CollectionPopulator(['json'], defaultCollectionReadingOptions.ejsonParseOptions!);
+    const collectionPopulator = new CollectionPopulator(
+      ['json'],
+      defaultCollectionReadingOptions.ejsonParseOptions!,
+    );
     const input: SeederCollection[] = [
       {
         name: 'no-number',

@@ -122,7 +122,7 @@ export class Seeder {
       if (!config.dropDatabase && config.removeAllDocuments) {
         this.log('Removing all documents from collections...');
         const promises = collections.map((collection) =>
-          database!.removeAllDocumentsIfCollectionExists(collection.name),
+          database?.removeAllDocumentsIfCollectionExists(collection.name),
         );
         await Promise.all(promises);
       }

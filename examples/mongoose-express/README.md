@@ -6,6 +6,7 @@ There are three models defined, `customers`, `menus`, and `orders`.
 ## Prerequisites
 
 In order to run this example, install the following tools:
+
 - [NodeJS with NPM](https://nodejs.org)
 - [Mongoose](https://mongoosejs.com/)
 - [Express](https://expressjs.com/)
@@ -19,55 +20,55 @@ Create the following Mongoose models:
 **Customer model**
 
 ```js
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const CustomerShema = mongoose.Schema({
-    name: String,
-    lastname: String,
-    email: {
-        type: String,
-        unique: true
-    },
-    password: String,
+  name: String,
+  lastname: String,
+  email: {
+    type: String,
+    unique: true,
+  },
+  password: String,
 });
 
-module.exports = mongoose.model("Customer", CustomerShema);
+module.exports = mongoose.model('Customer', CustomerShema);
 ```
 
 **Menu model**
 
 ```js
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const MenuSchema = mongoose.Schema({
-    name: String,
-    price: Number,
-    category: {
-        type: String,
-        enum: ["firstCourse", "mainCourse"],
-        default: "mainCourse",
-    },
+  name: String,
+  price: Number,
+  category: {
+    type: String,
+    enum: ['firstCourse', 'mainCourse'],
+    default: 'mainCourse',
+  },
 });
 
-module.exports = mongoose.model("Menu", MenuSchema);
+module.exports = mongoose.model('Menu', MenuSchema);
 ```
 
 **Order model**
 
 ```js
-const mongoose = require("mongoose");
-const Menu = require("./menu");
-const Customer = require("./customer");
+const mongoose = require('mongoose');
+const Menu = require('./menu');
+const Customer = require('./customer');
 
 const Schema = mongoose.Schema;
 
 const OrderSchema = Schema({
-    order_detail: [{ type: Schema.Types.ObjectId, ref: Menu }],
-    customer: { type: Schema.Types.ObjectId, ref: Customer },
-    date: Date,
+  order_detail: [{ type: Schema.Types.ObjectId, ref: Menu }],
+  customer: { type: Schema.Types.ObjectId, ref: Customer },
+  date: Date,
 });
 
-module.exports = mongoose.model("Order", OrderSchema);
+module.exports = mongoose.model('Order', OrderSchema);
 ```
 
 ## Define proper directory structure
@@ -97,20 +98,20 @@ Create the following files:
 
 ```json
 [
-    {
-        "_id": { "$oid": "5e8508ea69a10e42d07414be" },
-        "name": "Emma",
-        "lastname": "Watson",
-        "email": "emma@watson.com",
-        "password": "$2a$10$hhn8vSvl6rpv42undbkQ.O5XIdIJkujyqQWqKIxRJgLQYCGlM/6rW"
-    },
-    {
-        "_id": { "$oid": "5e850bd669a10e42d07414c0" },
-        "name": "Pablo",
-        "lastname": "Picasso",
-        "email": "pablo@picasso.com",
-        "password": "$2a$10$hhn8vSvl6rpv42undbkQ.O5XIdIJkujyqQWqKIxRJgLQYCGlM/6rW"
-    }
+  {
+    "_id": { "$oid": "5e8508ea69a10e42d07414be" },
+    "name": "Emma",
+    "lastname": "Watson",
+    "email": "emma@watson.com",
+    "password": "$2a$10$hhn8vSvl6rpv42undbkQ.O5XIdIJkujyqQWqKIxRJgLQYCGlM/6rW"
+  },
+  {
+    "_id": { "$oid": "5e850bd669a10e42d07414c0" },
+    "name": "Pablo",
+    "lastname": "Picasso",
+    "email": "pablo@picasso.com",
+    "password": "$2a$10$hhn8vSvl6rpv42undbkQ.O5XIdIJkujyqQWqKIxRJgLQYCGlM/6rW"
+  }
 ]
 ```
 
@@ -118,30 +119,30 @@ Create the following files:
 
 ```json
 [
-    {
-        "_id": { "$oid": "5e6066bea0403411bc4a3333" },
-        "name": "Ceviche",
-        "price": 18.0,
-        "category": "firstCourse"
-    },
-    {
-        "_id": { "$oid": "5e6066e9a0403411bc4a3334" },
-        "name": "Tacos",
-        "price": 18.0,
-        "category": "firstCourse"
-    },
-    {
-        "_id": { "$oid": "5e606408dc8aec3040688a86" },
-        "name": "Lomo saltado",
-        "price": 20.0,
-        "category": "mainCourse"
-    },
-    {
-        "_id": { "$oid": "5e60650ea0403411bc4a332f" },
-        "name": "Stew",
-        "price": 20.0,
-        "category": "mainCourse"
-    }
+  {
+    "_id": { "$oid": "5e6066bea0403411bc4a3333" },
+    "name": "Ceviche",
+    "price": 18.0,
+    "category": "firstCourse"
+  },
+  {
+    "_id": { "$oid": "5e6066e9a0403411bc4a3334" },
+    "name": "Tacos",
+    "price": 18.0,
+    "category": "firstCourse"
+  },
+  {
+    "_id": { "$oid": "5e606408dc8aec3040688a86" },
+    "name": "Lomo saltado",
+    "price": 20.0,
+    "category": "mainCourse"
+  },
+  {
+    "_id": { "$oid": "5e60650ea0403411bc4a332f" },
+    "name": "Stew",
+    "price": 20.0,
+    "category": "mainCourse"
+  }
 ]
 ```
 
@@ -149,30 +150,30 @@ Create the following files:
 
 ```json
 [
-    {
-        "_id": { "$oid": "5e8186aa5d750a38e4260fcc" },
-        "order_detail": [
-            { "$oid": "5e606408dc8aec3040688a86" },
-            { "$oid": "5e6066bea0403411bc4a3333" }
-        ],
-        "customer": { "$oid": "5e8508ea69a10e42d07414be" },
-        "date": { "$date": { "$numberLong": "1583902800000" } }
-    },
-    {
-        "_id": { "$oid": "5e8187d53eda1f3a20d887e1" },
-        "order_detail": [
-            { "$oid": "5e60650ea0403411bc4a332f" },
-            { "$oid": "5e6066e9a0403411bc4a3334" }
-        ],
-        "customer": { "$oid": "5e850bd669a10e42d07414c0" },
-        "date": { "$date": { "$numberLong": "1583902800000" } }
-    }
+  {
+    "_id": { "$oid": "5e8186aa5d750a38e4260fcc" },
+    "order_detail": [
+      { "$oid": "5e606408dc8aec3040688a86" },
+      { "$oid": "5e6066bea0403411bc4a3333" }
+    ],
+    "customer": { "$oid": "5e8508ea69a10e42d07414be" },
+    "date": { "$date": { "$numberLong": "1583902800000" } }
+  },
+  {
+    "_id": { "$oid": "5e8187d53eda1f3a20d887e1" },
+    "order_detail": [
+      { "$oid": "5e60650ea0403411bc4a332f" },
+      { "$oid": "5e6066e9a0403411bc4a3334" }
+    ],
+    "customer": { "$oid": "5e850bd669a10e42d07414c0" },
+    "date": { "$date": { "$numberLong": "1583902800000" } }
+  }
 ]
 ```
 
 ## Use Mongo Seeding
 
-> **NOTE:** You can import data using any Mongo Seeding tool. This example shows Mongo Seeding CLI usage. 
+> **NOTE:** You can import data using any Mongo Seeding tool. This example shows Mongo Seeding CLI usage.
 
 The following example imports data from `./mongoose-express/data` directory using MongoDB connection URI `mongodb://127.0.0.1:27017/mydb` with option to drop database before import:
 
@@ -192,23 +193,23 @@ Create the following file:
 **index.js**
 
 ```js
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const port = process.env.PORT || 3000;
-const Order = require("./models/order");
+const Order = require('./models/order');
 const app = express();
 
 const api = express.Router();
 
-api.get("/orders", (req, res) => {
-    Order.find()
-        .populate("order_detail customer")
-        .exec(function (err, order) {
-            if (err) return handleError(err);
+api.get('/orders', (req, res) => {
+  Order.find()
+    .populate('order_detail customer')
+    .exec(function (err, order) {
+      if (err) return res.status(500).send(err);
 
-            res.status(200).send(order);
-        });
+      res.status(200).send(order);
+    });
 });
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -216,17 +217,17 @@ app.use(bodyParser.json());
 app.use(`/`, api);
 
 mongoose.connect(
-    `mongodb://localhost:27017/mydb`,
-    { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
-    (err, res) => {
-        if (err) {
-            throw err;
-        } else {
-            app.listen(port, () => {
-                console.log(`Server is running on http://localhost:${port}`);
-            });
-        }
+  `mongodb://localhost:27017/mydb`,
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
+  (err, res) => {
+    if (err) {
+      throw err;
+    } else {
+      app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+      });
     }
+  },
 );
 ```
 
@@ -247,57 +248,58 @@ curl 'http://localhost:3000/orders'
 ```
 
 The response is:
+
 ```json
 [
-    {
-        "order_detail": [
-            {
-                "category": "mainCourse",
-                "_id": "5e606408dc8aec3040688a86",
-                "name": "Lomo saltado",
-                "price": 20
-            },
-            {
-                "category": "firstCourse",
-                "_id": "5e6066bea0403411bc4a3333",
-                "name": "Ceviche",
-                "price": 18
-            }
-        ],
-        "_id": "5e8186aa5d750a38e4260fcc",
-        "customer": {
-            "_id": "5e8508ea69a10e42d07414be",
-            "name": "Emma",
-            "lastname": "Watson",
-            "email": "emma@watson.com",
-            "password": "$2a$10$hhn8vSvl6rpv42undbkQ.O5XIdIJkujyqQWqKIxRJgLQYCGlM/6rW"
-        },
-        "date": "2020-03-11T05:00:00.000Z"
+  {
+    "order_detail": [
+      {
+        "category": "mainCourse",
+        "_id": "5e606408dc8aec3040688a86",
+        "name": "Lomo saltado",
+        "price": 20
+      },
+      {
+        "category": "firstCourse",
+        "_id": "5e6066bea0403411bc4a3333",
+        "name": "Ceviche",
+        "price": 18
+      }
+    ],
+    "_id": "5e8186aa5d750a38e4260fcc",
+    "customer": {
+      "_id": "5e8508ea69a10e42d07414be",
+      "name": "Emma",
+      "lastname": "Watson",
+      "email": "emma@watson.com",
+      "password": "$2a$10$hhn8vSvl6rpv42undbkQ.O5XIdIJkujyqQWqKIxRJgLQYCGlM/6rW"
     },
-    {
-        "order_detail": [
-            {
-                "category": "mainCourse",
-                "_id": "5e60650ea0403411bc4a332f",
-                "name": "Stew",
-                "price": 20
-            },
-            {
-                "category": "firstCourse",
-                "_id": "5e6066e9a0403411bc4a3334",
-                "name": "Tacos",
-                "price": 18
-            }
-        ],
-        "_id": "5e8187d53eda1f3a20d887e1",
-        "customer": {
-            "_id": "5e850bd669a10e42d07414c0",
-            "name": "Pablo",
-            "lastname": "Picasso",
-            "email": "pablo@picasso.com",
-            "password": "$2a$10$hhn8vSvl6rpv42undbkQ.O5XIdIJkujyqQWqKIxRJgLQYCGlM/6rW"
-        },
-        "date": "2020-03-11T05:00:00.000Z"
-    }
+    "date": "2020-03-11T05:00:00.000Z"
+  },
+  {
+    "order_detail": [
+      {
+        "category": "mainCourse",
+        "_id": "5e60650ea0403411bc4a332f",
+        "name": "Stew",
+        "price": 20
+      },
+      {
+        "category": "firstCourse",
+        "_id": "5e6066e9a0403411bc4a3334",
+        "name": "Tacos",
+        "price": 18
+      }
+    ],
+    "_id": "5e8187d53eda1f3a20d887e1",
+    "customer": {
+      "_id": "5e850bd669a10e42d07414c0",
+      "name": "Pablo",
+      "lastname": "Picasso",
+      "email": "pablo@picasso.com",
+      "password": "$2a$10$hhn8vSvl6rpv42undbkQ.O5XIdIJkujyqQWqKIxRJgLQYCGlM/6rW"
+    },
+    "date": "2020-03-11T05:00:00.000Z"
+  }
 ]
 ```

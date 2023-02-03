@@ -32,7 +32,7 @@ describe('CollectionPopulator', () => {
         {
           number: 5,
           name: 'five',
-        }
+        },
       ],
       object: [
         {
@@ -60,7 +60,7 @@ describe('CollectionPopulator', () => {
       // @ts-ignore
       const documents = collectionPopulator.populateDocumentsContent(path);
 
-      expectedDocuments[key].forEach(expectedDocument => {
+      expectedDocuments[key].forEach((expectedDocument) => {
         expect(documents).toContainEqual(
           expect.objectContaining(expectedDocument),
         );
@@ -88,7 +88,7 @@ describe('CollectionPopulator', () => {
     const path = `${IMPORT_DATA_DIR}/populator-skip-empty`;
 
     const dirsToCreate = ['empty-dir-1', 'empty-dir-2'];
-    dirsToCreate.forEach(dir => {
+    dirsToCreate.forEach((dir) => {
       const dirPath = `${path}/${dir}`;
       if (existsSync(dirPath)) {
         return;

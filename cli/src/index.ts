@@ -39,7 +39,7 @@ class CliSeeder {
 
     try {
       const collections = seeder.readCollectionsFromPath(
-        resolve(config.cli!.dataPath!),
+        resolve(config.cli?.dataPath ?? './'),
         config.collectionReading,
       );
 

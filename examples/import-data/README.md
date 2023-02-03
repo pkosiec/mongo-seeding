@@ -63,7 +63,7 @@ In order to import the sample data, use one of Mongo Seeding tools. The followin
       .then(() => {
         console.log('Success');
       })
-      .catch(err => {
+      .catch((err) => {
         console.log('Error', err);
       });
     ```

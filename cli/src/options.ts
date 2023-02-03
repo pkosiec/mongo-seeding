@@ -267,9 +267,11 @@ function populateEnvOptions(): PartialCliOptions {
   };
 }
 
-export function convertEmptyObjectToUndefined(obj: any): object | undefined {
+export function convertEmptyObjectToUndefined(obj: {
+  [key: string]: unknown;
+}): object | undefined {
   for (const key in obj) {
-    if (obj.hasOwnProperty(key) && typeof obj[key] !== 'undefined') {
+    if (typeof obj[key] !== 'undefined') {
       return obj;
     }
   }

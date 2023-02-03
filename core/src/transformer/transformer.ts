@@ -17,8 +17,8 @@ export class CollectionTransformer {
   ) {
     let arr = collections;
 
-    transformers.forEach(transformFn => {
-      arr = arr.map(collection => transformFn(collection));
+    transformers.forEach((transformFn) => {
+      arr = arr.map((collection) => transformFn(collection));
     });
 
     return arr;

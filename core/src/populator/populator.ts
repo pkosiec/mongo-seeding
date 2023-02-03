@@ -22,6 +22,8 @@ export class CollectionPopulator {
    * Constructs new `CollectionPopulator` object.
    *
    * @param extensions Array of file extensions
+   * @param ejsonParseOptions  EJSON parse options
+   * @param log Logger instance
    */
   constructor(
     extensions: string[],
@@ -33,7 +35,11 @@ export class CollectionPopulator {
     }
     this.extensions = extensions;
     this.ejsonParseOptions = ejsonParseOptions;
-    this.log = log ? log : () => {};
+    this.log = log
+      ? log
+      : () => {
+          // do nothing
+        };
   }
 
   /**
@@ -146,7 +152,7 @@ export class CollectionPopulator {
   private getCollectionMetadata(
     directoryName: string,
   ): SeederCollectionMetadata {
-    const separators = /\s*[-_\.\s]\s*/;
+    const separators = /\s*[-_.\s]\s*/;
 
     const isMatch = directoryName.match(separators);
     if (!isMatch) {

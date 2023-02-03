@@ -17,7 +17,6 @@ describe('Collection Importer', () => {
     const importer = new CollectionImporter(db, opts);
     importer.import([collection]);
 
-    // @ts-ignore
     expect(db.insertDocumentsIntoCollection).toBeCalledTimes(1);
     expect(db.insertDocumentsIntoCollection).toBeCalledWith(
       collection.documents,

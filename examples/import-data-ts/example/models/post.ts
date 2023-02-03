@@ -4,7 +4,7 @@ import {
   ObjectIdColumn,
 } from 'typeorm';
 import { ObjectId } from 'mongodb';
-import { Author, Comment, Category } from '../models/index';
+import { Author, Comment } from '../models/index';
 
 @Collection('posts')
 export class Post {
