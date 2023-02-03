@@ -1,17 +1,19 @@
 ![Mongo Seeding](https://raw.githubusercontent.com/pkosiec/mongo-seeding/main/docs/assets/logo.png)
 
 # Mongo Seeding
+
 [![GitHub release](https://img.shields.io/github/release/pkosiec/mongo-seeding.svg)](https://github.com/pkosiec/mongo-seeding/releases) [![Build Status](https://github.com/pkosiec/mongo-seeding/actions/workflows/branch.yaml/badge.svg)](https://github.com/pkosiec/mongo-seeding/actions) [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 
-The ultimate solution for populating your MongoDB database :rocket: 
+The ultimate solution for populating your MongoDB database :rocket:
 
 Define MongoDB documents in JSON, JavaScript or even TypeScript files. Use JS library, install CLI or run Docker image to import them!
 
 ## Introduction
 
-Mongo Seeding is a flexible set of tools for importing data into MongoDB database. 
+Mongo Seeding is a flexible set of tools for importing data into MongoDB database.
 
 It's great for:
+
 - testing database queries, automatically or manually
 - preparing ready-to-go development environment for your application
 - setting initial state for your application
@@ -22,9 +24,9 @@ It's great for:
 
 1. Use one of the Mongo Seeding tools, depending on your needs:
 
-    - [TypeScript/JavaScript library with friendly API](./core)
-    - [Command line interface (CLI)](./cli)
-    - [Docker image](./docker-image)
+   - [TypeScript/JavaScript library with friendly API](./core)
+   - [Command line interface (CLI)](./cli)
+   - [Docker image](./docker-image)
 
 1. ???
 1. Profit!
@@ -41,9 +43,9 @@ Imagine that you want to import 10 very similar documents into `authors` collect
 
 ```json
 {
-    "name": "{NAME_HERE}",
-    "email": "example@example.com",
-    "avatar": "https://placekitten.com/300/300"
+  "name": "{NAME_HERE}",
+  "email": "example@example.com",
+  "avatar": "https://placekitten.com/300/300"
 }
 ```
 
@@ -51,31 +53,31 @@ With every tool I've ever found, you would need to create 5 separate JSON files,
 
 ```json
 [
-    {
-        "name": "John",
-        "email": "example@example.com",
-        "avatar": "https://placekitten.com/300/300"
-    },
-    {
-        "name": "Joanne",
-        "email": "example@example.com",
-        "avatar": "https://placekitten.com/300/300"
-    },
-    {
-        "name": "Bob",
-        "email": "example@example.com",
-        "avatar": "https://placekitten.com/300/300"
-    },
-    {
-        "name": "Will",
-        "email": "example@example.com",
-        "avatar": "https://placekitten.com/300/300"
-    },
-    {
-        "name": "Chris",
-        "email": "example@example.com",
-        "avatar": "https://placekitten.com/300/300"
-    }
+  {
+    "name": "John",
+    "email": "example@example.com",
+    "avatar": "https://placekitten.com/300/300"
+  },
+  {
+    "name": "Joanne",
+    "email": "example@example.com",
+    "avatar": "https://placekitten.com/300/300"
+  },
+  {
+    "name": "Bob",
+    "email": "example@example.com",
+    "avatar": "https://placekitten.com/300/300"
+  },
+  {
+    "name": "Will",
+    "email": "example@example.com",
+    "avatar": "https://placekitten.com/300/300"
+  },
+  {
+    "name": "Chris",
+    "email": "example@example.com",
+    "avatar": "https://placekitten.com/300/300"
+  }
 ]
 ```
 
@@ -86,30 +88,30 @@ Imagine that now you have to change authors' email. You would probably use searc
 If you could use JavaScript to define the authors documents, it would be much easier and faster to write something like this:
 
 ```javascript
-const names = ["John", "Joanne", "Bob", "Will", "Chris"];
+const names = ['John', 'Joanne', 'Bob', 'Will', 'Chris'];
 
-module.exports = names.map(name => ({
-    name,
-    email: "example@example.com",
-    avatar: "https://placekitten.com/300/300",
-}))
+module.exports = names.map((name) => ({
+  name,
+  email: 'example@example.com',
+  avatar: 'https://placekitten.com/300/300',
+}));
 ```
 
 Obviously, in JavaScript files you can also import other files - external libraries, helper methods etc. It's easy to write some data randomization rules - which are mostly essential for creating development sample data. Consider the following example of `people` collection import:
 
 ```javascript
-const { getObjectId } = require("../../helpers/index");
+const { getObjectId } = require('../../helpers/index');
 
-const names = ["John", "Joanne", "Bob", "Will", "Chris"];
+const names = ['John', 'Joanne', 'Bob', 'Will', 'Chris'];
 
 const min = 18;
 const max = 100;
 
-module.exports = names.map(name => ({
-    firstName: name,
-    age: Math.floor(Math.random() * (max - min + 1)) + min,
-    _id: getObjectId(name),
-}))
+module.exports = names.map((name) => ({
+  firstName: name,
+  age: Math.floor(Math.random() * (max - min + 1)) + min,
+  _id: getObjectId(name),
+}));
 ```
 
 The difference should be noticeable. This way of defining import data feels just right. And yes, you can do that in Mongo Seeding. But, JSON files are supported as well.
@@ -120,16 +122,16 @@ In multiple JSON files which contains MongoDB documents definition, it's easy to
 
 ```json
 [
-    {
-        "name": "John",
-        "email": "john@mail.de",
-        "age": 18
-    },
-    {
-        "name": "Bob",
-        "email": "bob@example.com",
-        "age": "none"
-    }
+  {
+    "name": "John",
+    "email": "john@mail.de",
+    "age": 18
+  },
+  {
+    "name": "Bob",
+    "email": "bob@example.com",
+    "age": "none"
+  }
 ]
 ```
 
@@ -149,16 +151,16 @@ export interface Person {
 import { Person } from '../../models/index';
 
 const people: Person[] = [
-    {
-        name: "John",
-        email: "john@mail.de",
-        age: 18,
-    },
-    {
-        name: "Bob",
-        emial: "bob@example.com", // <-- error underlined in IDE
-        age: "none", //  <-- error underlined in IDE
-    },
+  {
+    name: 'John',
+    email: 'john@mail.de',
+    age: 18,
+  },
+  {
+    name: 'Bob',
+    emial: 'bob@example.com', // <-- error underlined in IDE
+    age: 'none', //  <-- error underlined in IDE
+  },
 ];
 
 export = people;
@@ -166,7 +168,7 @@ export = people;
 
 If you used types, you would instantly see that you made mistakes - not only during import, but much earlier, in your IDE.
 
-At this point some can say: “We had this for years — this is the purpose of mongoose!”. The problem is that importing a bigger amount of data with mongoose is painfully slow — because of the model validation. You can decide to use a faster approach, `Model.collection.insert()` 
+At this point some can say: “We had this for years — this is the purpose of mongoose!”. The problem is that importing a bigger amount of data with mongoose is painfully slow — because of the model validation. You can decide to use a faster approach, `Model.collection.insert()`
 method, but in this case you disable model validation completely!
 
 Also, starting from version 3.6, MongoDB supports JSON Schema validation. Even if you are OK with writing validation rules in JSON, you still have to try inserting a document into collection to see if the object is valid. It is too slow and cumbersome, isn’t it? How to solve this problem?
@@ -180,6 +182,7 @@ The Mongo Seeding CLI and Mongo Seeding Docker Image have TypeScript runtime bui
 Tools like this should be as flexible as possible. Some developers need just CLI tool, and some want to import data programmatically. Before writing Mongo Seeding, I needed a ready-to-use Docker image and found none. Dockerizing an application is easy, but it takes time.
 
 That's why Mongo Seeding consists of:
+
 - [TypeScript/JavaScript library](./core) - it can be installed straight from NPM and used in any JavaScript/TypeScript project,
 - [Command line interface (CLI)](./cli) - it can be installed globally and used from command line in any location,
 - [Docker image](./docker-image) - it is good for containerized applications.

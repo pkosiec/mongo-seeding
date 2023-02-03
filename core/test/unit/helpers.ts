@@ -26,7 +26,7 @@ describe('getObjectIds helper', () => {
     const names = ['Test', 'foo', 'bar'];
     const objIds = getObjectIds(names);
 
-    objIds.forEach(objId => {
+    objIds.forEach((objId) => {
       expect(objId).toBeInstanceOf(ObjectId);
     });
   });

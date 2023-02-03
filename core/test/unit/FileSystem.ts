@@ -121,7 +121,10 @@ describe('FileSystem', () => {
       },
     ];
 
-    const actualContentArray = fileSystem.readFilesContent(documentFilePaths, {});
+    const actualContentArray = fileSystem.readFilesContent(
+      documentFilePaths,
+      {},
+    );
 
     expect(actualContentArray).toEqual(expectedContentArray);
   });

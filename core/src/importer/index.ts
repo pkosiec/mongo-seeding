@@ -26,15 +26,16 @@ export class CollectionImporter {
    *
    * @param db Database object
    * @param bulkWriteOptions Optional MongoDB bulk write options
+   * @param log Optional logger instance
    */
-  constructor(
-    db: Database,
-    collectionInsertManyOptions?: BulkWriteOptions,
-    log?: LogFn,
-  ) {
+  constructor(db: Database, bulkWriteOptions?: BulkWriteOptions, log?: LogFn) {
     this.db = db;
-    this.bulkWriteOptions = collectionInsertManyOptions;
-    this.log = log ? log : () => {};
+    this.bulkWriteOptions = bulkWriteOptions;
+    this.log = log
+      ? log
+      : () => {
+          // do nothing
+        };
   }
 
   /**

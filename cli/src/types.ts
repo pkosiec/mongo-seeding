@@ -31,7 +31,7 @@ export interface CommandLineArguments {
   'ejson-parse-canonical-mode'?: boolean;
 }
 
-interface CliOptions {
+export interface CliOptions {
   seeder: SeederConfig;
   collectionReading: SeederCollectionReadingOptions;
   cli: CliSpecificOptions;

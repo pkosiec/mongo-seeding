@@ -23,12 +23,17 @@ export class Database {
   /**
    * Constructs a new `Database` object.
    *
-   * @param db MongoDB database object
+   * @param mongoClient MongoDB Client
+   * @param log Optional logger
    */
   constructor(mongoClient: MongoClient, log?: LogFn) {
     this.client = mongoClient;
     this.db = mongoClient.db();
-    this.log = log ? log : () => {};
+    this.log = log
+      ? log
+      : () => {
+          // do nothing
+        };
   }
 
   /**
@@ -36,10 +41,10 @@ export class Database {
    *
    * @param documentsToInsert Array of documents, which are being imported
    * @param collectionName Collection name
-   * @param collectionInsertOptions Optional collection import options
+   * @param bulkWriteOptions Optional collection import options
    */
   async insertDocumentsIntoCollection(
-    documentsToInsert: any[],
+    documentsToInsert: object[],
     collectionName: string,
     bulkWriteOptions?: BulkWriteOptions,
   ) {

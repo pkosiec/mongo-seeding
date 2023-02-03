@@ -44,21 +44,21 @@ This guide describes how to define the data for seeding your MongoDB database.
 
      ```typescript
      export = {
-         name: "Parrot"
-     }
+       name: 'Parrot',
+     };
      ```
 
      **Array of objects**
 
      ```typescript
      export = [
-         {
-             name: "Dog"
-         },
-         {
-             name: "Cat"
-         }
-     ]
+       {
+         name: 'Dog',
+       },
+       {
+         name: 'Cat',
+       },
+     ];
      ```
 
      > **Note:** TypeScript files are supported in Mongo Seeding CLI and Mongo Seeding Docker image. You can utilize static type checking in your custom app with Mongo Seeding library, but you have to include TypeScript runtime and then enable `ts` support in configuration.

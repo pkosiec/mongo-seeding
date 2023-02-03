@@ -11,7 +11,7 @@ api.get('/orders', (req, res) => {
   Order.find()
     .populate('order_detail customer')
     .exec(function (err, order) {
-      if (err) return handleError(err);
+      if (err) return res.status(500).send(err);
 
       res.status(200).send(order);
     });
@@ -24,7 +24,7 @@ app.use(`/`, api);
 mongoose.connect(
   `mongodb://localhost:27017/mydb`,
   { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
-  (err, res) => {
+  (err) => {
     if (err) {
       throw err;
     } else {

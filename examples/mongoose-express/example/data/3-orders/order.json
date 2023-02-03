@@ -1,20 +1,20 @@
 [
-    {
-        "_id": { "$oid": "5e8186aa5d750a38e4260fcc" },
-        "order_detail": [
-            { "$oid": "5e606408dc8aec3040688a86" },
-            { "$oid": "5e6066bea0403411bc4a3333" }
-        ],
-        "customer": { "$oid": "5e8508ea69a10e42d07414be" },
-        "date": { "$date": { "$numberLong": "1583902800000" } }
-    },
-    {
-        "_id": { "$oid": "5e8187d53eda1f3a20d887e1" },
-        "order_detail": [
-            { "$oid": "5e60650ea0403411bc4a332f" },
-            { "$oid": "5e6066e9a0403411bc4a3334" }
-        ],
-        "customer": { "$oid": "5e850bd669a10e42d07414c0" },
-        "date": { "$date": { "$numberLong": "1583902800000" } }
-    }
+  {
+    "_id": { "$oid": "5e8186aa5d750a38e4260fcc" },
+    "order_detail": [
+      { "$oid": "5e606408dc8aec3040688a86" },
+      { "$oid": "5e6066bea0403411bc4a3333" }
+    ],
+    "customer": { "$oid": "5e8508ea69a10e42d07414be" },
+    "date": { "$date": { "$numberLong": "1583902800000" } }
+  },
+  {
+    "_id": { "$oid": "5e8187d53eda1f3a20d887e1" },
+    "order_detail": [
+      { "$oid": "5e60650ea0403411bc4a332f" },
+      { "$oid": "5e6066e9a0403411bc4a3334" }
+    ],
+    "customer": { "$oid": "5e850bd669a10e42d07414c0" },
+    "date": { "$date": { "$numberLong": "1583902800000" } }
+  }
 ]

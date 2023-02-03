@@ -41,12 +41,14 @@ const replaceDocumentIdWithUnderscoreId = (
  *
  * @param collection Collection details
  */
-const setCreatedAtTimestamp = (collection: SeederCollection): SeederCollection => {
+const setCreatedAtTimestamp = (
+  collection: SeederCollection,
+): SeederCollection => {
   const documents = collection.documents.map(
     (document: { createdAt?: Date }) => {
       const documentToInsert = {
         ...document,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       return documentToInsert;
@@ -64,12 +66,14 @@ const setCreatedAtTimestamp = (collection: SeederCollection): SeederCollection =
  *
  * @param collection Collection details
  */
-const setUpdatedAtTimestamp = (collection: SeederCollection): SeederCollection => {
+const setUpdatedAtTimestamp = (
+  collection: SeederCollection,
+): SeederCollection => {
   const documents = collection.documents.map(
     (document: { updatedAt?: Date }) => {
       const documentToInsert = {
         ...document,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       return documentToInsert;
@@ -88,5 +92,5 @@ const setUpdatedAtTimestamp = (collection: SeederCollection): SeederCollection =
 export const DefaultTransformers = {
   replaceDocumentIdWithUnderscoreId,
   setCreatedAtTimestamp,
-  setUpdatedAtTimestamp
+  setUpdatedAtTimestamp,
 };
