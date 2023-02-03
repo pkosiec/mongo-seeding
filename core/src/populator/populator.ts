@@ -1,4 +1,4 @@
-import { EJSON } from 'bson';
+import { EJSONOptions } from 'bson';
 import { SeederCollection, SeederCollectionMetadata, LogFn } from '../common';
 import { fileSystem } from './filesystem';
 
@@ -11,7 +11,7 @@ export class CollectionPopulator {
    */
   extensions: string[];
 
-  ejsonParseOptions: EJSON.Options;
+  ejsonParseOptions: EJSONOptions;
 
   /**
    * Logger instance
@@ -25,7 +25,7 @@ export class CollectionPopulator {
    */
   constructor(
     extensions: string[],
-    ejsonParseOptions: EJSON.Options,
+    ejsonParseOptions: EJSONOptions,
     log?: LogFn,
   ) {
     if (extensions.length === 0) {

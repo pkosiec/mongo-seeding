@@ -1,6 +1,6 @@
 import { Database } from '../database';
 import { SeederCollection, LogFn } from '../common';
-import { CollectionInsertManyOptions } from 'mongodb';
+import { BulkWriteOptions } from 'mongodb';
 
 /**
  * Allows to import collections into database.
@@ -17,23 +17,23 @@ export class CollectionImporter {
   log: LogFn;
 
   /**
-   * Optional MongoDB collection import options
+   * Optional MongoDB collection create options
    */
-  collectionInsertManyOptions?: CollectionInsertManyOptions;
+  bulkWriteOptions?: BulkWriteOptions;
 
   /**
    * Constructs new `CollectionImporter` instance.
    *
    * @param db Database object
-   * @param collectionInsertManyOptions Optional MongoDB Collection InsertMany Options
+   * @param bulkWriteOptions Optional MongoDB bulk write options
    */
   constructor(
     db: Database,
-    collectionInsertManyOptions?: CollectionInsertManyOptions,
+    collectionInsertManyOptions?: BulkWriteOptions,
     log?: LogFn,
   ) {
     this.db = db;
-    this.collectionInsertManyOptions = collectionInsertManyOptions;
+    this.bulkWriteOptions = collectionInsertManyOptions;
     this.log = log ? log : () => {};
   }
 
@@ -60,7 +60,7 @@ export class CollectionImporter {
     return this.db.insertDocumentsIntoCollection(
       collection.documents,
       collection.name,
-      this.collectionInsertManyOptions,
+      this.bulkWriteOptions,
     );
   }
 }

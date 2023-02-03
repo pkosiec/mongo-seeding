@@ -134,7 +134,7 @@ export class Seeder {
 
       await new CollectionImporter(
         database,
-        config.collectionInsertManyOptions,
+        config.bulkWriteOptions,
         this.log,
       ).import(collections);
     } catch (err) {

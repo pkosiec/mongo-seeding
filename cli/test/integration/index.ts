@@ -56,8 +56,6 @@ describe('CLI', () => {
 
     const client = new MongoClient(dbConnectionUri, {
       ignoreUndefined: true,
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       connectTimeoutMS: 10000,
     });
     await client.connect();

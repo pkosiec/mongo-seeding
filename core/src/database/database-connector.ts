@@ -19,8 +19,6 @@ export class DatabaseConnector {
 
   static DEFAULT_CLIENT_OPTIONS: MongoClientOptions = {
     ignoreUndefined: true,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
     connectTimeoutMS: 10000,
   };
 

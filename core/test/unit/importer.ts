@@ -1,6 +1,6 @@
 import { CollectionImporter } from '../../src/importer';
 import { Database } from '../../src/database';
-import { CollectionInsertManyOptions } from 'mongodb';
+import { BulkWriteOptions } from 'mongodb';
 import { SeederCollection } from '../../src/common';
 
 describe('Collection Importer', () => {
@@ -10,7 +10,7 @@ describe('Collection Importer', () => {
 
     db.insertDocumentsIntoCollection = jest.fn();
 
-    const opts: CollectionInsertManyOptions = {
+    const opts: BulkWriteOptions = {
       ordered: true,
       bypassDocumentValidation: true,
     };

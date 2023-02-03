@@ -4,52 +4,20 @@
 # Stage 1: Core
 #
 
-FROM node:18-alpine AS coreBuilder
+FROM node:18-alpine AS builder
 
-ENV CORE_DIR=./core
 WORKDIR /app
 
-# Copy sources
-COPY $CORE_DIR/package.json $CORE_DIR/package-lock.json $CORE_DIR/tsconfig.json /app/
-COPY $CORE_DIR/src /app/src/
+COPY package.json package-lock.json lerna.json ./
 
-# Install dependencies
-RUN npm install --no-optional
+COPY cli/ /app/cli/
+COPY core/ /app/core/
 
-# Build app
-RUN npm run build
+RUN npm install
+RUN npm run bootstrap
+RUN npx lerna run build --scope mongo-seeding
+RUN npx lerna run build --scope mongo-seeding-cli
 
-# Remove sources
-RUN rm -rf /app/src/ &&  \
-    rm -rf /app/node_modules/
-RUN npm i --production --no-optional
-
-#
-# Stage 2: CLI
-#
-
-FROM node:18-alpine as cliBuilder
-
-ENV CLI_DIR=./cli
-WORKDIR /app
-
-# Install dependencies
-COPY $CLI_DIR/package.json $CLI_DIR/package-lock.json $CLI_DIR/tsconfig.json /app/
-RUN npm i --no-optional
-
-# Copy built core 
-COPY --from=coreBuilder /app/ node_modules/mongo-seeding/
-
-# Copy app sources
-COPY $CLI_DIR/src/ /app/src/
-COPY $CLI_DIR/bin/ /app/bin/
-
-# Build app
-RUN npm run build
-
-# Remove unnecessary sources
-RUN rm -rf /app/src/ && \
-    rm -rf /app/node_modules/
 
 #
 # Stage 3: Final Docker image
@@ -66,15 +34,11 @@ LABEL org.opencontainers.image.title="Mongo Seeding" \
 
 WORKDIR /app
 
-COPY --from=cliBuilder /app/ /app/
+COPY --from=builder /app/cli/ /app/
 
 # Create a symlink
-RUN npm i --production --no-optional && \
-    npm link && \
-    rm -rf /app/node_modules/mongo-seeding/
-
-# Copy built core 
-COPY --from=coreBuilder /app/ /app/node_modules/mongo-seeding/
+RUN npm i --omit=optional --omit=dev && \
+    npm link
 
 WORKDIR /data
 CMD seed
