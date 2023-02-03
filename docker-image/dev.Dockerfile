@@ -15,6 +15,7 @@ COPY core/ /app/core/
 
 RUN npm install
 RUN npm run bootstrap
+RUN npx lerna run build --scope mongo-seeding
 RUN npx lerna run build --scope mongo-seeding-cli
 
 
