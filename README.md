@@ -22,7 +22,7 @@ It's great for:
 
 1. Use one of the Mongo Seeding tools, depending on your needs:
 
-    - [JavaScript library with friendly API](./core)
+    - [TypeScript/JavaScript library with friendly API](./core)
     - [Command line interface (CLI)](./cli)
     - [Docker image](./docker-image)
 
@@ -123,20 +123,20 @@ In multiple JSON files which contains MongoDB documents definition, it's easy to
     {
         "name": "John",
         "email": "john@mail.de",
-        "age": 18,
+        "age": 18
     },
     {
         "name": "Bob",
-        "emial": "bob@example.com",
-        "age": "none",
-    },
+        "email": "bob@example.com",
+        "age": "none"
+    }
 ]
 ```
 
 Because of a typo, Bob has `email` field empty. Also, there is a non-number value for `age` key.
-The same problem would exist in JavaScript data definition. But, if you was able to use TypeScript, the situation slightly changes:
+The same problem would exist in JavaScript data definition. But, if you were able to use TypeScript, the situation slightly changes:
 
-```javascript
+```typescript
 export interface Person {
   name: string;
   email: string;
@@ -144,7 +144,7 @@ export interface Person {
 }
 ```
 
-```javascript
+```typescript
 // import interface defined above
 import { Person } from '../../models/index';
 
@@ -180,7 +180,7 @@ The Mongo Seeding CLI and Mongo Seeding Docker Image have TypeScript runtime bui
 Tools like this should be as flexible as possible. Some developers need just CLI tool, and some want to import data programmatically. Before writing Mongo Seeding, I needed a ready-to-use Docker image and found none. Dockerizing an application is easy, but it takes time.
 
 That's why Mongo Seeding consists of:
-- [JavaScript library](./core) - it can be installed straight from NPM and used in any JavaScript/TypeScript project,
+- [TypeScript/JavaScript library](./core) - it can be installed straight from NPM and used in any JavaScript/TypeScript project,
 - [Command line interface (CLI)](./cli) - it can be installed globally and used from command line in any location,
 - [Docker image](./docker-image) - it is good for containerized applications.
 
