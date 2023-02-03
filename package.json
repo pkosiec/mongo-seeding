@@ -13,7 +13,6 @@
     "url": "https://github.com/pkosiec/mongo-seeding/issues"
   },
   "scripts": {
-    "postinstall": "npm run setup-hooks",
     "setup-hooks": "git config core.hooksPath ./scripts/git-hooks",
     "bootstrap": "lerna bootstrap",
     "changelog": "lerna-changelog",
