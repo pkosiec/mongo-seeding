@@ -39,6 +39,7 @@ RUN npm i --no-optional
 
 # Copy built core 
 COPY --from=coreBuilder /app/ node_modules/mongo-seeding/
+RUN rm -rf node_modules/@types/mongodb # TODO: Remove temporary workaround
 
 # Copy app sources
 COPY $CLI_DIR/src/ /app/src/
