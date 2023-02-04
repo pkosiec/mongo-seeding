@@ -93,7 +93,7 @@ export interface SeederCollectionReadingOptions {
  * Stores default collection reading configuration values.
  */
 export const defaultCollectionReadingOptions: SeederCollectionReadingOptions = {
-  extensions: ['json', 'js', 'cjs'],
+  extensions: ['json', 'js', 'cjs', 'mjs'],
   ejsonParseOptions: {
     relaxed: true,
   },

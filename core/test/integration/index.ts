@@ -70,7 +70,7 @@ describe('Mongo Seeding', () => {
     const seeder = new Seeder(config);
 
     const path = `${IMPORT_DATA_DIR}/index-import`;
-    const collections = seeder.readCollectionsFromPath(path, {
+    const collections = await seeder.readCollectionsFromPath(path, {
       transformers: [
         Seeder.Transformers.replaceDocumentIdWithUnderscoreId,
         Seeder.Transformers.setCreatedAtTimestamp,
@@ -120,7 +120,7 @@ describe('Mongo Seeding', () => {
 
     await createCollection(database.db, 'drop-db-should-be-removed');
     const seeder = new Seeder();
-    const collections = seeder.readCollectionsFromPath(path);
+    const collections = await seeder.readCollectionsFromPath(path);
     await expect(seeder.import(collections, config)).resolves.toBeUndefined();
 
     const dbCollections = await listExistingCollections(database.db);
@@ -148,7 +148,7 @@ describe('Mongo Seeding', () => {
 
     const seeder = new Seeder();
     const path = `${IMPORT_DATA_DIR}/drop-col`;
-    const collections = seeder.readCollectionsFromPath(path);
+    const collections = await seeder.readCollectionsFromPath(path);
     await expect(seeder.import(collections, config)).resolves.toBeUndefined();
 
     const dbCollections = await listExistingCollections(database.db);
@@ -167,7 +167,7 @@ describe('Mongo Seeding', () => {
       },
     });
     const pathOldState = `${IMPORT_DATA_DIR}/remove-docs/old-state`;
-    const oldState = seeder.readCollectionsFromPath(pathOldState);
+    const oldState = await seeder.readCollectionsFromPath(pathOldState);
 
     for (const collection of collections) {
       await database.db
@@ -190,7 +190,7 @@ describe('Mongo Seeding', () => {
     }
 
     const pathNewState = `${IMPORT_DATA_DIR}/remove-docs/new-state`;
-    const newState = seeder.readCollectionsFromPath(pathNewState);
+    const newState = await seeder.readCollectionsFromPath(pathNewState);
     const config: DeepPartial<SeederConfig> = {
       database: {
         name: DATABASE_NAME,
@@ -222,9 +222,9 @@ describe('Mongo Seeding', () => {
 
   it('should throw error when wrong path given', async () => {
     const seeder = new Seeder();
-    await expect(() =>
+    await expect(
       seeder.readCollectionsFromPath('/this/path/surely/doesnt/exist'),
-    ).toThrowError('Error: ENOENT');
+    ).rejects.toThrowError('Error: ENOENT');
   });
 
   it('should throw error when cannot connect to database', async () => {
@@ -235,7 +235,7 @@ describe('Mongo Seeding', () => {
 
     const path = `${IMPORT_DATA_DIR}/index-import`;
     const seeder = new Seeder(config);
-    const collections = seeder.readCollectionsFromPath(path);
+    const collections = await seeder.readCollectionsFromPath(path);
 
     await expect(seeder.import(collections)).rejects.toThrowError('Error');
   });

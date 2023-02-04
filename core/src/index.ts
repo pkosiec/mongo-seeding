@@ -54,10 +54,10 @@ export class Seeder {
    * @param path File path
    * @param partialConfig Optional partial collection reading configuration object. It is merged with default configuration object. To use all default settings, simply omit this parameter.
    */
-  readCollectionsFromPath = (
+  readCollectionsFromPath = async (
     path: string,
     partialConfig?: DeepPartial<SeederCollectionReadingOptions>,
-  ): SeederCollection[] => {
+  ): Promise<SeederCollection[]> => {
     const config = mergeCollectionReadingOptions(partialConfig);
     let collections;
     try {
@@ -69,7 +69,7 @@ export class Seeder {
       );
 
       this.log(`Reading collections from ${path}...`);
-      collections = populator.readFromPath(path);
+      collections = await populator.readFromPath(path);
     } catch (err) {
       throw wrapError(err as Error);
     }

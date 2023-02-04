@@ -106,11 +106,17 @@ export class FileSystem {
    * @param paths Array of paths
    * @param ejsonParseOptions EJSON parse options
    */
-  readFilesContent(paths: string[], ejsonParseOptions: EJSONOptions) {
-    return paths.reduce<object[]>((arr: object[], path) => {
-      const fileContent: unknown = this.readFile(path, ejsonParseOptions);
-      return arr.concat(fileContent as object);
-    }, []);
+  async readFilesContent(paths: string[], ejsonParseOptions: EJSONOptions) {
+    const fileContents: object[] = [];
+    for (const path of paths) {
+      const fileContent: unknown = await this.readFile(path, ejsonParseOptions);
+      if (Array.isArray(fileContent)) {
+        fileContents.push(...fileContent);
+        continue;
+      }
+      fileContents.push(fileContent as object);
+    }
+    return fileContents;
   }
 
   /**
@@ -119,15 +125,27 @@ export class FileSystem {
    * @param path File path
    * @param ejsonParseOptions EJSON parse options
    */
-  readFile(path: string, ejsonParseOptions: EJSONOptions): unknown {
+  async readFile(
+    path: string,
+    ejsonParseOptions: EJSONOptions,
+  ): Promise<unknown> {
     const fileExtension = extname(path);
 
-    if (fileExtension !== '.json') {
-      return importFresh(path);
+    if (fileExtension === '.json') {
+      const content = readFileSync(path, 'utf-8');
+      return EJSON.parse(content, ejsonParseOptions);
     }
 
-    const content = readFileSync(path, 'utf-8');
-    return EJSON.parse(content, ejsonParseOptions);
+    if (fileExtension === '.mjs') {
+      const content = await import(path);
+      if (typeof content.default !== 'undefined') {
+        return content.default;
+      }
+
+      return content as unknown;
+    }
+
+    return importFresh(path);
   }
 }
 

@@ -47,7 +47,7 @@ export class CollectionPopulator {
    *
    * @param path
    */
-  readFromPath(path: string): SeederCollection[] {
+  async readFromPath(path: string): Promise<SeederCollection[]> {
     const subdirectories = fileSystem.listValidDirectories(path);
     return this.readCollections(subdirectories, path);
   }
@@ -58,18 +58,17 @@ export class CollectionPopulator {
    * @param directories Array of directories names
    * @param inputDirectory Base directory
    */
-  private readCollections(directories: string[], inputDirectory: string) {
-    const collections = directories.reduce(
-      (collections: SeederCollection[], directoryName: string) => {
-        const relativePath = `${inputDirectory}/${directoryName}`;
-        const collection = this.readCollection(relativePath, directoryName);
-        if (collection) {
-          collections.push(collection);
-        }
-        return collections;
-      },
-      [],
-    );
+  private async readCollections(directories: string[], inputDirectory: string) {
+    const collections: SeederCollection[] = [];
+    for (const directoryName of directories) {
+      const relativePath = `${inputDirectory}/${directoryName}`;
+      const collection = await this.readCollection(relativePath, directoryName);
+      if (!collection) {
+        continue;
+      }
+
+      collections.push(collection);
+    }
 
     return this.sortCollections(collections);
   }
@@ -98,12 +97,12 @@ export class CollectionPopulator {
    * @param path Collection Path
    * @param directoryName Directory name
    */
-  private readCollection(
+  private async readCollection(
     path: string,
     directoryName: string,
-  ): SeederCollection | null {
+  ): Promise<SeederCollection | null> {
     const { name, orderNo } = this.getCollectionMetadata(directoryName);
-    const documents = this.populateDocumentsContent(path);
+    const documents = (await this.populateDocumentsContent(path)) ?? [];
     if (!documents) {
       return null;
     }
@@ -120,7 +119,7 @@ export class CollectionPopulator {
    *
    * @param collectionPath Path for a single collection
    */
-  private populateDocumentsContent(collectionPath: string) {
+  private async populateDocumentsContent(collectionPath: string) {
     const fileNames = fileSystem.listFileNames(collectionPath);
     if (fileNames.length === 0) {
       this.log(`Directory '${collectionPath}' is empty. Skipping...`);
