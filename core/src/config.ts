@@ -74,12 +74,12 @@ export const mergeSeederConfig = (
  */
 export interface SeederCollectionReadingOptions {
   /**
-   * Files extensions that should be imported
+   * Files extensions that should be imported.
    */
   extensions: string[];
 
   /**
-   * Options for parsing EJSON files with `.json` extension
+   * Options for parsing EJSON files with `.json` extension.
    */
   ejsonParseOptions?: EJSONOptions;
 

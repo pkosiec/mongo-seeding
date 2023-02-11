@@ -66,12 +66,29 @@ npm install mongo-seeding --save
 
 1.  **(OPTIONAL)** To read MongoDB collections from disk, firstly follow the [tutorial](https://github.com/pkosiec/mongo-seeding/blob/main/docs/import-data-definition.md) in order to define documents and collections to import. Next, read them using `readCollectionsFromPath` method:
 
-    ```javascript
-    const path = require('path');
-    const collections = seeder.readCollectionsFromPath(
-      path.resolve('./your/path'),
-    );
-    ```
+- with `async/await`, for example:
+
+  ```javascript
+  const path = require('path');
+
+  // async/await
+  const collections = await seeder.readCollectionsFromPath(
+    path.resolve('./your/path'),
+  );
+  ```
+
+- with raw promises:
+
+  ```javascript
+  seeder
+    .readCollectionsFromPath(path.resolve('./your/path'))
+    .then((collections) => {
+      // Do whatever you want with collections, e.g. import them
+    })
+    .catch((err) => {
+      // Handle errors
+    });
+  ```
 
 1.  Seed your database:
 
@@ -203,12 +220,12 @@ You can specify an optional partial options object for this method, which will b
  */
 export interface SeederCollectionReadingOptions {
   /**
-   * Files extensions that should be imported
+   * Files extensions that should be imported.
    */
   extensions: string[];
 
   /**
-   * Options for parsing EJSON files with `.json` extension
+   * Options for parsing EJSON files with `.json` extension.
    */
   ejsonParseOptions?: EJSONOptions;
 
@@ -223,7 +240,7 @@ For example, you may provide the following options object:
 
 ```typescript
 const collectionReadingOptions = {
-  extensions: ['ts', 'js', 'cjs', 'json'],
+  extensions: ['ts', 'js', 'cjs', 'json', 'mjs'],
   ejsonParseOptions: {
     relaxed: false,
   },
@@ -256,8 +273,8 @@ There is two built-in transform functions:
 The default options object is as follows:
 
 ```typescript
-const defaultCollectionReadingConfig: SeederCollectionReadingConfig = {
-  extensions: ['json', 'js', 'cjs'],
+export const defaultCollectionReadingOptions: SeederCollectionReadingOptions = {
+  extensions: ['json', 'js', 'cjs', 'mjs'],
   ejsonParseOptions: {
     relaxed: true,
   },

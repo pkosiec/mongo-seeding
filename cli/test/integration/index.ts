@@ -102,6 +102,10 @@ describe('CLI', () => {
         number: 3,
         name: 'three',
       });
+      expect(collection).toContainEqual({
+        number: 4,
+        name: 'four',
+      });
     }
 
     await client.close(true);

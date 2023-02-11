@@ -9,7 +9,7 @@ import { SeederDatabaseConfigObjectOptions } from 'mongo-seeding/dist/database';
 import { Seeder, SeederCollectionReadingOptions } from 'mongo-seeding';
 
 export const DEFAULT_INPUT_PATH = './';
-export const DEFAULT_EXTENSIONS = ['ts', 'js', 'cjs', 'json'];
+export const DEFAULT_EXTENSIONS = ['ts', 'js', 'cjs', 'json', 'mjs'];
 
 export const cliOptions: CommandLineOption[] = [
   {
