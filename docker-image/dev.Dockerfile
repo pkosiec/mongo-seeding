@@ -25,10 +25,10 @@ RUN npx lerna run build --scope mongo-seeding-cli
 
 FROM node:18-alpine
 LABEL org.opencontainers.image.title="Mongo Seeding" \
-      org.opencontainers.image.description=" The ultimate solution for populating your MongoDB database. " \
+      org.opencontainers.image.description="The ultimate solution for populating your MongoDB database." \
       org.opencontainers.image.url="https://mongo-seeding.kosiec.dev" \
       org.opencontainers.image.documentation="https://mongo-seeding.kosiec.dev" \
-      org.opencontainers.image.source="https://github.com/pkosiec/mongo-seeding.git" \
+      org.opencontainers.image.source="https://github.com/pkosiec/mongo-seeding" \
       org.opencontainers.image.version="dev" \
       org.opencontainers.image.licenses="MIT"
 

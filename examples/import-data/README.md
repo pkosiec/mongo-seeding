@@ -97,7 +97,7 @@ To see the full description of the CLI usage, read the **[Readme](../../cli/READ
 Execute the following command:
 
 ```bash
-docker run --rm --network="host" -e DB_NAME=testing -e REPLACE_ID=true SET_TIMESTAMPS=true -e DROP_DATABASE=true -v /absolute/path/to/examples/import-data/example/:/absolute/path/to/examples/import-data/example/ -w /absolute/path/to/examples/import-data/example/data pkosiec/mongo-seeding
+docker run --rm --network="host" -e DB_NAME=testing -e REPLACE_ID=true SET_TIMESTAMPS=true -e DROP_DATABASE=true -v /absolute/path/to/examples/import-data/example/:/absolute/path/to/examples/import-data/example/ -w /absolute/path/to/examples/import-data/example/data ghcr.io/pkosiec/mongo-seeding
 ```
 
 Replace `/absolute/path/to/` with your absolute path to this cloned repository.
