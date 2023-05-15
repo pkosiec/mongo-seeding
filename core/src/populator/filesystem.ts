@@ -1,8 +1,9 @@
 import { lstatSync, readdirSync, readFileSync } from 'fs';
 import { EJSON, EJSONOptions } from 'bson';
 import { extname } from 'path';
+import { NewLoggerInstance } from '../common';
 
-const importFresh = require('import-fresh');
+import importFresh from 'import-fresh';
 
 /**
  * Provides functionality for manipulating files and directories.
@@ -131,12 +132,17 @@ export class FileSystem {
   ): Promise<unknown> {
     const fileExtension = extname(path);
 
+    const log = NewLoggerInstance();
+
     if (fileExtension === '.json') {
       const content = readFileSync(path, 'utf-8');
       return EJSON.parse(content, ejsonParseOptions);
     }
 
+    log('loading', path);
+
     if (fileExtension === '.mjs') {
+      log('mjs', path);
       const content = await import(path);
       if (typeof content.default !== 'undefined') {
         return content.default;

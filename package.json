@@ -24,7 +24,7 @@
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",
     "eslint:check": "eslint . --ext .json,.js,.jsx,.ts,.tsx",
     "prettier:check": "prettier --check .",
-    "eslint:fix": "eslint . --fix --ext .json,.js,.jsx,.ts,.tsx",
+    "eslint:fix": "eslint . --fix --ext .json,.js,.cjs,.mjs,.jsx,.ts,.tsx",
     "prettier:fix": "prettier --write ."
   },
   "devDependencies": {

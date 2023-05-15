@@ -4,6 +4,7 @@
   "homepage": "https://mongo-seeding.kosiec.dev",
   "version": "3.7.2",
   "license": "MIT",
+  "type": "module",
   "author": {
     "name": "Paweł Kosiec",
     "email": "pawel@kosiec.dev",

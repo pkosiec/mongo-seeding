@@ -27,14 +27,14 @@ export class CollectionPopulator {
    */
   constructor(
     extensions: string[],
-    ejsonParseOptions: EJSONOptions,
+    ejsonParseOptions?: EJSONOptions,
     log?: LogFn,
   ) {
     if (extensions.length === 0) {
       throw new Error('Array of supported extensions must not be empty');
     }
     this.extensions = extensions;
-    this.ejsonParseOptions = ejsonParseOptions;
+    this.ejsonParseOptions = ejsonParseOptions ?? {};
     this.log = log
       ? log
       : () => {

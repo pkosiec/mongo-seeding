@@ -14,6 +14,7 @@ import {
   mergeSeederConfig,
   mergeCollectionReadingOptions,
 } from './config';
+import { CollectionPopulator } from './populator';
 
 export * from './config';
 export * from './helpers';
@@ -61,7 +62,6 @@ export class Seeder {
     const config = mergeCollectionReadingOptions(partialConfig);
     let collections;
     try {
-      const { CollectionPopulator } = require('./populator');
       const populator = new CollectionPopulator(
         config.extensions,
         config.ejsonParseOptions,

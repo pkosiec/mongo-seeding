@@ -9,6 +9,32 @@ interface ExpectedDocuments {
   [key: string]: object[];
 }
 
+export type AuditPageQuery = {
+  auditEvents: {
+    totalCount: number;
+    data: (
+      | {
+          platformUser?: string | null;
+          channel: string;
+          command: string;
+          id: string;
+          createdAt: any;
+          deployment?: { id: string; name: string } | null;
+        }
+      | {
+          id: string;
+          createdAt: any;
+          deployment?: { id: string; name: string } | null;
+        }
+    )[];
+    pageInfo: { offset: number; limit: number };
+  };
+};
+
+function foo() {
+  let foo: AuditPageQuery['auditEvents']['data'][0] = {};
+}
+
 describe('CollectionPopulator', () => {
   it('should populate documents correctly', async () => {
     const expectedDocuments: ExpectedDocuments = {

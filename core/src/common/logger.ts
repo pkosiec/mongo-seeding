@@ -1,8 +1,9 @@
+import * as debug from 'debug';
+
 /**
  * Constructs new logger, which logs app events to stderr.
  */
 export const NewLoggerInstance = () => {
-  const debug = require('debug');
   return debug('mongo-seeding');
 };
 
