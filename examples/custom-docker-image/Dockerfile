@@ -1,4 +1,4 @@
-FROM pkosiec/mongo-seeding:3.7.1
+FROM ghcr.io/pkosiec/mongo-seeding
 
 WORKDIR /data-import/
 
