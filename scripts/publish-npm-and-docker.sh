@@ -16,15 +16,19 @@ cd ${ROOT_PATH}
 echo "Publishing NPM packages..."
 lerna publish --pre-dist-tag next
 
-echo "Building Docker image..."
+echo "Building and pushing Docker images..."
 
 IMAGE_VERSION_TAG=$(node -p -e "require('./cli/package.json').version");
 echo "Using tag: ${IMAGE_VERSION_TAG}"
 
-docker build -f ./docker-image/prod.Dockerfile --build-arg cliVersion=${IMAGE_VERSION_TAG} -t ${IMAGE_NAME}:${IMAGE_VERSION_TAG} .
+docker buildx create --name mongo-seeding-bldr --bootstrap --use
 
-echo "Pushing Docker image..."
-docker push ${IMAGE_NAME}:${IMAGE_VERSION_TAG}
+docker buildx build --push \
+  --platform linux/amd64,linux/arm64,linux/arm/v7 \
+  --builder mongo-seeding-bldr \
+  --tag ${IMAGE_NAME}:${IMAGE_VERSION_TAG} \
+  --build-arg cliVersion=${IMAGE_VERSION_TAG} \
+  --file ./docker-image/prod.Dockerfile  .
 
 read -p "Push the Docker image ${IMAGE_VERSION_TAG} as latest (y/n)?" choice
 case "$choice" in 
@@ -35,3 +39,5 @@ case "$choice" in
   n|N ) echo "Skipping...";;
   * ) echo "invalid";;
 esac
+
+docker buildx rm mongo-seeding-bldr
