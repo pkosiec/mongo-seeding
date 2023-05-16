@@ -1,9 +1,14 @@
-import { lstatSync, readdirSync, readFileSync } from 'fs';
+import {
+  lstatSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+  unlinkSync,
+} from 'fs';
+import { tmpdir } from 'os';
 import { EJSON, EJSONOptions } from 'bson';
-import { extname } from 'path';
+import { extname, resolve } from 'path';
 import { NewLoggerInstance } from '../common';
-
-import importFresh from 'import-fresh';
 
 /**
  * Provides functionality for manipulating files and directories.
@@ -139,8 +144,6 @@ export class FileSystem {
       return EJSON.parse(content, ejsonParseOptions);
     }
 
-    log('loading', path);
-
     if (fileExtension === '.mjs') {
       log('mjs', path);
       const content = await import(path);
@@ -151,8 +154,22 @@ export class FileSystem {
       return content as unknown;
     }
 
-    return importFresh(path);
+    return await importFresh(path);
   }
+}
+
+async function importFresh(modulePath: string) {
+  const filepath = resolve(modulePath);
+  const fileContent = readFileSync(filepath, 'utf8');
+  const fileName = filepath.replace(/^.*?([^\\/]*)$/, '$1');
+  const dir = tmpdir();
+  const newFilepath = `${dir}/${fileName}`;
+
+  writeFileSync(newFilepath, fileContent);
+  const module = await import(newFilepath);
+  unlinkSync(newFilepath);
+
+  return module;
 }
 
 /**

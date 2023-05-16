@@ -31,10 +31,6 @@ export type AuditPageQuery = {
   };
 };
 
-function foo() {
-  let foo: AuditPageQuery['auditEvents']['data'][0] = {};
-}
-
 describe('CollectionPopulator', () => {
   it('should populate documents correctly', async () => {
     const expectedDocuments: ExpectedDocuments = {

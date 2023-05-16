@@ -18,6 +18,7 @@ jest.mock('fs', () => ({
       '.hiddenDirectory',
       '.test2',
     ]),
+  writeFileSync: jest.fn(),
   readFileSync: jest.fn((filePath: string) => {
     let content;
     switch (filePath) {
@@ -44,14 +45,6 @@ jest.mock('fs', () => ({
     return JSON.stringify(content);
   }),
 }));
-
-jest.mock('import-fresh', () =>
-  jest.fn().mockReturnValue({
-    value: {
-      second: true,
-    },
-  }),
-);
 
 describe('FileSystem', () => {
   it('should list all directories that are not empty or hidden', () => {
