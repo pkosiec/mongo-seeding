@@ -49,11 +49,11 @@
     "dist/"
   ],
   "scripts": {
-    "test": "jest -i --ci",
-    "test:unit": "jest unit",
-    "test:integration": "jest integration",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch --coverage",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest -i --ci",
+    "test:unit": "NODE_OPTIONS=--experimental-vm-modules jest unit",
+    "test:integration": "NODE_OPTIONS=--experimental-vm-modules jest integration",
+    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch --coverage",
     "build": "npm run cleanup; tsc",
     "cleanup": "rm -rf ./dist",
     "preversion": "npm run test; npm run build"

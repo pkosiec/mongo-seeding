@@ -5,9 +5,10 @@ import {
   writeFileSync,
   unlinkSync,
 } from 'fs';
+import { mkdtemp } from 'node:fs/promises';
 import { tmpdir } from 'os';
 import { EJSON, EJSONOptions } from 'bson';
-import { extname, resolve } from 'path';
+import { join, extname, resolve } from 'path';
 import { NewLoggerInstance } from '../common';
 
 /**
@@ -144,27 +145,22 @@ export class FileSystem {
       return EJSON.parse(content, ejsonParseOptions);
     }
 
-    if (fileExtension === '.mjs') {
-      log('mjs', path);
-      const content = await import(path);
-      if (typeof content.default !== 'undefined') {
-        return content.default;
-      }
-
-      return content as unknown;
+    const content = await importFresh(path);
+    if (typeof content.default !== 'undefined') {
+      return content.default;
     }
 
-    return await importFresh(path);
+    return content as unknown;
   }
 }
 
-async function importFresh(modulePath: string) {
-  const filepath = resolve(modulePath);
+// based on https://github.com/nodejs/modules/issues/307#issuecomment-1382183511
+async function importFresh(inputPath: string) {
+  const filepath = resolve(inputPath);
   const fileContent = readFileSync(filepath, 'utf8');
   const fileName = filepath.replace(/^.*?([^\\/]*)$/, '$1');
-  const dir = tmpdir();
+  const dir = await mkdtemp(join(tmpdir(), 'seed-'));
   const newFilepath = `${dir}/${fileName}`;
-
   writeFileSync(newFilepath, fileContent);
   const module = await import(newFilepath);
   unlinkSync(newFilepath);

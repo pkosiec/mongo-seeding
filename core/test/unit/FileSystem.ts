@@ -24,10 +24,10 @@ jest.mock('fs', () => ({
     switch (filePath) {
       case 'mockFiles/test1.json':
         content = { number: 1 };
-        break;
+        return JSON.stringify(content);
       case 'mockFiles/test3.json':
         content = { string: 'three' };
-        break;
+        return JSON.stringify(content);
       case 'mockFiles/ejson.json':
         content = {
           _id: {
@@ -37,12 +37,11 @@ jest.mock('fs', () => ({
           minKey: { $minKey: 1 },
           maxKey: { $maxKey: 1 },
         };
-        break;
-      default:
-        content = {};
+        return JSON.stringify(content);
     }
 
-    return JSON.stringify(content);
+    if (filePath.endsWith()
+
   }),
 }));
 
