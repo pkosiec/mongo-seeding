@@ -2,7 +2,7 @@
   "name": "sample-data-example",
   "description": "JS and JSON samples for Mongo Seeding",
   "homepage": "https://mongo-seeding.kosiec.dev",
-  "version": "3.7.2",
+  "version": "3.8.0-alpha.0",
   "license": "MIT",
   "private": true,
   "maintainers": [
@@ -21,6 +21,6 @@
   },
   "dependencies": {
     "@types/node": "^18.7.23",
-    "mongo-seeding": "^3.7.2"
+    "mongo-seeding": "^3.8.0-alpha.0"
   }
 }
