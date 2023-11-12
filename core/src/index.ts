@@ -4,6 +4,7 @@ import {
   LogFn,
   NewLoggerInstance,
 } from './common';
+import 'error-cause-polyfill/auto';
 import { DatabaseConnector, Database } from './database';
 import { DefaultTransformers, CollectionTransformer } from './transformer';
 import { CollectionImporter } from './importer';
@@ -156,7 +157,5 @@ export class Seeder {
  * @param err Original error
  */
 const wrapError = (err: Error) => {
-  err.name = 'MongoSeedingError';
-  err.message = `${err.name}: ${err.message}`;
-  return err;
+  throw new Error('MongoSeedingError', { cause: err });
 };
