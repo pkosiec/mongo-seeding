@@ -4,7 +4,6 @@ import {
   LogFn,
   NewLoggerInstance,
 } from './common';
-import 'error-cause-polyfill/auto';
 import { DatabaseConnector, Database } from './database';
 import { DefaultTransformers, CollectionTransformer } from './transformer';
 import { CollectionImporter } from './importer';
@@ -15,6 +14,7 @@ import {
   mergeSeederConfig,
   mergeCollectionReadingOptions,
 } from './config';
+require('error-cause/auto');
 
 export * from './config';
 export * from './helpers';
