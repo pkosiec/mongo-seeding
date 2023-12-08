@@ -14,7 +14,6 @@ import {
   mergeSeederConfig,
   mergeCollectionReadingOptions,
 } from './config';
-require('error-cause/auto');
 
 export * from './config';
 export * from './helpers';
@@ -72,7 +71,7 @@ export class Seeder {
       this.log(`Reading collections from ${path}...`);
       collections = populator.readFromPath(path);
     } catch (err) {
-      throw wrapError(err as Error);
+      throw err;
     }
 
     if (config.transformers.length > 0) {
@@ -140,7 +139,7 @@ export class Seeder {
         this.log,
       ).import(collections);
     } catch (err) {
-      throw wrapError(err as Error);
+      throw err;
     } finally {
       if (database) {
         await database.closeConnection();
@@ -150,12 +149,3 @@ export class Seeder {
     this.log('Finishing...');
   };
 }
-
-/**
- * Wraps error with custom name
- *
- * @param err Original error
- */
-const wrapError = (err: Error) => {
-  throw new Error('MongoSeedingError', { cause: err });
-};
