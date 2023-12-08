@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2015",
-    "lib": ["es2022"],
+    "lib": ["es2017"],
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,

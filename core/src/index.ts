@@ -60,19 +60,15 @@ export class Seeder {
   ): SeederCollection[] => {
     const config = mergeCollectionReadingOptions(partialConfig);
     let collections;
-    try {
-      const { CollectionPopulator } = require('./populator');
-      const populator = new CollectionPopulator(
-        config.extensions,
-        config.ejsonParseOptions,
-        this.log,
-      );
+    const { CollectionPopulator } = require('./populator');
+    const populator = new CollectionPopulator(
+      config.extensions,
+      config.ejsonParseOptions,
+      this.log,
+    );
 
-      this.log(`Reading collections from ${path}...`);
-      collections = populator.readFromPath(path);
-    } catch (err) {
-      throw err;
-    }
+    this.log(`Reading collections from ${path}...`);
+    collections = populator.readFromPath(path);
 
     if (config.transformers.length > 0) {
       this.log('Transforming collections...');
@@ -138,8 +134,6 @@ export class Seeder {
         config.bulkWriteOptions,
         this.log,
       ).import(collections);
-    } catch (err) {
-      throw err;
     } finally {
       if (database) {
         await database.closeConnection();
