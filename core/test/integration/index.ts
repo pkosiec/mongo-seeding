@@ -222,21 +222,26 @@ describe('Mongo Seeding', () => {
 
   it('should throw error when wrong path given', async () => {
     const seeder = new Seeder();
-    await expect(() =>
+
+    expect(() =>
       seeder.readCollectionsFromPath('/this/path/surely/doesnt/exist'),
-    ).toThrowError('Error: ENOENT');
+    ).toThrow(
+      `ENOENT: no such file or directory, scandir '/this/path/surely/doesnt/exist'`,
+    );
   });
 
   it('should throw error when cannot connect to database', async () => {
     const config: DeepPartial<SeederConfig> = {
       database: 'mongodb://foo:bar@localhost:27017/name',
-      databaseReconnectTimeout: 1,
+      databaseReconnectTimeout: 1000,
     };
 
     const path = `${IMPORT_DATA_DIR}/index-import`;
     const seeder = new Seeder(config);
     const collections = seeder.readCollectionsFromPath(path);
 
-    await expect(seeder.import(collections)).rejects.toThrowError('Error');
+    await expect(() => seeder.import(collections)).rejects.toThrow(
+      `Error connecting to database: MongoServerError: Authentication failed.`,
+    );
   });
 });

@@ -60,19 +60,15 @@ export class Seeder {
   ): SeederCollection[] => {
     const config = mergeCollectionReadingOptions(partialConfig);
     let collections;
-    try {
-      const { CollectionPopulator } = require('./populator');
-      const populator = new CollectionPopulator(
-        config.extensions,
-        config.ejsonParseOptions,
-        this.log,
-      );
+    const { CollectionPopulator } = require('./populator');
+    const populator = new CollectionPopulator(
+      config.extensions,
+      config.ejsonParseOptions,
+      this.log,
+    );
 
-      this.log(`Reading collections from ${path}...`);
-      collections = populator.readFromPath(path);
-    } catch (err) {
-      throw wrapError(err as Error);
-    }
+    this.log(`Reading collections from ${path}...`);
+    collections = populator.readFromPath(path);
 
     if (config.transformers.length > 0) {
       this.log('Transforming collections...');
@@ -138,8 +134,6 @@ export class Seeder {
         config.bulkWriteOptions,
         this.log,
       ).import(collections);
-    } catch (err) {
-      throw wrapError(err as Error);
     } finally {
       if (database) {
         await database.closeConnection();
@@ -149,14 +143,3 @@ export class Seeder {
     this.log('Finishing...');
   };
 }
-
-/**
- * Wraps error with custom name
- *
- * @param err Original error
- */
-const wrapError = (err: Error) => {
-  err.name = 'MongoSeedingError';
-  err.message = `${err.name}: ${err.message}`;
-  return err;
-};
