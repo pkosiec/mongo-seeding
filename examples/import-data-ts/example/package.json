@@ -2,7 +2,7 @@
   "name": "sample-data-example-ts",
   "description": "TypeScript samples for Mongo Seeding",
   "homepage": "https://mongo-seeding.kosiec.dev",
-  "version": "3.8.0-alpha.0",
+  "version": "4.0.0-alpha.0",
   "license": "MIT",
   "private": true,
   "maintainers": [
@@ -20,7 +20,7 @@
     "url": "https://github.com/pkosiec/mongo-seeding/issues"
   },
   "dependencies": {
-    "mongo-seeding": "^3.8.0-alpha.0",
+    "mongo-seeding": "^4.0.0-alpha.0",
     "mongodb": "^3.6.3",
     "typeorm": "^0.3.10"
   },
