@@ -1,12 +1,17 @@
-import { DatabaseConnector, SeederDatabaseConfig } from '../../src/database';
+import { DatabaseConnector } from '../../src/database';
 import { MongoClient, MongoClientOptions } from 'mongodb';
+import { ConnectionString } from 'connection-string';
 
-const dbConfig: SeederDatabaseConfig = {
+const dbConfig = new ConnectionString('', {
   protocol: 'mongodb',
-  host: '127.0.0.1',
-  port: 27017,
-  name: 'database',
-};
+  hosts: [
+    {
+      name: '127.0.0.1',
+      port: 27017,
+    },
+  ],
+  path: ['database'],
+});
 
 const uri = 'mongodb://foo.bar';
 
@@ -25,71 +30,6 @@ describe('DatabaseConnector', () => {
     //@ts-ignore
     MongoClient.mockClear();
     connectMock.mockClear();
-  });
-
-  it('should throw error when trying connecting without config', async () => {
-    const databaseConnector = new DatabaseConnector();
-    // @ts-ignore
-    await expect(databaseConnector.connect({})).rejects.toThrow();
-  });
-
-  it('should return valid DB connection URI', () => {
-    const databaseConnector = new DatabaseConnector();
-
-    const expectedUri = 'mongodb://127.0.0.1:27017/database';
-    // @ts-ignore
-    const uri = databaseConnector.getDbConnectionUri(dbConfig);
-    expect(uri).toBe(expectedUri);
-  });
-
-  it('should return valid DB connection URI with Mongo 3.6 protocol', () => {
-    const databaseConnector = new DatabaseConnector();
-    const dbConfig: SeederDatabaseConfig = {
-      protocol: 'mongodb+srv',
-      host: '127.0.0.1',
-      port: 27017,
-      name: 'database',
-    };
-    const expectedUri = 'mongodb+srv://127.0.0.1/database';
-    // @ts-ignore
-    const uri = databaseConnector.getDbConnectionUri(dbConfig);
-    expect(uri).toBe(expectedUri);
-  });
-
-  it('should return valid DB connection URI with username only', () => {
-    const databaseConnector = new DatabaseConnector();
-    const authConfig: SeederDatabaseConfig = {
-      protocol: 'mongodb',
-      username: 'user',
-      host: '10.10.10.1',
-      port: 27017,
-      name: 'authDb',
-      options: {
-        ssl: 'false',
-        foo: 'bar',
-      },
-    };
-    const expectedUri =
-      'mongodb://user@10.10.10.1:27017/authDb?ssl=false&foo=bar';
-    // @ts-ignore
-    const uri = databaseConnector.getDbConnectionUri(authConfig);
-    expect(uri).toBe(expectedUri);
-  });
-
-  it('should return valid DB connection URI with username and login', () => {
-    const databaseConnector = new DatabaseConnector();
-    const authConfig: SeederDatabaseConfig = {
-      protocol: 'mongodb',
-      username: 'user',
-      password: 'pass',
-      host: '10.10.10.1',
-      port: 27017,
-      name: 'authDb',
-    };
-    // @ts-ignore
-    const uri = databaseConnector.getDbConnectionUri(authConfig);
-    const expectedUri = 'mongodb://user:pass@10.10.10.1:27017/authDb';
-    expect(uri).toBe(expectedUri);
   });
 
   it('should mask user credentials in database connection URI', () => {
@@ -138,9 +78,9 @@ describe('DatabaseConnector', () => {
       }),
     );
 
-    await expect(databaseConnector.connect(dbConfig)).rejects.toThrowError(
-      'MongoError',
-    );
+    await expect(
+      databaseConnector.connect(dbConfig.toString()),
+    ).rejects.toThrow('MongoError');
   });
 
   it('should allow passing custom Mongo client options', async () => {
@@ -159,8 +99,8 @@ describe('DatabaseConnector', () => {
 
     await connector.connect(uri);
 
-    expect(MongoClient).toBeCalledWith(uri, opts);
-    expect(MongoClient).toBeCalledTimes(1);
-    expect(connectMock).toBeCalledTimes(1);
+    expect(MongoClient).toHaveBeenCalledWith(uri, opts);
+    expect(MongoClient).toHaveBeenCalledTimes(1);
+    expect(connectMock).toHaveBeenCalledTimes(1);
   });
 });

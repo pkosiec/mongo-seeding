@@ -1,11 +1,5 @@
 import { MongoClient, MongoClientOptions } from 'mongodb';
-import { URLSearchParams } from 'url';
-import {
-  Database,
-  SeederDatabaseConfig,
-  isSeederDatabaseConfigObject,
-  SeederDatabaseConfigObject,
-} from '.';
+import { Database } from '.';
 import { LogFn } from '../common';
 
 /**
@@ -61,68 +55,17 @@ export class DatabaseConnector {
   /**
    * Connects to database.
    *
-   * @param config Database configuration
+   * @param connectionString Database connection string
    */
-  async connect(config: SeederDatabaseConfig): Promise<Database> {
-    const dbConnectionUri = this.getUri(config);
-    const mongoClient = new MongoClient(dbConnectionUri, this.clientOptions);
+  async connect(connectionString: string): Promise<Database> {
+    const mongoClient = new MongoClient(connectionString, this.clientOptions);
 
-    this.log(`Connecting to ${this.maskUriCredentials(dbConnectionUri)}...`);
+    this.log(`Connecting to ${this.maskUriCredentials(connectionString)}...`);
 
-    try {
-      await mongoClient.connect();
-    } catch (err) {
-      const e = err as Error;
-      throw new Error(`Error connecting to database: ${e.name}: ${e.message}`);
-    }
-
+    await mongoClient.connect();
     this.log('Connection with database established.');
 
     return new Database(mongoClient);
-  }
-
-  /**
-   * Gets MongoDB Connection URI from config.
-   *
-   * @param config Database configuration
-   */
-  private getUri(config: SeederDatabaseConfig): string {
-    if (typeof config === 'string') {
-      return config;
-    }
-
-    if (isSeederDatabaseConfigObject(config as unknown)) {
-      return this.getDbConnectionUri(config);
-    }
-
-    throw new Error(
-      'Connection URI or database config object is required to connect to database',
-    );
-  }
-
-  /**
-   * Constructs database connection URI from database configuration object.
-   *
-   * @param param0 Database connection object
-   */
-  private getDbConnectionUri({
-    protocol,
-    host,
-    port,
-    name,
-    username,
-    password,
-    options,
-  }: SeederDatabaseConfigObject) {
-    const credentials = username
-      ? `${username}${password ? `:${password}` : ''}@`
-      : '';
-    const optsUriPart = options
-      ? `?${new URLSearchParams(options).toString()}`
-      : '';
-    const portUriPart = protocol !== 'mongodb+srv' ? `:${port}` : '';
-
-    return `${protocol}://${credentials}${host}${portUriPart}/${name}${optsUriPart}`;
   }
 
   /**

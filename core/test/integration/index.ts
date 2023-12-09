@@ -1,7 +1,7 @@
 import {
   DatabaseConnector,
   Database,
-  defaultDatabaseConfigObject,
+  parseSeederDatabaseConfig,
 } from '../../src/database';
 import { DeepPartial } from '../../src/common';
 import { Seeder, SeederConfig } from '../../src';
@@ -18,10 +18,8 @@ const databaseConnector = new DatabaseConnector();
 let database: Database;
 
 beforeAll(async () => {
-  database = await databaseConnector.connect({
-    ...defaultDatabaseConfigObject,
-    name: DATABASE_NAME,
-  });
+  const connStr = parseSeederDatabaseConfig({ name: DATABASE_NAME }).toString();
+  database = await databaseConnector.connect(connStr);
   await database.drop();
 });
 
@@ -241,7 +239,7 @@ describe('Mongo Seeding', () => {
     const collections = seeder.readCollectionsFromPath(path);
 
     await expect(() => seeder.import(collections)).rejects.toThrow(
-      `Error connecting to database: MongoServerError: Authentication failed.`,
+      `Authentication failed.`,
     );
   });
 });
