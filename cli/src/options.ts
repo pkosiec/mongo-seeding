@@ -5,7 +5,7 @@ import {
   CommandLineArguments,
   PartialCliOptions,
 } from './types';
-import { SeederDatabaseConfigObjectOptions } from 'mongo-seeding/dist/database';
+import { SeederDatabaseConfigObjectOptions } from 'mongo-seeding';
 import { Seeder, SeederCollectionReadingOptions } from 'mongo-seeding';
 
 export const DEFAULT_INPUT_PATH = './';

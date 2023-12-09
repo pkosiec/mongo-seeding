@@ -1,7 +1,7 @@
 import {
   DatabaseConnector,
-  defaultDatabaseConfigObject,
   Database,
+  parseSeederDatabaseConfig,
 } from '../../src/database';
 import {
   removeUnderscoreIdProperty,
@@ -13,10 +13,8 @@ const databaseConnector = new DatabaseConnector();
 let database: Database;
 
 beforeAll(async () => {
-  database = await databaseConnector.connect({
-    ...defaultDatabaseConfigObject,
-    name: 'coredb',
-  });
+  const connStr = parseSeederDatabaseConfig({ name: 'coredb' }).toString();
+  database = await databaseConnector.connect(connStr);
   await database.db.dropDatabase();
 });
 

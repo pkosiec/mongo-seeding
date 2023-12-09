@@ -11,9 +11,12 @@ import {
   SeederCollectionReadingOptions,
   defaultSeederConfig,
   SeederConfig,
-  mergeSeederConfig,
+  mergeSeederConfigAndDeleteDb,
   mergeCollectionReadingOptions,
+  SeederConfigWithoutDatabase,
+  mergeConnection,
 } from './config';
+import { ConnectionString } from 'connection-string';
 
 export * from './config';
 export * from './helpers';
@@ -35,7 +38,12 @@ export class Seeder {
   /**
    * Configuration for seeding database.
    */
-  config: SeederConfig = defaultSeederConfig;
+  config: SeederConfigWithoutDatabase = defaultSeederConfig;
+
+  /**
+   * Database connection.
+   */
+  connection: ConnectionString;
 
   /**
    * Constructs a new `Seeder` instance and loads configuration for data import.
@@ -43,7 +51,8 @@ export class Seeder {
    * @param config Optional partial object with database seeding configuration. The object is merged with the default configuration object. To use all default settings, simply omit this parameter.
    */
   constructor(config?: DeepPartial<SeederConfig>) {
-    this.config = mergeSeederConfig(config);
+    this.connection = mergeConnection(config?.database);
+    this.config = mergeSeederConfigAndDeleteDb(config);
     this.log = NewLoggerInstance();
   }
 
@@ -97,7 +106,12 @@ export class Seeder {
     }
 
     this.log('Starting collection import...');
-    const config = mergeSeederConfig(partialConfig, this.config);
+    const connection = mergeConnection(
+      partialConfig?.database,
+      this.connection,
+    );
+    const config = mergeSeederConfigAndDeleteDb(partialConfig, this.config);
+
     const databaseConnector = new DatabaseConnector(
       config.databaseReconnectTimeout,
       config.mongoClientOptions,
@@ -106,7 +120,7 @@ export class Seeder {
 
     let database: Database | undefined;
     try {
-      database = await databaseConnector.connect(config.database);
+      database = await databaseConnector.connect(connection.toString());
 
       if (!config.dropDatabase && config.dropCollections) {
         this.log('Dropping collections...');
