@@ -14,7 +14,7 @@
   },
   "scripts": {
     "setup-hooks": "git config core.hooksPath ./scripts/git-hooks",
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap -- --force",
     "changelog": "lerna-changelog",
     "build-all": "lerna run build",
     "publish": "bash ./scripts/publish-npm-and-docker.sh",
