@@ -13,9 +13,11 @@ DIRECTORIES=(
     "cli"
     "docker-image/test/tester"
     "examples/import-data/example"
-    "examples/import-data-ts/example"
     "examples/custom-docker-image/sample-data"
     "examples/mongoose-express/example"
+)
+DIRECTORIES_WITH_FORCE=(
+  "examples/import-data-ts/example"
 )
 
 echo "Updating dependencies..."
@@ -24,15 +26,27 @@ function updateDependencies() {
     echo "> $1"
     cd $2
     npm outdated || true
-    npm update
-    npm audit fix
+    if [ "$3" = true ] ; then
+      echo "Forcing update..."
+      npm update --force
+    else
+      npm update
+      npm audit fix
+    fi
 }
 
 for directory in "${DIRECTORIES[@]}"
    do
      CURRENT_PATH=${ROOT_PATH}/${directory}
-     updateDependencies ${directory} ${CURRENT_PATH}
+     updateDependencies ${directory} ${CURRENT_PATH} false
    done
+
+for directory in "${DIRECTORIES_WITH_FORCE[@]}"
+   do
+     CURRENT_PATH=${ROOT_PATH}/${directory}
+     updateDependencies ${directory} ${CURRENT_PATH} true
+   done
+
 
 echo "Bringing back symlinks..."
 
