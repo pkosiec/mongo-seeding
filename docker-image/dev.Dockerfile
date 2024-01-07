@@ -4,7 +4,7 @@
 # Stage 1: Core
 #
 
-FROM node:18-alpine AS builder
+FROM node:20.10-alpine AS builder
 
 WORKDIR /app
 
@@ -23,7 +23,7 @@ RUN npx lerna run build --scope mongo-seeding-cli
 # Stage 3: Final Docker image
 #
 
-FROM node:18-alpine
+FROM node:20.10-alpine
 LABEL org.opencontainers.image.title="Mongo Seeding" \
       org.opencontainers.image.description="The ultimate solution for populating your MongoDB database." \
       org.opencontainers.image.url="https://mongo-seeding.kosiec.dev" \

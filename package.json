@@ -36,5 +36,8 @@
     "lerna-changelog": "^2.2.0",
     "prettier": "^3.0.3",
     "typescript": "^5.0.4"
+  },
+  "volta": {
+    "node": "20.10.0"
   }
 }

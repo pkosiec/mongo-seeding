@@ -96,5 +96,8 @@
       "json",
       "node"
     ]
+  },
+  "volta": {
+    "extends": "../package.json"
   }
 }

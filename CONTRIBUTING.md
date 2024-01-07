@@ -2,6 +2,10 @@
 
 Github is used to host code, track issues and feature requests, as well as accept pull requests.
 
+## Tooling
+
+This project uses [Volta](https://github.com/volta-cli/volta) to manage Node.js version. It is recommended to install it before starting development.
+
 ## Development process
 
 [Github flow](https://guides.github.com/introduction/flow/index.html) is used as a development process. This means that all changes are done by creating pull requests. Bringing a code change to this project should be executed as follows:
