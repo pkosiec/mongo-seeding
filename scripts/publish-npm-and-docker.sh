@@ -24,7 +24,7 @@ echo "Using tag: ${IMAGE_VERSION_TAG}"
 docker buildx create --name mongo-seeding-bldr --bootstrap --use
 
 docker buildx build --push \
-  --platform linux/amd64,linux/arm64,linux/arm/v7 \
+  --platform linux/amd64,linux/arm64 \
   --builder mongo-seeding-bldr \
   --tag ${IMAGE_NAME}:${IMAGE_VERSION_TAG} \
   --build-arg cliVersion=${IMAGE_VERSION_TAG} \
