@@ -26,5 +26,8 @@
   },
   "scripts": {
     "start": "node index.js"
+  },
+  "volta": {
+    "extends": "../../../package.json"
   }
 }

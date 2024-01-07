@@ -14,7 +14,7 @@
   },
   "scripts": {
     "setup-hooks": "git config core.hooksPath ./scripts/git-hooks",
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap -- --force",
     "changelog": "lerna-changelog",
     "build-all": "lerna run build",
     "publish": "bash ./scripts/publish-npm-and-docker.sh",
@@ -36,5 +36,8 @@
     "lerna-changelog": "^2.2.0",
     "prettier": "^3.0.3",
     "typescript": "^5.0.4"
+  },
+  "volta": {
+    "node": "20.10.0"
   }
 }
