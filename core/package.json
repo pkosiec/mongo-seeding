@@ -2,7 +2,7 @@
   "name": "mongo-seeding",
   "description": "The ultimate Node.js library for populating your MongoDB database.",
   "homepage": "https://mongo-seeding.kosiec.dev",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0",
   "license": "MIT",
   "author": {
     "name": "Paweł Kosiec",
