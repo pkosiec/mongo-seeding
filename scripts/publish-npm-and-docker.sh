@@ -34,8 +34,7 @@ read -p "Push the Docker image ${IMAGE_VERSION_TAG} as latest (y/n)?" choice
 case "$choice" in 
   y|Y ) 
     echo "Tagging and pushing Docker image with '${IMAGE_LATEST_TAG}' tag..."
-    docker tag ${IMAGE_NAME}:${IMAGE_VERSION_TAG} ${IMAGE_NAME}:${IMAGE_LATEST_TAG}
-    docker push ${IMAGE_NAME}:${IMAGE_LATEST_TAG} ;;
+    docker buildx imagetools create -t ${IMAGE_NAME}:${IMAGE_LATEST_TAG} ${IMAGE_NAME}:${IMAGE_VERSION_TAG} ;;
   n|N ) echo "Skipping...";;
   * ) echo "invalid";;
 esac
