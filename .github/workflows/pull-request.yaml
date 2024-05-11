@@ -6,6 +6,9 @@ on:
     branches:
       - main
 
+env:
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
 jobs:
   build-node-apps:
     name: Build and test Node.js apps
