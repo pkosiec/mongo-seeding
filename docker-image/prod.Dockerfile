@@ -1,4 +1,4 @@
-FROM node:20.10-alpine
+FROM node:20.13.1
 LABEL org.opencontainers.image.title="Mongo Seeding" \
       org.opencontainers.image.description="The ultimate solution for populating your MongoDB database." \
       org.opencontainers.image.url="https://mongo-seeding.kosiec.dev" \

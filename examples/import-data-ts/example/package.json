@@ -21,11 +21,10 @@
   },
   "dependencies": {
     "mongo-seeding": "^4.0.0",
-    "mongodb": "^3.6.3",
+    "mongodb": "^5.9.2",
     "typeorm": "^0.3.19"
   },
   "devDependencies": {
-    "@types/mongodb": "^3.6.20",
     "@types/node": "^20.10.0",
     "typescript": "^5.0.4"
   },
