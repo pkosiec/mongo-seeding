@@ -20,7 +20,7 @@
     "url": "https://github.com/pkosiec/mongo-seeding/issues"
   },
   "dependencies": {
-    "@types/node": "^20.10.0",
+    "@types/node": "^22.14.0",
     "mongo-seeding": "^4.0.1"
   },
   "volta": {
