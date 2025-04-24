@@ -72,7 +72,7 @@
     "test:watch": "jest --watch --coverage"
   },
   "dependencies": {
-    "command-line-args": "^5.1.1",
+    "command-line-args": "^6.0.0",
     "command-line-usage": "^7.0.1",
     "extend": "^3.0.2",
     "mongo-seeding": "^4.0.1",
