@@ -2,7 +2,7 @@
   "name": "mongo-seeding-cli",
   "description": "The ultimate command line tool for populating your MongoDB database.",
   "homepage": "https://mongo-seeding.kosiec.dev",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "license": "MIT",
   "author": {
     "name": "Paweł Kosiec",
@@ -75,7 +75,7 @@
     "command-line-args": "^6.0.0",
     "command-line-usage": "^7.0.1",
     "extend": "^3.0.2",
-    "mongo-seeding": "^4.0.1",
+    "mongo-seeding": "^4.0.2",
     "ts-node": "^10.3.0",
     "typescript": "^5.2.2"
   },

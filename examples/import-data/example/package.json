@@ -2,7 +2,7 @@
   "name": "sample-data-example",
   "description": "JS and JSON samples for Mongo Seeding",
   "homepage": "https://mongo-seeding.kosiec.dev",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "license": "MIT",
   "private": true,
   "maintainers": [
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@types/node": "^22.14.0",
-    "mongo-seeding": "^4.0.1"
+    "mongo-seeding": "^4.0.2"
   },
   "volta": {
     "extends": "../../../package.json"
